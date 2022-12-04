@@ -79,5 +79,37 @@ namespace SportswearShop_Ver2.Models
 			}
 			return banners;
 		}
+
+		public List<Product> getProductForHomePage()
+		{
+			List<Product> products = new List<Product>();
+			using (MySqlConnection conn = GetConnection())
+			{
+				conn.Open();
+				string str = "SELECT * FROM products";
+				MySqlCommand cmd = new MySqlCommand(str, conn);
+				using (var reader = cmd.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						//System.Diagnostics.Debug.WriteLine("1");
+						products.Add(new Product()
+						{
+							Id = Convert.ToInt32(reader["id"]),
+							Name = reader["name"].ToString(),
+							Image = reader["image"].ToString(),
+							Original_price = Convert.ToInt32(reader["original_price"]),
+							Price_sale = Convert.ToInt32(reader["price_sale"])
+
+						});
+					}
+					reader.Close();
+				}
+
+				conn.Close();
+
+			}
+			return products;
+		}
 	}
 }

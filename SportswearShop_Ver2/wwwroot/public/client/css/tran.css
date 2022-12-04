@@ -1,0 +1,14 @@
+.o-giam-gia{
+    font-weight: 400;
+    margin-left: 8px;
+    border: 1px solid rgb(255, 66, 78);
+    border-radius: 2px;
+    background-color: rgb(255, 240, 241);
+    color: rgb(255, 66, 78) !important;
+    line-height: 18px;
+    font-size: 14px;
+    padding: 0px 4px;
+}
+
+
+

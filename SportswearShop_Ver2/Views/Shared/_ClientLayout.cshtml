@@ -5,7 +5,54 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<title>@ViewData["Title"]</title>
+	<!--File css của Tran  -->
 
+	<link rel="stylesheet" href="~/public/client/css/tran.css">
+	<!-- Favicon -->
+	<link rel="icon" href="~/public/client/images/favi.png" />
+	<!-- Fonts-->
+	<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">	<!-- StyleSheet -->
+	<link rel="stylesheet" href="~/public/client/plugins/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="~/public/plugins/ps-icon/style.css">
+
+	<!-- CSS Library-->
+	<link rel="stylesheet" href="~/public/client/plugins/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="~/public/client/plugins/owl-carousel/assets/owl.carousel.css">
+	<link rel="stylesheet" href="~/public/client/plugins/jquery-bar-rating/dist/themes/fontawesome-stars.css">
+	<link rel="stylesheet" href="~/public/client/plugins/slick/slick/slick.css">
+	<link rel="stylesheet" href="~/public/client/plugins/bootstrap-select/dist/css/bootstrap-select.min.css">
+	<link rel="stylesheet" href="~/public/client/plugins/Magnific-Popup/dist/magnific-popup.css">
+	<link rel="stylesheet" href="~/public/client/plugins/jquery-ui/jquery-ui.min.css">
+	<link rel="stylesheet" href="~/public/client/plugins/revolution/css/settings.css">
+	<link rel="stylesheet" href="~/public/client/plugins/revolution/css/layers.css">
+	<link rel="stylesheet" href="~/public/client/plugins/revolution/css/navigation.css">
+	<!-- Custom-->
+	<link rel="stylesheet" href="~/public/client/css/style.css">
+	<link rel="stylesheet" href="~/public/client/css/themify-icons.css">
+	<link rel="stylesheet" href="~/public/client/css/font-awesome.css">
+	<link rel="stylesheet" href="~/public/client/css/reset.css">
+	<link rel="stylesheet" href="~/public/client/css/responsive.css">
+	<link rel="stylesheet" href="~/public/client/css/bootstrap.css">
+	<!-- Magnific Popup -->
+	<link rel="stylesheet" href="~/public/client/css/magnific-popup.min.css">
+	<!-- Fancybox -->
+	<link rel="stylesheet" href="~/public/client/css/jquery.fancybox.min.css">
+	<!-- Themify Icons -->
+	<link rel="stylesheet" href="~/public/client/css/themify-icons.css">
+	<!-- Nice Select CSS -->
+	<!-- <link rel="stylesheet" href="~/public/client/css/niceselect.css"> -->
+	<!-- Animate CSS -->
+	<link rel="stylesheet" href="~/public/client/css/animate.css">
+	<!-- Flex Slider CSS -->
+	<link rel="stylesheet" href="~/public/client/css/flex-slider.min.css">
+	<!-- Owl Carousel -->
+	<link rel="stylesheet" href="~/public/client/css/owl-carousel.css">
+	<!-- Slicknav -->
+	<link rel="stylesheet" href="~/public/client/css/slicknav.min.css">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- Slicknav -->
+	<link rel="stylesheet" href="~/public/client/css/slicknav.min.css">
 	<!--===============================================================================================-->
 	<link rel="icon" type="image/png" href="~/public/images/icons/favicon.png" />
 	<!--===============================================================================================-->
@@ -38,154 +85,122 @@
 	<!--===============================================================================================-->
 </head>
 <body class="animsition">
-
-	<!-- Header -->
-	<header>
-		<!-- Header desktop -->
-		<div class="container-menu-desktop">
-			<div class="wrap-menu-desktop">
-				<nav class="limiter-menu-desktop container">
-
-					<!-- Logo desktop -->
-					<a href="#" class="logo">
-						<img src="~/public/images/icons/logo-01.png" alt="IMG-LOGO">
-					</a>
-
-					<!-- Menu desktop -->
-					<div class="menu-desktop">
-						<ul class="main-menu">
-							<li class="active-menu">
-								<a href="index.html">Home</a>
-								<ul class="sub-menu">
-									<li><a href="index.html">Homepage 1</a></li>
-									<li><a href="home-02.html">Homepage 2</a></li>
-									<li><a href="home-03.html">Homepage 3</a></li>
-								</ul>
-							</li>
-
-							<li>
-								<a href="product.html">Shop</a>
-							</li>
-
-							<li class="label1" data-label1="hot">
-								<a href="shoping-cart.html">Features</a>
-							</li>
-
-							<li>
-								<a href="blog.html">Blog</a>
-							</li>
-
-							<li>
-								<a href="about.html">About</a>
-							</li>
-
-							<li>
-								<a href="contact.html">Contact</a>
-							</li>
-						</ul>
-					</div>
-
-					<!-- Icon header -->
-					<div class="wrap-icon-header flex-w flex-r-m">
-						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
-							<i class="zmdi zmdi-search"></i>
-						</div>
-
-						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="2">
-							<i class="zmdi zmdi-shopping-cart"></i>
-						</div>
-
-						<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti" data-notify="0">
-							<i class="zmdi zmdi-favorite-outline"></i>
-						</a>
-					</div>
-				</nav>
-			</div>
-		</div>
-
-		<!-- Header Mobile -->
-		<div class="wrap-header-mobile">
-			<!-- Logo moblie -->
-			<div class="logo-mobile">
-				<a href="index.html"><img src="~/public/images/icons/logo-01.png" alt="IMG-LOGO"></a>
-			</div>
-
-			<!-- Icon header -->
-			<div class="wrap-icon-header flex-w flex-r-m m-r-15">
-				<div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 js-show-modal-search">
-					<i class="zmdi zmdi-search"></i>
+	<header class="header">
+		<nav class="navigation" style="height:60px; margin-bottom: 15px;">
+			<div class="container-fluid">
+				<div class="navigation__column left">
+					<div class="header__logo pl-40"><a class="ps-logo" href="/Home/Index"><img src="~/public/images/icons/sport.png" alt=""></a></div>
+					<input type="text" id="input-customer-id" value="@*@customerId*@" hidden><!--Đừng xóa cái này  -->
+					<input type="text" id="input-admin-id" value="@*@adminId*@" hidden>
 				</div>
+				<div class="navigation__column center" style="height:60px; margin-bottom: 15px;">
+					<ul class="main-menu menu">
+						@*@foreach (var item in @ViewBag.AllCategory)
+						{
+							@if (item.GetType().GetProperty("CategoryId").GetValue(item, null) == "LT000")
+							{*@
+								<li class="menu-item menu-item-has-children has-mega-menu">
+									<a href="/ProductListing/product_listing2?categoryId=@*@item.GetType().GetProperty("CategoryId").GetValue(item, null)*@" style="text-decoration:none">Laptop</a>
+									<div class="mega-menu">
+										<div class="mega-wrap">
+											@*@foreach (var brand in @ViewBag.AllBrand)
+											{
+												@if (brand.GetType().GetProperty("CategoryId").GetValue(brand, null) == "LT000")
+												{*@
+													<div class="mega-column">
+														<a href="/ProductListing/product_listing?brandId=@*@brand.GetType().GetProperty("BrandId").GetValue(brand, null)*@"> <h4 class="mega-heading">@*@brand.GetType().GetProperty("BrandName").GetValue(brand, null)*@</h4> </a>
+														@*@foreach (var subbrand in @ViewBag.AllSubBrand)
+														{*@
+															@*@if (subbrand.GetType().GetProperty("BrandId").GetValue(subbrand, null) == brand.GetType().GetProperty("BrandId").GetValue(brand, null))
+															{*@
+																<ul class="mega-item">
+																	<li><a href="/ProductListing/product_listing3?subbrandId=@*@subbrand.GetType().GetProperty("SubBrandId").GetValue(subbrand, null)*@">@*@subbrand.GetType().GetProperty("SubBrandName").GetValue(subbrand, null)*@</a></li>
+																</ul>
+															@*}}*@
+													</div>
+												@*}}*@
+										</div>
+									</div>
+								</li>
+							@*}}*@
 
-				<div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart" data-notify="2">
-					<i class="zmdi zmdi-shopping-cart"></i>
-				</div>
-
-				<a href="#" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti" data-notify="0">
-					<i class="zmdi zmdi-favorite-outline"></i>
-				</a>
-			</div>
-
-			<!-- Button show menu -->
-			<div class="btn-show-menu-mobile hamburger hamburger--squeeze">
-				<span class="hamburger-box">
-					<span class="hamburger-inner"></span>
-				</span>
-			</div>
-		</div>
-
-
-		<!-- Menu Mobile -->
-		<div class="menu-mobile">
-			<ul class="main-menu-m">
-				<li>
-					<a href="index.html">Home</a>
-					<ul class="sub-menu-m">
-						<li><a href="index.html">Homepage 1</a></li>
-						<li><a href="home-02.html">Homepage 2</a></li>
-						<li><a href="home-03.html">Homepage 3</a></li>
+						@*@foreach (var item in @ViewBag.AllCategory)
+						{
+							@if (item.GetType().GetProperty("CategoryId").GetValue(item, null) == "PC000")
+							{
+								<li class="menu-item menu-item-has-children has-mega-menu">
+									<a href="/ProductListing/product_listing2?categoryId=@item.GetType().GetProperty("CategoryId").GetValue(item, null)" style="text-decoration:none">PC</a>
+									<div class="mega-menu">
+										<div class="mega-wrap">
+											@foreach (var brand in @ViewBag.AllBrand)
+											{
+												@if (brand.GetType().GetProperty("CategoryId").GetValue(brand, null) == "PC000")
+												{
+													<div class="mega-column">
+														<a href="/ProductListing/product_listing?brandId=@brand.GetType().GetProperty("BrandId").GetValue(brand, null)"> <h4 class="mega-heading">@brand.GetType().GetProperty("BrandName").GetValue(brand, null)</h4> </a>
+														@foreach (var subbrand in @ViewBag.AllSubBrand)
+														{
+															@if (subbrand.GetType().GetProperty("BrandId").GetValue(subbrand, null) == brand.GetType().GetProperty("BrandId").GetValue(brand, null))
+															{
+																<ul class="mega-item">
+																	<li><a href="/ProductListing/product_listing3?subbrandId=@subbrand.GetType().GetProperty("SubBrandId").GetValue(subbrand, null)">@subbrand.GetType().GetProperty("SubBrandName").GetValue(subbrand, null)</a></li>
+																</ul>
+															}}
+													</div>
+												}}
+										</div>
+									</div>
+								</li>
+							}}
+						@foreach (var item in @ViewBag.AllCategory)
+						{
+							@if (item.GetType().GetProperty("CategoryId").GetValue(item, null) == "PK000")
+							{
+								<li class="menu-item"><a href="/ProductListing/product_listing2?categoryId=@item.GetType().GetProperty("CategoryId").GetValue(item, null)" style="text-decoration:none">Phụ Kiện</a></li>
+							}}
+						@foreach (var item in @ViewBag.AllCategory)
+						{
+							@if (item.GetType().GetProperty("CategoryId").GetValue(item, null) == "BL000")
+							{
+								<li class="menu-item"><a href="/Blog/all_blog" style="text-decoration:none">Tin Tức</a></li>
+							}}*@
 					</ul>
-					<span class="arrow-main-menu-m">
-						<i class="fa fa-angle-right" aria-hidden="true"></i>
-					</span>
-				</li>
+				</div>
+				<div class="navigation__column right" style="height:60px; margin-bottom: 15px;">
+					<form class="ps-search--header" action="/Home/search_result" name="timkiem" method="post">
+						<input class="form-control" type="text" id="keyword" name="kw_submit" placeholder="Tìm kiếm" value="@ViewData["CurrentFilter"]">
+						<button type="submit" name="submit" value="Search"><i class="fa fa-search"></i></button>
+					</form>
+					<div class="ps-cart">
+						<a class="ps-cart__toggle" href="/Cart/show_cart" title="Giỏ hàng">
+							<span><i id="so-luong-sp-gio-hang">0</i></span>
+							<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+						</a>
+						<div class="ps-cart__listing">
+							<div id="load_cart"></div>
+						</div>
+					</div>
+					<div class="menu-toggle"><span></span></div>
+					@*@if (!string.IsNullOrEmpty(customerId))
+					{*@
+						<a class="ps-cart__toggle" href="/Wishlist/Index"><i class="fa fa-heart-o" aria-hidden="true" title="Wish List"></i></a>
+					@*}*@
+					<div class="dropdown">
+						<div class="nut_dropdown"><a href="/Home/login" class="ps-cart__toggle"><i class="fa fa-user-circle-o" title="Đăng Nhập"></i></a></div>
+						<div class="noidung_dropdown">
+							@*@if (!string.IsNullOrEmpty(customerId))
+							{*@
+								<a href="/Profile/profile">Tài khoản</a>
+								<a href="/Order/my_orders">Đơn hàng của tôi</a>
+								<a href="/customer">Kiểm tra bảo hành</a>
+								<a href="/Home/Logout">Đăng xuất</a>
+							@*}*@
+						</div>
+					</div>
 
-				<li>
-					<a href="product.html">Shop</a>
-				</li>
-
-				<li>
-					<a href="shoping-cart.html" class="label1 rs1" data-label1="hot">Features</a>
-				</li>
-
-				<li>
-					<a href="blog.html">Blog</a>
-				</li>
-
-				<li>
-					<a href="about.html">About</a>
-				</li>
-
-				<li>
-					<a href="contact.html">Contact</a>
-				</li>
-			</ul>
-		</div>
-
-		<!-- Modal Search -->
-		<div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
-			<div class="container-search-header">
-				<button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-					<img src="~/public/images/icons/icon-close2.png" alt="CLOSE">
-				</button>
-
-				<form class="wrap-search-header flex-w p-l-15">
-					<button class="flex-c-m trans-04">
-						<i class="zmdi zmdi-search"></i>
-					</button>
-					<input class="plh3" type="text" name="search" placeholder="Search...">
-				</form>
+				</div>
 			</div>
-		</div>
+		</nav>
 	</header>
 
 	@RenderBody()
