@@ -1,4 +1,19 @@
-﻿<!DOCTYPE html>
+﻿@using System.Globalization;
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+	string adminId = HttpContextAccessor.HttpContext.Session.GetString("adminId");
+	string customerId = HttpContextAccessor.HttpContext.Session.GetString("customerId");
+	string customerFirstName = HttpContextAccessor.HttpContext.Session.GetString("customerFirstName");
+	string customerLastName = HttpContextAccessor.HttpContext.Session.GetString("customerLastName");
+	string customerImage = HttpContextAccessor.HttpContext.Session.GetString("customerImage");
+	if (string.IsNullOrEmpty(customerImage))
+	{
+		customerImage = "default-user-icon.png";
+	}
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -90,39 +105,39 @@
 			<div class="container-fluid">
 				<div class="navigation__column left">
 					<div class="header__logo pl-40"><a class="ps-logo" href="/Home/Index"><img src="~/public/images/icons/sport.png" alt=""></a></div>
-					<input type="text" id="input-customer-id" value="@*@customerId*@" hidden><!--Đừng xóa cái này  -->
-					<input type="text" id="input-admin-id" value="@*@adminId*@" hidden>
+					<input type="text" id="input-customer-id" value="@customerId" hidden><!--Đừng xóa cái này  -->
+					<input type="text" id="input-admin-id" value="@adminId" hidden>
 				</div>
 				<div class="navigation__column center" style="height:60px; margin-bottom: 15px;">
 					<ul class="main-menu menu">
 						@*@foreach (var item in @ViewBag.AllCategory)
 						{
 							@if (item.GetType().GetProperty("CategoryId").GetValue(item, null) == "LT000")
-							{*@
+							{
 								<li class="menu-item menu-item-has-children has-mega-menu">
-									<a href="/ProductListing/product_listing2?categoryId=@*@item.GetType().GetProperty("CategoryId").GetValue(item, null)*@" style="text-decoration:none">Laptop</a>
+									<a href="/ProductListing/product_listing2?categoryId=@item.GetType().GetProperty("CategoryId").GetValue(item, null)" style="text-decoration:none">Laptop</a>
 									<div class="mega-menu">
 										<div class="mega-wrap">
-											@*@foreach (var brand in @ViewBag.AllBrand)
+											@foreach (var brand in @ViewBag.AllBrand)
 											{
 												@if (brand.GetType().GetProperty("CategoryId").GetValue(brand, null) == "LT000")
-												{*@
+												{
 													<div class="mega-column">
-														<a href="/ProductListing/product_listing?brandId=@*@brand.GetType().GetProperty("BrandId").GetValue(brand, null)*@"> <h4 class="mega-heading">@*@brand.GetType().GetProperty("BrandName").GetValue(brand, null)*@</h4> </a>
-														@*@foreach (var subbrand in @ViewBag.AllSubBrand)
-														{*@
-															@*@if (subbrand.GetType().GetProperty("BrandId").GetValue(subbrand, null) == brand.GetType().GetProperty("BrandId").GetValue(brand, null))
-															{*@
+														<a href="/ProductListing/product_listing?brandId=@brand.GetType().GetProperty("BrandId").GetValue(brand, null)"> <h4 class="mega-heading">@brand.GetType().GetProperty("BrandName").GetValue(brand, null)</h4> </a>
+														@foreach (var subbrand in @ViewBag.AllSubBrand)
+														{
+															@if (subbrand.GetType().GetProperty("BrandId").GetValue(subbrand, null) == brand.GetType().GetProperty("BrandId").GetValue(brand, null))
+															{
 																<ul class="mega-item">
-																	<li><a href="/ProductListing/product_listing3?subbrandId=@*@subbrand.GetType().GetProperty("SubBrandId").GetValue(subbrand, null)*@">@*@subbrand.GetType().GetProperty("SubBrandName").GetValue(subbrand, null)*@</a></li>
+																	<li><a href="/ProductListing/product_listing3?subbrandId=@subbrand.GetType().GetProperty("SubBrandId").GetValue(subbrand, null)">@subbrand.GetType().GetProperty("SubBrandName").GetValue(subbrand, null)</a></li>
 																</ul>
-															@*}}*@
+															}}
 													</div>
-												@*}}*@
+												}}
 										</div>
 									</div>
 								</li>
-							@*}}*@
+							}}*@
 
 						@*@foreach (var item in @ViewBag.AllCategory)
 						{
@@ -181,20 +196,20 @@
 						</div>
 					</div>
 					<div class="menu-toggle"><span></span></div>
-					@*@if (!string.IsNullOrEmpty(customerId))
-					{*@
+					@if (!string.IsNullOrEmpty(customerId))
+					{
 						<a class="ps-cart__toggle" href="/Wishlist/Index"><i class="fa fa-heart-o" aria-hidden="true" title="Wish List"></i></a>
-					@*}*@
+					}
 					<div class="dropdown">
 						<div class="nut_dropdown"><a href="/Home/login" class="ps-cart__toggle"><i class="fa fa-user-circle-o" title="Đăng Nhập"></i></a></div>
 						<div class="noidung_dropdown">
-							@*@if (!string.IsNullOrEmpty(customerId))
-							{*@
+							@if (!string.IsNullOrEmpty(customerId))
+							{
 								<a href="/Profile/profile">Tài khoản</a>
 								<a href="/Order/my_orders">Đơn hàng của tôi</a>
 								<a href="/customer">Kiểm tra bảo hành</a>
 								<a href="/Home/Logout">Đăng xuất</a>
-							@*}*@
+							}
 						</div>
 					</div>
 

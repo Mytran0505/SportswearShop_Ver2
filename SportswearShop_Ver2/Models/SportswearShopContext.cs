@@ -111,5 +111,46 @@ namespace SportswearShop_Ver2.Models
 			}
 			return products;
 		}
+
+		public User getUserInfo(string email, string password, int isAdmin)
+		{
+			User userInfo = new User();
+			using (MySqlConnection conn = GetConnection())
+			{
+				conn.Open();
+				var str = "select * from User where Admin = @admin AND Email = @email AND Password = @password";
+				MySqlCommand cmd = new MySqlCommand(str, conn);
+				cmd.Parameters.AddWithValue("email", email);
+				cmd.Parameters.AddWithValue("password", password);
+				cmd.Parameters.AddWithValue("admin", isAdmin);
+				using (var reader = cmd.ExecuteReader())
+				{
+					if (reader.Read())
+					{
+						userInfo.UserId = Convert.ToInt32(reader["UserId"]);
+						userInfo.FirstName = reader["FirstName"].ToString();
+						userInfo.LastName = reader["LastName"].ToString();
+						userInfo.Mobile = reader["Mobile"].ToString();
+						userInfo.UserImage = reader["UserImage"].ToString();
+						userInfo.Email = reader["Email"].ToString();
+						userInfo.Admin = Convert.ToInt32(reader["Admin"]);
+					}
+					else
+						return null;
+				}
+			}
+			return userInfo;
+		}
+		public void updateLastLogin(int userId)
+		{
+			using (MySqlConnection conn = GetConnection())
+			{
+				conn.Open();
+				var str = "UPDATE USER SET LastLogin = SYSDATE() where UserId = @userId";
+				MySqlCommand cmd = new MySqlCommand(str, conn);
+				cmd.Parameters.AddWithValue("userId", userId);
+				cmd.ExecuteNonQuery();
+			}
+		}
 	}
 }
