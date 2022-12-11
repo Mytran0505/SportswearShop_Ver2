@@ -10,13 +10,7 @@ using MySQL.Data.EntityFrameworkCore;
 
 namespace SportswearShop_Ver2.Models
 {
-<<<<<<< HEAD
-	public class SportswearShopLINQContext
-	{
-		public DbSet<User> User { set; get; }
-        public DbSet<Statistic> Statistic { set; get; }
-=======
-	public class SportswearShopLINQContext : DbContext
+    public class SportswearShopLINQContext : DbContext
     {
         private const string connectionString = "server=localhost;port=3306;database=sportshop_ver2;uid=root;password=;Convert Zero Datetime=True";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -27,24 +21,23 @@ namespace SportswearShop_Ver2.Models
         public DbSet<User> User { set; get; }
         public DbSet<Menu> Menu { set; get; }
         public DbSet<Category> Category { set; get; }
+        public DbSet<Statistic> Statistic { set; get; }
 
->>>>>>> 400dabcf0147f3c4efc950df5af23e6ddd841502
         public void updateLoginHistory(LoginHistory login)
-		{
-			//LoginHistory.Add(login);
-			//SaveChanges();
-		}
-<<<<<<< HEAD
+        {
+                //LoginHistory.Add(login);
+                //SaveChanges();
+        }
 
         public List<Statistic> getStatistic(DateTime tu_ngay, DateTime den_ngay)
         {
-            // Chuyển đổi như vầy để set Time = 00:00:00 để so sánh với statisticDate (kiểu Date, ko có Time) trong CSDL
+                // Chuyển đổi như vầy để set Time = 00:00:00 để so sánh với statisticDate (kiểu Date, ko có Time) trong CSDL
             tu_ngay = DateTime.ParseExact(tu_ngay.ToString("yyyy-MM-dd"), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
             den_ngay = DateTime.ParseExact(den_ngay.ToString("yyyy-MM-dd"), "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
 
             var statistic = Statistic.Where(s => s.StatisticDate >= tu_ngay && s.StatisticDate <= den_ngay).ToList();
             return statistic;
-=======
+        }
         public List<Category> getAllCategory()
         {
             var categories = Category.Where(c => c.Active == 1).ToList();
@@ -52,9 +45,8 @@ namespace SportswearShop_Ver2.Models
         }
         public List<Menu> getAllMenu()
         {
-            var Menus = Menu.Where(c => c.Active==1).ToList();
+            var Menus = Menu.Where(c => c.Active == 1).ToList();
             return Menus;
->>>>>>> 400dabcf0147f3c4efc950df5af23e6ddd841502
         }
     }
 }
