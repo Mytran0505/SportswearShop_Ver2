@@ -16,9 +16,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name='copyright' content=''>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>@ViewData["Title"]</title>
 	<!--File css của Tran  -->
 
@@ -97,126 +99,170 @@
 	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="~/public/css/util.css">
 	<link rel="stylesheet" type="text/css" href="~/public/css/main.css">
+    <link rel="stylesheet" href="~/public/client/css/style.css">
+
 	<!--===============================================================================================-->
+    <!--File css của Huy  -->
+
+    <link rel="stylesheet" href="~/public/client/css/huy.css">
+    <!-- Favicon -->
+    <link rel="icon" href="~/public/client/images/favi.png" />
+    <!-- Fonts-->
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">	<!-- StyleSheet -->
+    <link rel="stylesheet" href="~/public/client/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/public/plugins/ps-icon/style.css">
+    <!-- CSS Library-->
+    <link rel="stylesheet" href="~/public/client/plugins/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/public/client/plugins/owl-carousel/assets/owl.carousel.css">
+    <link rel="stylesheet" href="~/public/client/plugins/jquery-bar-rating/dist/themes/fontawesome-stars.css">
+    @*<link rel="stylesheet" href="~/public/client/plugins/slick/slick/slick.css">*@
+    <link rel="stylesheet" href="~/public/client/plugins/bootstrap-select/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="~/public/client/plugins/Magnific-Popup/dist/magnific-popup.css">
+    <link rel="stylesheet" href="~/public/client/plugins/jquery-ui/jquery-ui.min.css">
+    <link rel="stylesheet" href="~/public/client/plugins/revolution/css/settings.css">
+    <link rel="stylesheet" href="~/public/client/plugins/revolution/css/layers.css">
+    <link rel="stylesheet" href="~/public/client/plugins/revolution/css/navigation.css">
+    <!-- Custom-->
+    <link rel="stylesheet" href="~/public/client/css/style.css">
+    <link rel="stylesheet" href="~/public/client/css/themify-icons.css">
+    <link rel="stylesheet" href="~/public/client/css/font-awesome.css">
+    @*<link rel="stylesheet" href="~/public/client/css/reset.css">*@
+    <link rel="stylesheet" href="~/public/client/css/responsive.css">
+
+    @*<link rel="stylesheet" href="~/public/client/css/bootstrap.css">*@
+    <!-- Magnific Popup -->
+    <link rel="stylesheet" href="~/public/client/css/magnific-popup.min.css">
+    <!-- Fancybox -->
+    <link rel="stylesheet" href="~/public/client/css/jquery.fancybox.min.css">
+    <!-- Themify Icons -->
+    <link rel="stylesheet" href="~/public/client/css/themify-icons.css">
+    <!-- Nice Select CSS -->
+    <!-- <link rel="stylesheet" href="~/public/client/css/niceselect.css"> -->
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="~/public/client/css/animate.css">
+    <!-- Flex Slider CSS -->
+    <link rel="stylesheet" href="~/public/client/css/flex-slider.min.css">
+    <!-- Owl Carousel -->
+    <link rel="stylesheet" href="~/public/client/css/owl-carousel.css">
+    <!-- Slicknav -->
+    <link rel="stylesheet" href="~/public/client/css/slicknav.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Slicknav -->
+    <link rel="stylesheet" href="~/public/client/css/slicknav.min.css">
 </head>
-<body class="animsition">
+<body>
 	<header class="header">
-		<nav class="navigation" style="height:60px; margin-bottom: 15px;">
-			<div class="container-fluid">
-				<div class="navigation__column left">
-					<div class="header__logo pl-40"><a class="ps-logo" href="/Home/Index"><img src="~/public/images/icons/sport.png" alt=""></a></div>
-					<input type="text" id="input-customer-id" value="@customerId" hidden><!--Đừng xóa cái này  -->
-					<input type="text" id="input-admin-id" value="@adminId" hidden>
-				</div>
-				<div class="navigation__column center" style="height:60px; margin-bottom: 15px;">
-					<ul class="main-menu menu">
-						@*@foreach (var item in @ViewBag.AllCategory)
-						{
-							@if (item.GetType().GetProperty("CategoryId").GetValue(item, null) == "LT000")
-							{
-								<li class="menu-item menu-item-has-children has-mega-menu">
-									<a href="/ProductListing/product_listing2?categoryId=@item.GetType().GetProperty("CategoryId").GetValue(item, null)" style="text-decoration:none">Laptop</a>
-									<div class="mega-menu">
-										<div class="mega-wrap">
-											@foreach (var brand in @ViewBag.AllBrand)
-											{
-												@if (brand.GetType().GetProperty("CategoryId").GetValue(brand, null) == "LT000")
-												{
-													<div class="mega-column">
-														<a href="/ProductListing/product_listing?brandId=@brand.GetType().GetProperty("BrandId").GetValue(brand, null)"> <h4 class="mega-heading">@brand.GetType().GetProperty("BrandName").GetValue(brand, null)</h4> </a>
-														@foreach (var subbrand in @ViewBag.AllSubBrand)
-														{
-															@if (subbrand.GetType().GetProperty("BrandId").GetValue(subbrand, null) == brand.GetType().GetProperty("BrandId").GetValue(brand, null))
-															{
-																<ul class="mega-item">
-																	<li><a href="/ProductListing/product_listing3?subbrandId=@subbrand.GetType().GetProperty("SubBrandId").GetValue(subbrand, null)">@subbrand.GetType().GetProperty("SubBrandName").GetValue(subbrand, null)</a></li>
-																</ul>
-															}}
-													</div>
-												}}
-										</div>
-									</div>
-								</li>
-							}}*@
+        <nav class="navigation" style="height:60px; margin-bottom: 15px;">
+            <div class="container-fluid">
+                <div class="navigation__column left">
+                    <div class="header__logo pl-40"><a class="ps-logo" href="Home/Index"><img src="public\images\icons\sport.png" alt=""></a></div>
+                    @*<input type="text" id="input-customer-id" value="@customerId" hidden><!--Đừng xóa cái này  -->
+                    <input type="text" id="input-admin-id" value="@adminId" hidden>*@
+                </div>
+                <div class="navigation__column center" style="height:60px; margin-bottom: 15px;">
+                    <ul class="main-menu menu">
+                        @*@foreach (var item in @ViewBag.AllCategory)
+                        {
+                            @if (item.GetType().GetProperty("CategoryId").GetValue(item, null) == "LT000")
+                            {
+                                <li class="menu-item menu-item-has-children has-mega-menu">
+                                    <a href="/ProductListing/product_listing2?categoryId=@item.GetType().GetProperty("CategoryId").GetValue(item, null)" style="text-decoration:none">Laptop</a>
+                                    <div class="mega-menu">
+                                        <div class="mega-wrap">
+                                            @foreach (var brand in @ViewBag.AllBrand)
+                                            {
+                                                @if (brand.GetType().GetProperty("CategoryId").GetValue(brand, null) == "LT000")
+                                                {
+                                                    <div class="mega-column">
+                                                        <a href="/ProductListing/product_listing?brandId=@brand.GetType().GetProperty("BrandId").GetValue(brand, null)"> <h4 class="mega-heading">@brand.GetType().GetProperty("BrandName").GetValue(brand, null)</h4> </a>
+                                                        @foreach (var subbrand in @ViewBag.AllSubBrand)
+                                                        {
+                                                            @if (subbrand.GetType().GetProperty("BrandId").GetValue(subbrand, null) == brand.GetType().GetProperty("BrandId").GetValue(brand, null))
+                                                            {
+                                                                <ul class="mega-item">
+                                                                    <li><a href="/ProductListing/product_listing3?subbrandId=@subbrand.GetType().GetProperty("SubBrandId").GetValue(subbrand, null)">@subbrand.GetType().GetProperty("SubBrandName").GetValue(subbrand, null)</a></li>
+                                                                </ul>}}
+                                                    </div>}}
+                                        </div>
+                                    </div>
+                                </li>
+                            }}
 
-						@*@foreach (var item in @ViewBag.AllCategory)
-						{
-							@if (item.GetType().GetProperty("CategoryId").GetValue(item, null) == "PC000")
-							{
-								<li class="menu-item menu-item-has-children has-mega-menu">
-									<a href="/ProductListing/product_listing2?categoryId=@item.GetType().GetProperty("CategoryId").GetValue(item, null)" style="text-decoration:none">PC</a>
-									<div class="mega-menu">
-										<div class="mega-wrap">
-											@foreach (var brand in @ViewBag.AllBrand)
-											{
-												@if (brand.GetType().GetProperty("CategoryId").GetValue(brand, null) == "PC000")
-												{
-													<div class="mega-column">
-														<a href="/ProductListing/product_listing?brandId=@brand.GetType().GetProperty("BrandId").GetValue(brand, null)"> <h4 class="mega-heading">@brand.GetType().GetProperty("BrandName").GetValue(brand, null)</h4> </a>
-														@foreach (var subbrand in @ViewBag.AllSubBrand)
-														{
-															@if (subbrand.GetType().GetProperty("BrandId").GetValue(subbrand, null) == brand.GetType().GetProperty("BrandId").GetValue(brand, null))
-															{
-																<ul class="mega-item">
-																	<li><a href="/ProductListing/product_listing3?subbrandId=@subbrand.GetType().GetProperty("SubBrandId").GetValue(subbrand, null)">@subbrand.GetType().GetProperty("SubBrandName").GetValue(subbrand, null)</a></li>
-																</ul>
-															}}
-													</div>
-												}}
-										</div>
-									</div>
-								</li>
-							}}
-						@foreach (var item in @ViewBag.AllCategory)
-						{
-							@if (item.GetType().GetProperty("CategoryId").GetValue(item, null) == "PK000")
-							{
-								<li class="menu-item"><a href="/ProductListing/product_listing2?categoryId=@item.GetType().GetProperty("CategoryId").GetValue(item, null)" style="text-decoration:none">Phụ Kiện</a></li>
-							}}
-						@foreach (var item in @ViewBag.AllCategory)
-						{
-							@if (item.GetType().GetProperty("CategoryId").GetValue(item, null) == "BL000")
-							{
-								<li class="menu-item"><a href="/Blog/all_blog" style="text-decoration:none">Tin Tức</a></li>
-							}}*@
-					</ul>
-				</div>
-				<div class="navigation__column right" style="height:60px; margin-bottom: 15px;">
-					<form class="ps-search--header" action="/Home/search_result" name="timkiem" method="post">
-						<input class="form-control" type="text" id="keyword" name="kw_submit" placeholder="Tìm kiếm" value="@ViewData["CurrentFilter"]">
-						<button type="submit" name="submit" value="Search"><i class="fa fa-search"></i></button>
-					</form>
-					<div class="ps-cart">
-						<a class="ps-cart__toggle" href="/Cart/show_cart" title="Giỏ hàng">
-							<span><i id="so-luong-sp-gio-hang">0</i></span>
-							<i class="fa fa-shopping-cart" aria-hidden="true"></i>
-						</a>
-						<div class="ps-cart__listing">
-							<div id="load_cart"></div>
-						</div>
-					</div>
-					<div class="menu-toggle"><span></span></div>
-					@if (!string.IsNullOrEmpty(customerId))
-					{
-						<a class="ps-cart__toggle" href="/Wishlist/Index"><i class="fa fa-heart-o" aria-hidden="true" title="Wish List"></i></a>
-					}
-					<div class="dropdown">
-						<div class="nut_dropdown"><a href="/Home/login" class="ps-cart__toggle"><i class="fa fa-user-circle-o" title="Đăng Nhập"></i></a></div>
-						<div class="noidung_dropdown">
-							@if (!string.IsNullOrEmpty(customerId))
-							{
-								<a href="/Profile/profile">Tài khoản</a>
-								<a href="/Order/my_orders">Đơn hàng của tôi</a>
-								<a href="/customer">Kiểm tra bảo hành</a>
-								<a href="/Home/Logout">Đăng xuất</a>
-							}
-						</div>
-					</div>
+                        @foreach (var item in @ViewBag.AllCategory)
+                        {
+                            @if (item.GetType().GetProperty("CategoryId").GetValue(item, null) == "PC000")
+                            {
+                                <li class="menu-item menu-item-has-children has-mega-menu">
+                                    <a href="/ProductListing/product_listing2?categoryId=@item.GetType().GetProperty("CategoryId").GetValue(item, null)" style="text-decoration:none">PC</a>
+                                    <div class="mega-menu">
+                                        <div class="mega-wrap">
+                                            @foreach (var brand in @ViewBag.AllBrand)
+                                            {
+                                                @if (brand.GetType().GetProperty("CategoryId").GetValue(brand, null) == "PC000")
+                                                {
+                                                    <div class="mega-column">
+                                                        <a href="/ProductListing/product_listing?brandId=@brand.GetType().GetProperty("BrandId").GetValue(brand, null)"> <h4 class="mega-heading">@brand.GetType().GetProperty("BrandName").GetValue(brand, null)</h4> </a>
+                                                        @foreach (var subbrand in @ViewBag.AllSubBrand)
+                                                        {
+                                                            @if (subbrand.GetType().GetProperty("BrandId").GetValue(subbrand, null) == brand.GetType().GetProperty("BrandId").GetValue(brand, null))
+                                                            {
+                                                                <ul class="mega-item">
+                                                                    <li><a href="/ProductListing/product_listing3?subbrandId=@subbrand.GetType().GetProperty("SubBrandId").GetValue(subbrand, null)">@subbrand.GetType().GetProperty("SubBrandName").GetValue(subbrand, null)</a></li>
+                                                                </ul>}}
+                                                    </div>}}
+                                        </div>
+                                    </div>
+                                </li>
+                            }}
+                        @foreach (var item in @ViewBag.AllCategory)
+                        {
+                            @if (item.GetType().GetProperty("CategoryId").GetValue(item, null) == "PK000")
+                            {
+                                <li class="menu-item"><a href="/ProductListing/product_listing2?categoryId=@item.GetType().GetProperty("CategoryId").GetValue(item, null)" style="text-decoration:none">Phụ Kiện</a></li>
+                            }}
+                        @foreach (var item in @ViewBag.AllCategory)
+                        {
+                            @if (item.GetType().GetProperty("CategoryId").GetValue(item, null) == "BL000")
+                            {
+                                <li class="menu-item"><a href="/Blog/all_blog" style="text-decoration:none">Tin Tức</a></li>
+                            }}*@
+                    </ul>
+                </div>
+                <div class="navigation__column right" style="height:60px; margin-bottom: 15px;">
+                    <form class="ps-search--header" action="/Home/search_result" name="timkiem" method="post">
+                        <input class="form-control" type="text" id="keyword" name="kw_submit" placeholder="Tìm kiếm" value="@ViewData["CurrentFilter"]">
+                        <button type="submit" name="submit" value="Search"><i class="fa fa-search"></i></button>
+                    </form>
+                    <div class="ps-cart">
+                        <a class="ps-cart__toggle" href="/Cart/show_cart" title="Giỏ hàng">
+                            <span><i id="so-luong-sp-gio-hang">0</i></span>
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        </a>
+                        <div class="ps-cart__listing">
+                            <div id="load_cart"></div>
+                        </div>
+                    </div>
+                    <div class="menu-toggle"><span></span></div>
+                    @if (!string.IsNullOrEmpty(customerId))
+                    {<a class="ps-cart__toggle" href="/Wishlist/Index"><i class="fa fa-heart-o" aria-hidden="true" title="Wish List"></i></a>}
+                    <div class="dropdown">
+                        <div class="nut_dropdown"><a href="/Home/login" class="ps-cart__toggle"><i class="fa fa-user-circle-o" title="Đăng Nhập"></i></a></div>
+                        <div class="noidung_dropdown">
+                            @if (!string.IsNullOrEmpty(customerId))
+                            {
+                                <a href="/Profile/profile">Tài khoản</a>
+                                <a href="/Order/my_orders">Đơn hàng của tôi</a>
+                                <a href="/customer">Kiểm tra bảo hành</a>
+                                <a href="/Home/Logout">Đăng xuất</a>
+                            }
+                        </div>
+                    </div>
 
-				</div>
-			</div>
-		</nav>
-	</header>
+                </div>
+            </div>
+        </nav>
+    </header>
 
 	@RenderBody()
 
@@ -364,169 +410,82 @@
 			</div>
 		</div>
 	</footer>
+	<style>
+		.swal-footer, .swal-text {
+			text-align: center;
+		}
 
+		.slider-area .mySlides {
+			display: none
+		}
 
-	<!-- Back to top -->
-	<div class="btn-back-to-top" id="myBtn">
-		<span class="symbol-btn-back-to-top">
-			<i class="zmdi zmdi-chevron-up"></i>
-		</span>
-	</div>
+		.slider-area img {
+			vertical-align: middle;
+			border-radius: 10px 10px 0px 0px;
+			max-height: 260px;
+		}
 
-	<!-- Modal1 -->
-	<div class="wrap-modal1 js-modal1 p-t-60 p-b-20">
-		<div class="overlay-modal1 js-hide-modal1"></div>
+		.slideshow-container {
+			position: relative;
+			margin: 50px 0px 0px 0px;
+			border: 1px solid #D1D6E0;
+			border-radius: 10px;
+		}
+		/* Next & previous buttons */
+		.slider-area .prev, .next {
+			cursor: pointer;
+			position: absolute;
+			top: 50%;
+			width: auto;
+			padding: 16px;
+			margin-top: -22px;
+			color: white;
+			font-weight: bold;
+			font-size: 18px;
+			transition: 0.6s ease;
+			border-radius: 0 3px 3px 0;
+			user-select: none;
+		}
+		/* Position the "next button" to the right */
+		.slider-area .next {
+			right: 0;
+			border-radius: 3px 0 0 3px;
+		}
 
-		<div class="container">
-			<div class="bg0 p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
-				<button class="how-pos3 hov3 trans-04 js-hide-modal1">
-					<img src="~/public/images/icons/icon-close.png" alt="CLOSE">
-				</button>
+		/* On hover, add a black background color with a little bit see-through */
+		.prev:hover, .next:hover {
+			background-color: rgba(0,0,0,0.8);
+		}
 
-				<div class="row">
-					<div class="col-md-6 col-lg-7 p-b-30">
-						<div class="p-l-25 p-r-30 p-lr-0-lg">
-							<div class="wrap-slick3 flex-sb flex-w">
-								<div class="wrap-slick3-dots"></div>
-								<div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
+		/* The dots/bullets/indicators */
+		.slider-area .dot {
+			cursor: pointer;
+			height: 8px;
+			width: 8px;
+			margin: 0 2px;
+			background-color: #bbb;
+			border-radius: 50%;
+			display: inline-block;
+			transition: background-color 0.6s ease;
+		}
 
-								<div class="slick3 gallery-lb">
-									<div class="item-slick3" data-thumb="~/public/images/product-detail-01.jpg">
-										<div class="wrap-pic-w pos-relative">
-											<img src="~/public/images/product-detail-01.jpg" alt="IMG-PRODUCT">
+		.slider-area .active, .dot:hover {
+			background-color: #717171;
+		}
 
-											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="~/public/images/product-detail-01.jpg">
-												<i class="fa fa-expand"></i>
-											</a>
-										</div>
-									</div>
-
-									<div class="item-slick3" data-thumb="~/public/images/product-detail-02.jpg">
-										<div class="wrap-pic-w pos-relative">
-											<img src="~/public/images/product-detail-02.jpg" alt="IMG-PRODUCT">
-
-											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="~/public/images/product-detail-02.jpg">
-												<i class="fa fa-expand"></i>
-											</a>
-										</div>
-									</div>
-
-									<div class="item-slick3" data-thumb="~/public/~/public/images/product-detail-03.jpg">
-										<div class="wrap-pic-w pos-relative">
-											<img src="~/public/~/public/images/product-detail-03.jpg" alt="IMG-PRODUCT">
-
-											<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="~/public/images/product-detail-03.jpg">
-												<i class="fa fa-expand"></i>
-											</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-md-6 col-lg-5 p-b-30">
-						<div class="p-r-50 p-t-5 p-lr-0-lg">
-							<h4 class="mtext-105 cl2 js-name-detail p-b-14">
-								Lightweight Jacket
-							</h4>
-
-							<span class="mtext-106 cl2">
-								$58.79
-							</span>
-
-							<p class="stext-102 cl3 p-t-23">
-								Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus ligula. Mauris consequat ornare feugiat.
-							</p>
-
-							<!--  -->
-							<div class="p-t-33">
-								<div class="flex-w flex-r-m p-b-10">
-									<div class="size-203 flex-c-m respon6">
-										Size
-									</div>
-
-									<div class="size-204 respon6-next">
-										<div class="rs1-select2 bor8 bg0">
-											<select class="js-select2" name="time">
-												<option>Choose an option</option>
-												<option>Size S</option>
-												<option>Size M</option>
-												<option>Size L</option>
-												<option>Size XL</option>
-											</select>
-											<div class="dropDownSelect2"></div>
-										</div>
-									</div>
-								</div>
-
-								<div class="flex-w flex-r-m p-b-10">
-									<div class="size-203 flex-c-m respon6">
-										Color
-									</div>
-
-									<div class="size-204 respon6-next">
-										<div class="rs1-select2 bor8 bg0">
-											<select class="js-select2" name="time">
-												<option>Choose an option</option>
-												<option>Red</option>
-												<option>Blue</option>
-												<option>White</option>
-												<option>Grey</option>
-											</select>
-											<div class="dropDownSelect2"></div>
-										</div>
-									</div>
-								</div>
-
-								<div class="flex-w flex-r-m p-b-10">
-									<div class="size-204 flex-w flex-m respon6-next">
-										<div class="wrap-num-product flex-w m-r-20 m-tb-10">
-											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-												<i class="fs-16 zmdi zmdi-minus"></i>
-											</div>
-
-											<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product" value="1">
-
-											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-												<i class="fs-16 zmdi zmdi-plus"></i>
-											</div>
-										</div>
-
-										<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
-											Add to cart
-										</button>
-									</div>
-								</div>
-							</div>
-
-							<!--  -->
-							<div class="flex-w flex-m p-l-100 p-t-40 respon7">
-								<div class="flex-m bor9 p-r-10 m-r-11">
-									<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100" data-tooltip="Add to Wishlist">
-										<i class="zmdi zmdi-favorite"></i>
-									</a>
-								</div>
-
-								<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Facebook">
-									<i class="fa fa-facebook"></i>
-								</a>
-
-								<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Twitter">
-									<i class="fa fa-twitter"></i>
-								</a>
-
-								<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100" data-tooltip="Google Plus">
-									<i class="fa fa-google-plus"></i>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
+		.ps-search--header > input {
+			padding: 0 20px;
+			border: none;
+			height: 40px;
+			background-color: #e8e8e8;
+			/* -webkit-border-radius: 40px; */
+			-moz-border-radius: 40px;
+			-ms-border-radius: 40px;
+			border-radius: 40px;
+			font-size: 13px;
+			color: #767779;
+		}
+	</style>
 	<!--===============================================================================================-->
 	<script src="~/public/vendor/jquery/jquery-3.2.1.min.js"></script>
 	<!--===============================================================================================-->
@@ -628,7 +587,197 @@
 	</script>
 	<!--===============================================================================================-->
 	<script src="~/public/js/main.js"></script>
+	<script src="~/public/admin/js/plugin/sweetalert/sweetalert.min.js"></script>
 
+	<script>
+		$(document).ready(function () {
+			load_cart();
+			load_cart_quantity();
+			setInterval(load_cart_quantity, 2000);
+			$('body').on("click", ".delete-button-in-nav", function () {
+				$(this).parent().remove();
+				var ItemId = $(this).parent().find('.item-id-for-cart').val();
+				$.ajax({
+					url: '/Cart/remove_item',
+					methed: "GET",
+					data: { id: ItemId },
+					success: function (data) {
+						load_cart();
+						load_cart_quantity();
+					},
+					error: function (data) {
+						alert('Lỗi');
+					}
+				});
+			});
+		});
+		function load_cart_quantity() {
+			$.ajax({
+				url: "/Home/load_cart_quantity",
+				success: function (data) {
+					$('#so-luong-sp-gio-hang').html(data);
+				},
+				error: function (data) {
+					alert("Lỗi");
+				}
+			});
+		}
+		function load_cart() {
+			$.ajax({
+				url: "/Home/load_cart",
+				success: function (data) {
+					$('#load_cart').html(data);
+				},
+				error: function (data) {
+					alert("Lỗi");
+				}
+			});
+		}
+	</script>
+	<script>
+		$(document).ready(function () {
+			$('a[title="Wishlist"]').click(function () {
+				var customer_id = $('#input-customer-id').val();
+				if (customer_id) {
+					var ProductId = $(this).parents('.button-head').find('.ProductId').val();
+					$.ajax({
+						url: "/Wishlist/add_product_to_wishlist",
+						method: "GET",
+						data: { ProductId: ProductId },
+						success: function (data) {
+							if (data == '1') {
+								swal({
+									title: "Thành công",
+									text: "Đã thêm sản phẩm vào danh sách yêu thích.",
+									icon: "success",
+									button: "OK",
+								});
+							}
+							else {
+								swal({
+									text: "Sản phẩm đã tồn tại trong danh sách yêu thích",
+									icon: "info",
+									button: "OK",
+								});
+							}
+
+						},
+						error: function (data) {
+							alert("Lỗi");
+						}
+					});
+				} else {
+					swal({
+						text: "Bạn cần đăng nhập để thêm sản phẩm vào danh sách yêu thích",
+						icon: "info",
+						buttons: ["OK", "Đăng nhập"],
+					}).then(function (isConfirm) {
+						if (isConfirm) {
+							window.location = "/Home/login";
+						}
+					})
+				}
+
+			});
+		});
+	</script>
+	<script>
+        $('.add-to-cart-a-tag').click(function () {
+            var productId = $(this).parent().find('input[type=text]').val();
+            var Quantity = $(this).parent().find('.Quantity').val();
+            if (Quantity >= 1) {
+                $.ajax({
+                    url: '/Cart/add_to_cart',
+                    methed: "GET",
+                    data: { ProductId: productId, Quantity: 1 },
+                    success: function (data) {
+                        load_cart();
+                        swal({
+                            title: "Thông báo",
+                            text: "Đã thêm sản phẩm vào giỏ hàng!",
+                            icon: "success",
+                            buttons: ["Tiếp tục mua hàng", "Xem giỏ hàng"],
+                        }).then(function (isConfirm) {
+                            if (isConfirm) {
+                                window.location = "/Cart/show_cart";
+                            }
+                        })
+                    },
+                    error: function (data) {
+                        alert('Error');
+                    }
+                });
+            }
+            else {
+                swal({
+                    title: "Không thể thêm sản phẩm",
+                    text: "Sản phẩm đã hết hàng",
+                    icon: "warning",
+                });
+            }
+        });
+    </script>
+
+
+
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+    <!-- Jquery -->
+    <script src="~/public/client/js/jquery.min.js"></script>
+    <script src="~/public/client/js/jquery-migrate-3.0.0.js"></script>
+    <script src="~/public/client/js/jquery-ui.min.js"></script>
+    <!-- Popper JS -->
+    <script src="~/public/client/js/popper.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="~/public/client/js/bootstrap.min.js"></script>
+    <!-- Color JS -->
+    <script src="~/public/client/js/colors.js"></script>
+    <!-- Slicknav JS -->
+    <script src="~/public/client/js/slicknav.min.js"></script>
+    <!-- Owl Carousel JS -->
+    <script src="~/public/client/js/owl-carousel.js"></script>
+    <!-- Magnific Popup JS -->
+    <script src="~/public/client/js/magnific-popup.js"></script>
+    <!-- Waypoints JS -->
+    <script src="~/public/client/js/waypoints.min.js"></script>
+    <!-- Countdown JS -->
+    <script src="~/public/client/js/finalcountdown.min.js"></script>
+    <!-- Nice Select JS
+    <script src="~/public/client/js/nicesellect.js"></script> -->
+    <!-- Flex Slider JS -->
+    <script src="~/public/client/js/flex-slider.js"></script>
+    <!-- ScrollUp JS -->
+    <script src="~/public/client/js/scrollup.js"></script>
+    <!-- Onepage Nav JS -->
+    <script src="~/public/client/js/onepage-nav.min.js"></script>
+    <!-- Easing JS -->
+    <script src="~/public/client/js/easing.js"></script>
+    <!-- Active JS -->
+    <script src="~/public/client/js/active.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/jquery-bar-rating/dist/jquery.barrating.min.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/owl-carousel/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/gmap3.min.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/imagesloaded.pkgd.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/isotope.pkgd.min.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/jquery.matchHeight-min.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/slick/slick/slick.min.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/elevatezoom/jquery.elevatezoom.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/Magnific-Popup/dist/jquery.magnific-popup.min.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAx39JFH5nhxze1ZydH-Kl8xXM3OK4fvcg&amp;region=GB"></script>
+    <script type="text/javascript" src="/public/client/plugins/revolution/js/jquery.themepunch.tools.min.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/revolution/js/jquery.themepunch.revolution.min.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/revolution/js/extensions/revolution.extension.video.min.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/revolution/js/extensions/revolution.extension.layeranimation.min.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/revolution/js/extensions/revolution.extension.navigation.min.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/revolution/js/extensions/revolution.extension.parallax.min.js"></script>
+    <script type="text/javascript" src="~/public/client/plugins/revolution/js/extensions/revolution.extension.actions.min.js"></script>
+    <script src="~/public/ckeditor/ckeditor/ckeditor.js"></script>
+    <!-- Custom scripts-->
+    <script type="text/javascript" src="~/public/client/js/main.js"></script>
 </body>
 </html>
 

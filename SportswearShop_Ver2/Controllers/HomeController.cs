@@ -1,7 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportswearShop_Ver2.Models;
 using System.Diagnostics;
-
+using System.Globalization;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using MyCardSession.Helpers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Net.Mail;
 namespace SportswearShop_Ver2.Controllers
 {
     public class HomeController : Controller
@@ -45,7 +55,58 @@ namespace SportswearShop_Ver2.Controllers
 			}
 			return View();
 		}
-		public IActionResult check_password(User userInput)
+
+        public int load_cart_quantity()
+        {
+            if (SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart") == null)
+            {
+                return 0;
+            }
+            List<CartItem> cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+            return cart.Sum(item => item.Quantity);
+        }
+
+        public string load_cart()
+        {
+            if (SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart") == null)
+            {
+                return @"<img style='display: block; width: auto; height: 150px; margin-left: auto; margin-right:auto;' src='/public/client/Images/empty-cart.png'>
+                <p> Bạn chưa có sản phẩm nào trong giỏ hàng</p>";
+            }
+
+            CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
+            List<CartItem> cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+            int numberProduct = cart.Sum(item => item.Quantity);
+            if (numberProduct == 0)
+            {
+                return @"<img style='display: block; width: auto; height: 150px; margin-left: auto; margin-right:auto;' src='/public/client/Images/empty-cart.png'>
+                <p> Bạn chưa có sản phẩm nào trong giỏ hàng</p>";
+            }
+
+            string output = "<div class='ps-cart__content'>";
+            foreach (var cartItem in cart)
+            {
+                string image = cartItem.Product.Image;
+                output += @$"<div class='ps-cart-item'>
+                <input type = 'hidden' class='item-id-for-cart' value='{cartItem.Product.Id}'/>
+                <a class='ps-cart-item__close delete-button-in-nav' href='javascript:void(0)'></a>
+                <div class='ps-cart-item__thumbnail'>
+                    <a href = '/ProductDetail?productId={cartItem.Product.Id}'></a><img src='{cartItem.Product.Image}' alt=''>
+                </div>
+                <div class='ps-cart-item__content'>
+                    <a class='ps-cart-item__title' href='/ProductDetail?productId={cartItem.Product.Id}'>{cartItem.Product.Name}</a>
+                    <p>{cartItem.Product.Price_sale.ToString("#,###", cul.NumberFormat)}₫ x{cartItem.Quantity}</p>
+                </div>
+            </div>";
+            }
+            output += @$"</div><div class='ps-cart__total'>
+            <p>Số sản phẩm:<span>{numberProduct}</span></p>
+            <p>Tổng tiền:<span>{(cart.Sum(item => item.Product.Price_sale * item.Quantity)).ToString("#,###", cul.NumberFormat)} ₫</span></p></div>
+            <div class='ps-cart__footer'>
+            <a href = 'javascript:void(0)' class='ps-btn btn-thanh-toan'>THANH TOÁN</a>";
+            return output;
+        }
+        public IActionResult check_password(User userInput)
 		{
 			System.Diagnostics.Debug.WriteLine(userInput.Email);
 			SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;

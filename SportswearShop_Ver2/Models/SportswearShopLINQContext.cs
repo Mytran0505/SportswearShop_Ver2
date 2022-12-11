@@ -4,17 +4,37 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Drawing.Drawing2D;
+using MySQL.Data.EntityFrameworkCore;
+
+
 namespace SportswearShop_Ver2.Models
 {
+<<<<<<< HEAD
 	public class SportswearShopLINQContext
 	{
 		public DbSet<User> User { set; get; }
         public DbSet<Statistic> Statistic { set; get; }
+=======
+	public class SportswearShopLINQContext : DbContext
+    {
+        private const string connectionString = "server=localhost;port=3306;database=sportshop_ver2;uid=root;password=;Convert Zero Datetime=True";
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.UseMySQL(connectionString);
+        }
+        public DbSet<User> User { set; get; }
+        public DbSet<Menu> Menu { set; get; }
+        public DbSet<Category> Category { set; get; }
+
+>>>>>>> 400dabcf0147f3c4efc950df5af23e6ddd841502
         public void updateLoginHistory(LoginHistory login)
 		{
 			//LoginHistory.Add(login);
 			//SaveChanges();
 		}
+<<<<<<< HEAD
 
         public List<Statistic> getStatistic(DateTime tu_ngay, DateTime den_ngay)
         {
@@ -24,6 +44,17 @@ namespace SportswearShop_Ver2.Models
 
             var statistic = Statistic.Where(s => s.StatisticDate >= tu_ngay && s.StatisticDate <= den_ngay).ToList();
             return statistic;
+=======
+        public List<Category> getAllCategory()
+        {
+            var categories = Category.Where(c => c.Active == 1).ToList();
+            return categories;
+        }
+        public List<Menu> getAllMenu()
+        {
+            var Menus = Menu.Where(c => c.Active==1).ToList();
+            return Menus;
+>>>>>>> 400dabcf0147f3c4efc950df5af23e6ddd841502
         }
     }
 }

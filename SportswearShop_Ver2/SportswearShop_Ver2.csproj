@@ -19,6 +19,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.0" />
     <PackageReference Include="MySql.Data" Version="8.0.31" />
     <PackageReference Include="MySql.Data.EntityFramework" Version="8.0.31" />
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.22" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.23" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.3" />

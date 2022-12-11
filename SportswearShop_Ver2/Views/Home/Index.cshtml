@@ -179,34 +179,49 @@
 		<div class="row isotope-grid">
 			@foreach (var item in ViewBag.ProductForHomePage)
 			{
-				<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
-					<!-- Block2 -->
-					<div class="block2">
-						<div class="block2-pic hov-img0">
-							<img src="@item.GetType().GetProperty("Image").GetValue(item, null)" alt="@item.GetType().GetProperty("Name").GetValue(item, null)">
-
-							@*<a href="#" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-						Quick View
-						</a>*@
-						</div>
-
-						<div class="block2-txt flex-w flex-t p-t-14">
-							<div class="block2-txt-child1 flex-col-l ">
-								<a href="/san-pham/@item.GetType().GetProperty("Id").GetValue(item, null)@item.GetType().GetProperty("Name").GetValue(item, null)" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-									@item.GetType().GetProperty("Name").GetValue(item, null)
-								</a>
-
-								<span class="stext-105 cl3">
-									@item.GetType().GetProperty("Original_price").GetValue(item, null)
-								</span>
+				<div class="col-xl-3 col-lg-4 col-md-4 col-12 isotope-item women">
+					<div class="single-product">
+						<div class="product-img" style="width: 250px; height: 200px;">
+							<a href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("Id").GetValue(item, null)">
+								<img class="default-img" style="margin: auto; max-width: 250px; max-height: 200px; width: auto; height: auto; " src="@item.GetType().GetProperty("Image").GetValue(item, null)" alt="#">
+								<img class="hover-img" src="@item.GetType().GetProperty("Image").GetValue(item, null)" alt="#">
+								@*@{
+							double so_ngay_da_moban = (DateTime.Now - item.GetType().GetProperty("StartsAt").GetValue(item, null)).TotalDays;
+							}*@
+								@if (item.GetType().GetProperty("Quantity").GetValue(item, null) < 1)
+								{
+									<span class="out-of-stock" style="background-color:#FF8C00;">Hết hàng</span>
+								}
+								@*@if (so_ngay_da_moban < 14)
+							{
+							<span class="new" style="right: 180px;">New</span>
+							}*@
+							</a>
+							<div class="button-head">
+								<div class="product-action">
+									@*<a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Lượt xem: @item.GetType().GetProperty("View").GetValue(item, null)</span></a>*@
+									<a title="Wishlist" href="javascript:void(0)"><i class=" ti-heart "></i><span>Yêu thích</span></a>
+									<input type="text" class="ProductId" value="@item.GetType().GetProperty("Id").GetValue(item, null)" hidden>
+								</div>
+								<div class="product-action-2">
+									<a title="Add to cart" class="add-to-cart-a-tag" href="javascript:void(0)">Thêm vào giỏ hàng</a>
+									<input type="text" value="@item.GetType().GetProperty("Id").GetValue(item, null)" hidden>
+									<input type="hidden" class="Quantity" value="@item.GetType().GetProperty("Quantity").GetValue(item, null)">
+								</div>
 							</div>
-
-							@*<div class="block2-txt-child2 flex-r p-t-3">
-						<a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-						<img class="icon-heart1 dis-block trans-04" src="public/images/icons/icon-heart-01.png" alt="ICON">
-						<img class="icon-heart2 dis-block trans-04 ab-t-l" src="public/images/icons/icon-heart-02.png" alt="ICON">
-						</a>
-						</div>*@
+						</div>
+						<div class="product-content">
+							<h3><a style="text-decoration: none; color: black;" href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("Id").GetValue(item, null)">@item.GetType().GetProperty("Name").GetValue(item, null)</a></h3>
+							<div class="product-price">
+								<span style="color:black; font-size:17px"><b>@item.GetType().GetProperty("Price_sale").GetValue(item, null).ToString("#,###", cul.NumberFormat) ₫</b></span>
+								@*@if (item.GetType().GetProperty("Discount").GetValue(item, null) > 0)
+							{
+							double dc = @item.GetType().GetProperty("Price").GetValue(item, null) + (@item.GetType().GetProperty("Price").GetValue(item, null) * (@item.GetType().GetProperty("Discount").GetValue(item, null)) / 100);
+							<br>
+							<span class="old">@dc.ToString("#,###", cul.NumberFormat) ₫</span>
+							<span class="o-giam-gia" style="font-size:10px">-@item.GetType().GetProperty("Discount").GetValue(item, null)% </span>
+							}*@
+							</div>
 						</div>
 					</div>
 				</div>
