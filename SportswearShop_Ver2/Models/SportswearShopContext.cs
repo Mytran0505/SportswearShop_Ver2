@@ -458,5 +458,47 @@ namespace SportswearShop_Ver2.Models
             }
             return numberOrder;
         }
+
+
+        public List<object> getStatistic(DateTime startDate, DateTime endDate)
+        {
+            List<object> revenueInfo = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT NgayBan, SUM(DoanhThu) AS DoanhThu " +
+                          "FROM( " +
+                                "SELECT bkh.id, bkh.created_at as NgayBan, bkh.total_money - SUM(pd.original_price * cthd.amount) AS DoanhThu " +
+                                "FROM c_t_h_d_s cthd, products pd, bill_khachhangs bkh " +
+                                "WHERE cthd.product_id = pd.id AND bkh.id = cthd.id " +
+                                "AND bkh.created_at BETWEEN @startdate AND @enddate " +
+                                "GROUP by bkh.id, bkh.created_at " +
+                                "UNION " +
+                                "SELECT bvl.id, bvl.created_at as NgayBan, bvl.total_money - SUM(pd.original_price * cthd.amount) AS DoanhThu " +
+                                "FROM c_t_h_d_s cthd, products pd, bill_vanglais bvl " +
+                                "WHERE cthd.product_id = pd.id AND bvl.id = cthd.id " +
+                                "AND bvl.created_at BETWEEN @startdate AND @enddate " +
+                                "GROUP by bvl.id, bvl.created_at) x " +
+                                "GROUP BY NgayBan";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("startdate", startDate.ToString("yyyy-MM-dd"));
+                cmd.Parameters.AddWithValue("enddate", endDate.ToString("yyyy-MM-dd"));
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var obj = new
+                        {
+                            period = ((DateTime)reader["NgayBan"]).ToString("dd-MM-yyyy"),
+                            profit = Convert.ToInt32(reader["DoanhThu"]),
+                        };
+                        revenueInfo.Add(obj);
+                    }
+                }
+            }
+            return revenueInfo;
+        }
+
+
     }
 }

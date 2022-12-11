@@ -1,0 +1,221 @@
+﻿@using Microsoft.AspNetCore.Http
+@using System.Globalization
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    string adminFirstName = HttpContextAccessor.HttpContext.Session.GetString("adminFirstName");
+    string adminLastName = HttpContextAccessor.HttpContext.Session.GetString("adminLastName");
+    string adminImage = HttpContextAccessor.HttpContext.Session.GetString("adminImage");
+    if (string.IsNullOrEmpty(adminImage))
+    {
+        adminImage = "default-user-icon.png";
+    }
+    Layout = null;
+    CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thống kê doanh thu bán hàng từ ngày @ViewBag.tuNgay.ToString("dd-MM-yyyy") đến ngày @ViewBag.denNgay.ToString("dd-MM-yyyy")</title>
+    <link rel="icon" type="image/png" href="~/public/admin/images/pdf-icon.jpg" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+</head>
+<body>
+    <!-- <button onclick="window.print();" class="noPrint">Print</button> -->
+    <div class="container" style="font-size:22px;">
+        <div class="row" style="margin-top: 40px;">
+            <div class="col-sm-1">
+                <img src="~/public/client/Images/logo3.png" alt="">
+            </div>
+            <div class="col-sm-11">
+                <b>CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ ITGOSHOP</b>
+                <p>Tầng 5, Số 117-119-121 Nguyễn Du, Phường Bến Thành, Quận 1, Thành Phố Hồ Chí Minh</p>
+            </div>
+            <!-- <div class="col-sm-4" style="text-align: right;">
+                <p style="color:#F70C72;font-weight: bold;">"Tất cả vì khách hàng"</p>
+            </div> -->
+        </div>
+        <hr style="margin:20px 0px 40px 0px">
+        <div class="row" style="margin-bottom:40px;">
+            <div class="col-md-12" style="text-align: center;">
+                <b style="font-size: 26px;">THỐNG KÊ VÀ PHÂN TÍCH DOANH THU BÁN HÀNG</b><br>
+                <i>(Từ ngày @ViewBag.tuNgay.ToString("dd-MM-yyyy") đến ngày @ViewBag.denNgay.ToString("dd-MM-yyyy"))</i>
+            </div>
+            <div class="col-md-12" style="text-align: right;">
+                <p style="margin:30px 0px">Thời gian thống kê: @DateTime.Now.ToString("HH:mm dd-MM-yyyy")</p>
+                <!-- <p>Người bán hàng: Lê Thị Hồng Cúc</p> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p><b style="font-size: 24px;">I. Số liệu thống kê</b></p>
+                <input type="hidden" id="tu-ngay" value="@ViewBag.tuNgay">
+                <input type="hidden" id="den-ngay" value="@ViewBag.denNgay">
+                <table class="table table-bordered" style="text-align:center">
+                    <thead>
+                        <tr>
+                            <th scope="col">STT</th>
+                            <th scope="col">Ngày bán hàng</th>
+                            <th scope="col">Bán hàng</th>
+                            <th scope="col">Doanh thu</th>
+                        </tr>
+                    </thead>
+                    @*<tbody>
+                        @{
+                            int stt = 1; int total_sales = 0; int total_profit = 0;
+                            int max_sales = 0; int max_profit = 0; string max_sales_date = ""; string max_profit_date = "";
+                            //Statistic first_statistic_row = ViewBag.statisticInfo[0]; int min_sales = first_statistic_row.Sales; int min_profit = first_statistic_row.Profit; string min_sales_date = ""; string min_profit_date = "";
+                        }
+                        @foreach (var item in ViewBag.statisticInfo)
+                        {
+                            <tr>
+                                <th scope="row">@stt</th>
+                                <td>@item.StatisticDate.ToString("dd-MM-yyyy")</td>
+                                <td>@item.Sales.ToString("#,###", cul.NumberFormat) ₫</td>
+                                <td>@item.Profit.ToString("#,###", cul.NumberFormat) ₫</td>
+                            </tr>
+                            stt++; total_sales += item.Sales; total_profit += item.Profit;
+                            if (max_sales < item.Sales)
+                            {
+                                max_sales = item.Sales;
+                                max_sales_date = item.StatisticDate.ToString("dd-MM-yyyy");
+                            }
+                            if (min_sales > item.Sales)
+                            {
+                                min_sales = item.Sales;
+                                min_sales_date = item.StatisticDate.ToString("dd-MM-yyyy");
+                            }
+
+                            if (max_profit < item.Profit)
+                            {
+                                max_profit = item.Profit;
+                                max_profit_date = item.StatisticDate.ToString("dd-MM-yyyy");
+                            }
+                            if (min_profit > item.Profit)
+                            {
+                                min_profit = item.Profit;
+                                min_profit_date = item.StatisticDate.ToString("dd-MM-yyyy");
+                            }
+                        }
+                        <tr>
+                            <td colspan="2"><b>TỔNG CỘNG</b></td>
+                            <td>@total_sales.ToString("#,###", cul.NumberFormat) ₫</td>
+                            <td>@total_profit.ToString("#,###", cul.NumberFormat) ₫</td>
+                        </tr>
+                    </tbody>*@
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <p><b style="font-size: 24px;">II. Biểu đồ thống kê doanh thu</b></p>
+                <form>
+                    <div id="bieuDoDoanhThu" style="max-width:85%"></div>
+                </form>
+                <small>
+                    Chú thích:
+                    <div style="display:inline-block;background-color:#0B62A4; height:10px; width:10px;margin-left: 20px;"></div> : Bán hàng
+                    <div style="display:inline-block;background-color:#7A92A3; height:10px; width:10px;margin-left: 20px;"></div>  : Doanh thu
+                </small>
+            </div>
+        </div>
+        <div class="row" style="margin-top:20px;">
+            <div class="col-md-12">
+                <p><b style="font-size: 24px;">III. Phân tích thống kê</b></p>
+                <p>Từ ngày @ViewBag.tuNgay.ToString("dd-MM-yyyy") đến ngày @ViewBag.denNgay.ToString("dd-MM-yyyy"):</p>
+                @*<div style="margin-left:40px">
+                    <p>- Ngày bán hàng có giá trị lớn nhất: @max_sales_date (@max_sales.ToString("#,###", cul.NumberFormat) ₫)</p>
+                    <p>- Ngày bán hàng có giá trị nhỏ nhất: @min_sales_date (@min_sales.ToString("#,###", cul.NumberFormat) ₫)</p>
+                    <p>- Ngày có doanh thu lớn nhất: @max_profit_date (@max_profit.ToString("#,###", cul.NumberFormat) ₫)</p>
+                    <p>- Ngày có doanh thu nhỏ nhất: @min_profit_date (@min_profit.ToString("#,###", cul.NumberFormat) ₫)</p>
+                    @{
+                        string sale_avg = (total_sales / ViewBag.statisticInfo.Count).ToString("#,###", cul.NumberFormat);
+                        string revenue_avg = (total_profit / ViewBag.statisticInfo.Count).ToString("#,###", cul.NumberFormat);
+                    }
+                    <p>- Giá trị bán hàng trung bình mỗi ngày: @sale_avg ₫</p>
+                    <p>- Doanh thu trung bình mỗi ngày: @revenue_avg ₫</p>
+                </div>*@
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8" style="text-align: right;">
+            </div>
+            <div class="col-md-4" style="text-align: center;">
+                <p style="margin:20px 0px 100px 0px">
+                    <b style="font-size: 24px;">Người lập thống kê</b><br>
+                    <i>(Kí, đóng dấu và ghi rõ họ tên)</i>
+                </p>
+                <p>@adminLastName @adminFirstName</p>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:10px;">
+            <div class="col-md-12" style="text-align: center;">
+                <hr>
+                <b>ITGoShop - "Tất cả vì khách hàng"</b>
+                <hr>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            var chart = new Morris.Bar({
+                element: 'bieuDoDoanhThu',
+                lineColors: ['#819C79', '#fc8710', '#FF6541', '#A4ADD3', '#766B56'],
+                pointFillColors: ['#ffffff'],
+                pointStrokeColors: ['black'],
+                fillOpacity: 0.6,
+                hideHover: 'auto',
+                parseTime: false,
+                xkey: 'period',
+                ykeys: ['profit'],
+                behaveLikeLine: true,
+                labels: ['Doanh thu']
+            });
+
+            load_chart();
+
+            setTimeout(function () { window.print(); }, 500);
+            
+
+            function load_chart() {
+                var tu_ngay = $('#tu-ngay').val();
+                var den_ngay = $('#den-ngay').val();
+                $.ajax({
+                    url: "/Admin/filter_by_date",
+                    dataType: "json",
+                    data: { den_ngay: den_ngay, tu_ngay: tu_ngay },
+                    success: function (data) {
+                        chart.setData(data);
+                    },
+                    error: function (data) {
+                        swal({
+                            text: "Không tìm thấy dữ liệu",
+                            icon: "error",
+                        });
+                    }
+                });
+            }
+
+        });
+
+    </script>
+</body>
+</html>

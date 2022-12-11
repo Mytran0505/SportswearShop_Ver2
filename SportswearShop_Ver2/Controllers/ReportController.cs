@@ -17,14 +17,15 @@ namespace SportswearShop_Ver2.Controllers
         {
             if (tu_ngay == DateTime.MinValue || den_ngay == DateTime.MinValue) // DateTime is null
             {
-                tu_ngay = DateTime.Now.AddDays(-14);
+                tu_ngay = DateTime.Now.AddDays(-30);
                 den_ngay = DateTime.Now;
             }
-            SportswearShopLINQContext context = new SportswearShopLINQContext();
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
             ViewBag.tuNgay = tu_ngay;
             ViewBag.denNgay = den_ngay;
             ViewBag.statisticInfo = context.getStatistic(tu_ngay, den_ngay);
             return View();
         }
+
     }
 }
