@@ -229,5 +229,234 @@ namespace SportswearShop_Ver2.Models
 				cmd.ExecuteNonQuery();
 			}
 		}
-	}
+
+        public long getTotalRevenue()
+        {
+            long revenue = 0;
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT SUM(DoanhThu) AS DoanhThu " +
+                          "FROM( " +
+                                "SELECT NgayBan, SUM(DoanhThu) AS DoanhThu " +
+                                "FROM( " +
+                                      "SELECT bkh.id, bkh.created_at as NgayBan, bkh.total_money - SUM(pd.original_price * cthd.amount) AS DoanhThu " +
+                                      "FROM c_t_h_d_s cthd, products pd, bill_khachhangs bkh " +
+                                      "WHERE cthd.product_id = pd.id AND bkh.id = cthd.id " +
+                                      "GROUP by bkh.id, bkh.created_at " +
+                                      "UNION " +
+                                      "SELECT bvl.id, bvl.created_at as NgayBan, bvl.total_money - SUM(pd.original_price * cthd.amount) AS DoanhThu " +
+                                      "FROM c_t_h_d_s cthd, products pd, bill_vanglais bvl " +
+                                      "WHERE cthd.product_id = pd.id AND bvl.id = cthd.id " +
+                                      "GROUP by bvl.id, bvl.created_at) x " +
+                                      "GROUP BY NgayBan) x";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (DBNull.Value.Equals(reader["DoanhThu"])) revenue = 0;
+                        else
+                            revenue = Convert.ToInt32(reader["DoanhThu"]);
+
+                    }
+                }
+            }
+            return revenue;
+        }
+
+        public long getRevenueThisMonth(DateTime startDate, DateTime endDate)
+        {
+            long revenue = 0;
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+				var str = "SELECT SUM(DoanhThu) AS DoanhThu " +
+                          "FROM( " +
+                                "SELECT NgayBan, SUM(DoanhThu) AS DoanhThu " +
+                                "FROM( " +
+                                      "SELECT bkh.id, bkh.created_at as NgayBan, bkh.total_money - SUM(pd.original_price * cthd.amount) AS DoanhThu " +
+                                      "FROM c_t_h_d_s cthd, products pd, bill_khachhangs bkh " +
+                                      "WHERE cthd.product_id = pd.id AND bkh.id = cthd.id " +
+                                      "AND bkh.created_at BETWEEN @startdate AND @enddate " +
+                                      "GROUP by bkh.id, bkh.created_at " +
+                                      "UNION " +
+                                      "SELECT bvl.id, bvl.created_at as NgayBan, bvl.total_money - SUM(pd.original_price * cthd.amount) AS DoanhThu " +
+                                      "FROM c_t_h_d_s cthd, products pd, bill_vanglais bvl " +
+                                      "WHERE cthd.product_id = pd.id AND bvl.id = cthd.id " +
+                                      "AND bvl.created_at BETWEEN @startdate AND @enddate " +
+                                      "GROUP by bvl.id, bvl.created_at) x " +
+                                      "GROUP BY NgayBan) x";
+
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("startdate", startDate.ToString("yyyy-MM-dd"));
+                cmd.Parameters.AddWithValue("enddate", endDate.ToString("yyyy-MM-dd"));
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (DBNull.Value.Equals(reader["DoanhThu"])) revenue = 0;
+                        else
+                            revenue = Convert.ToInt32(reader["DoanhThu"]);
+
+                    }
+                }
+            }
+            return revenue;
+        }
+
+        public List<object> getRevenueByDate(DateTime startDate, DateTime endDate)
+        {
+            List<object> revenueInfo = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT NgayBan, SUM(DoanhThu) AS DoanhThu " +
+                          "FROM( " +
+                                "SELECT bkh.id, bkh.created_at as NgayBan, bkh.total_money - SUM(pd.original_price * cthd.amount) AS DoanhThu " +
+                                "FROM c_t_h_d_s cthd, products pd, bill_khachhangs bkh " +
+                                "WHERE cthd.product_id = pd.id AND bkh.id = cthd.id " +
+                                "AND bkh.created_at BETWEEN @startdate AND @enddate " +
+                                "GROUP by bkh.id, bkh.created_at " +
+                                "UNION " +
+                                "SELECT bvl.id, bvl.created_at as NgayBan, bvl.total_money - SUM(pd.original_price * cthd.amount) AS DoanhThu " +
+                                "FROM c_t_h_d_s cthd, products pd, bill_vanglais bvl " +
+                                "WHERE cthd.product_id = pd.id AND bvl.id = cthd.id " +
+                                "AND bvl.created_at BETWEEN @startdate AND @enddate " +
+                                "GROUP by bvl.id, bvl.created_at) x " +
+                                "GROUP BY NgayBan";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("startdate", startDate.ToString("yyyy-MM-dd"));
+                cmd.Parameters.AddWithValue("enddate", endDate.ToString("yyyy-MM-dd"));
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var obj = new
+                        {
+                            period = ((DateTime)reader["NgayBan"]).ToString("dd-MM-yyyy"),
+                            profit = Convert.ToInt32(reader["DoanhThu"]),
+                        };
+                        revenueInfo.Add(obj);
+                    }
+                }
+            }
+            return revenueInfo;
+        }
+
+        public List<object> countOrderByDate(DateTime startDate, DateTime endDate)
+        {
+            List<object> ordersInfo = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+				var str = "SELECT COUNT(DISTINCT cthd.id) AS TongDonHang " +
+						  "from bill_khachhangs bkh, bill_vanglais bvl, c_t_h_d_s cthd " +
+                          "WHERE (bkh.id = cthd.id and bkh.created_at BETWEEN @startdate and @enddate) " +
+                          "OR (bvl.id = cthd.id and bvl.created_at BETWEEN @startdate and @enddate)";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("startdate", startDate.ToString("yyyy-MM-dd"));
+                cmd.Parameters.AddWithValue("enddate", endDate.ToString("yyyy-MM-dd"));
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        //System.Diagnostics.Debug.WriteLine("1");
+                        var obj = new
+                        {
+                            label = "Đặt hàng thành công",
+                            value = Convert.ToInt32(reader["TongDonHang"]),
+                        };
+                        ordersInfo.Add(obj);
+                    }
+                }
+            }
+            return ordersInfo;
+        }
+
+        public int countCustomer()
+        {
+            int numberCustomer = 0;
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT COUNT(*) AS NUMBER_CUSTOMER FROM USER WHERE ADMIN = 0";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        numberCustomer = Convert.ToInt32(reader["NUMBER_CUSTOMER"]);
+                    }
+                }
+            }
+            return numberCustomer;
+        }
+
+        public int countProduct()
+        {
+            int numberProduct = 0;
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT COUNT(*) AS NUMBER_PRODUCT FROM PRODUCTS";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        numberProduct = Convert.ToInt32(reader["NUMBER_PRODUCT"]);
+                    }
+                }
+            }
+            return numberProduct;
+        }
+
+        public int countOrder(DateTime startDate, DateTime endDate)
+        {
+            int numberOrder = 0;
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT COUNT(DISTINCT cthd.id) AS TongDonHang " +
+                          "from bill_khachhangs bkh, bill_vanglais bvl, c_t_h_d_s cthd " +
+                          "WHERE (bkh.id = cthd.id and bkh.created_at BETWEEN @startdate and @enddate) " +
+                          "OR (bvl.id = cthd.id and bvl.created_at BETWEEN @startdate and @enddate)";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("startdate", startDate.ToString("yyyy-MM-dd"));
+                cmd.Parameters.AddWithValue("enddate", endDate.ToString("yyyy-MM-dd"));
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        numberOrder = Convert.ToInt32(reader["TongDonHang"]);
+                    }
+                }
+            }
+            return numberOrder;
+        }
+
+        public int countOrder()
+        {
+            int numberOrder = 0;
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT COUNT(DISTINCT cthd.id) AS TongDonHang " +
+                          "from bill_khachhangs bkh, bill_vanglais bvl, c_t_h_d_s cthd " +
+                          "WHERE bkh.id = cthd.id " +
+                          "OR bvl.id = cthd.id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        numberOrder = Convert.ToInt32(reader["TongDonHang"]);
+                    }
+                }
+            }
+            return numberOrder;
+        }
+    }
 }
