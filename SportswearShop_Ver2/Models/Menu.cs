@@ -31,5 +31,10 @@
 		public Menu()
 		{
 		}
-	}
+
+        internal static object Where(Func<object, bool> value)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

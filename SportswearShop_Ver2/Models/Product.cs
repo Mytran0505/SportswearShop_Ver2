@@ -11,22 +11,23 @@
 		private int price_sale;
 		private int active;
 		private string image;
+		private int quantity;
 
 		public Product()
 		{
 		}
-
-		public Product(int id, string name, string description, string content, int menu_id, int original_price, int price_sale, int active, string image)
+		public Product(int id, string name, string description, string content, int menu_id, int original_price, int price_sale, int active, string image, int quantity)
 		{
-			this.Id = id;
-			this.Name = name;
-			this.Description = description;
-			this.Content = content;
-			this.Menu_id = menu_id;
-			this.Original_price = original_price;
-			this.Price_sale = price_sale;
-			this.Active = active;
-			this.Image = image;
+			this.id = id;
+			this.name = name;
+			this.description = description;
+			this.content = content;
+			this.menu_id = menu_id;
+			this.original_price = original_price;
+			this.price_sale = price_sale;
+			this.active = active;
+			this.image = image;
+			this.Quantity = quantity;
 		}
 
 		public int Id { get => id; set => id = value; }
@@ -38,5 +39,6 @@
 		public int Price_sale { get => price_sale; set => price_sale = value; }
 		public int Active { get => active; set => active = value; }
 		public string Image { get => image; set => image = value; }
+		public int Quantity { get => quantity; set => quantity = value; }
 	}
 }

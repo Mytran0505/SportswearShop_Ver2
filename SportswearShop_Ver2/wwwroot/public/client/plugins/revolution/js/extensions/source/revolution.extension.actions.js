@@ -189,15 +189,15 @@ if (as)
 	})				
 }
 
-function getScrollRoot(){
-    var html = document.documentElement, body = document.body,
-        cacheTop = ((typeof window.pageYOffset !== "undefined") ? window.pageYOffset : null) || body.scrollTop || html.scrollTop, // cache the window's current scroll position
-        root;
-    html.scrollTop = body.scrollTop = cacheTop + (cacheTop > 0) ? -1 : 1;
-    root = (html.scrollTop !== cacheTop) ? html : body;
-    root.scrollTop = cacheTop; 
-    return root; 
-}
+//function getScrollRoot(){
+//    var html = document.documentElement, body = document.body,
+//        cacheTop = ((typeof window.pageYOffset !== "undefined") ? window.pageYOffset : null) || body.scrollTop || html.scrollTop, // cache the window's current scroll position
+//        root;
+//    html.scrollTop = body.scrollTop = cacheTop + (cacheTop > 0) ? -1 : 1;
+//    root = (html.scrollTop !== cacheTop) ? html : body;
+//    root.scrollTop = cacheTop; 
+//    return root; 
+//}
 
 
 

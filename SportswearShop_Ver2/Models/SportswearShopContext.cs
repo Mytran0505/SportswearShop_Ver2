@@ -1,4 +1,6 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using MySql.Data.MySqlClient;
+using System.Xml.Linq;
 
 namespace SportswearShop_Ver2.Models
 {
@@ -99,7 +101,8 @@ namespace SportswearShop_Ver2.Models
 							Name = reader["name"].ToString(),
 							Image = reader["image"].ToString(),
 							Original_price = Convert.ToInt32(reader["original_price"]),
-							Price_sale = Convert.ToInt32(reader["price_sale"])
+							Price_sale = Convert.ToInt32(reader["price_sale"]),
+							Quantity = Convert.ToInt32(reader["Quantity"])
 
 						});
 					}
@@ -112,7 +115,81 @@ namespace SportswearShop_Ver2.Models
 			return products;
 		}
 
-		public User getUserInfo(string email, string password, int isAdmin)
+		public Product getProductInfo(int productId)
+		{
+			Product productInfo = new Product();
+			using (MySqlConnection conn = GetConnection())
+			{
+				conn.Open();
+				var str = "SELECT * FROM PRODUCTs WHERE Id = @productId";
+				//"SELECT * FROM (Product P JOIN category C ON P.CategoryId = C.CategoryId) " +
+				//"JOIN brand B ON B.BrandId = P.BrandId " +
+				//"JOIN subbrand S ON S.SubBrandId = P.SubBrandId " +
+				//"where ProductId = @productId";
+				MySqlCommand cmd = new MySqlCommand(str, conn);
+				cmd.Parameters.AddWithValue("ProductId", productId);
+				using (var reader = cmd.ExecuteReader())
+				{
+					if (reader.Read())
+					{
+						productInfo.Id = Convert.ToInt32(reader["id"]);
+						productInfo.Name = reader["name"].ToString();
+						productInfo.Image = reader["image"].ToString();
+						productInfo.Original_price = Convert.ToInt32(reader["original_price"]);
+						productInfo.Price_sale = Convert.ToInt32(reader["price_sale"]);
+						productInfo.Quantity = Convert.ToInt32(reader["Quantity"]);
+						
+						if (reader["menu_id"] != DBNull.Value)
+							productInfo.Menu_id = Convert.ToInt32(reader["menu_id"]);
+						productInfo.Content = reader["Content"].ToString();
+					}
+					else
+						return null;
+				}
+			}
+			return productInfo;
+		}
+
+        public object getProductDetail(int productId)
+        {
+            object productInfo = new object();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT * FROM MENUS M, PRODUCT P, CATEGORY C" +
+					"WHERE M.PARENT_ID = C.ID AND P.MENU_ID=M.ID" +
+					"AND P.ID = @ProductId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("ProductId", productId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        //System.Diagnostics.Debug.WriteLine("hI: " + reader["CategoryName"].ToString());
+                        productInfo = new
+                        {
+                            ProductId = Convert.ToInt32(reader["P.Id"]),
+                            Quantity = Convert.ToInt32(reader["Quantity"]),
+                            ProductName = reader["P.Name"].ToString(),
+                            ProductImage = reader["P.Image"].ToString(),
+                            Price = Convert.ToInt32(reader["price_sale"]),
+                            CategoryId = reader["C.Id"].ToString(),
+                            MenuId = Convert.ToInt32(reader["M.Id"]),
+                            Content = reader["Content"].ToString(),
+                            CategoryName = reader["C.Name"].ToString(),
+                            MenuName = reader["m.Name"].ToString(),
+                        };
+
+                    }
+                    reader.Close();
+
+                }
+                conn.Close();
+
+            }
+            return productInfo;
+        }
+        public User getUserInfo(string email, string password, int isAdmin)
 		{
 			User userInfo = new User();
 			using (MySqlConnection conn = GetConnection())
