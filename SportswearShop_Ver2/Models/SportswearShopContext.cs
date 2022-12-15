@@ -460,9 +460,9 @@ namespace SportswearShop_Ver2.Models
         }
 
 
-        public List<object> getStatistic(DateTime startDate, DateTime endDate)
+        public List<Statistic> getStatistic(DateTime startDate, DateTime endDate)
         {
-            List<object> revenueInfo = new List<object>();
+            List<Statistic> revenueInfo = new List<Statistic>();
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
@@ -487,14 +487,16 @@ namespace SportswearShop_Ver2.Models
                 {
                     while (reader.Read())
                     {
-                        var obj = new
+                        revenueInfo.Add(new Statistic()
                         {
-                            period = ((DateTime)reader["NgayBan"]).ToString("dd-MM-yyyy"),
-                            profit = Convert.ToInt32(reader["DoanhThu"]),
-                        };
-                        revenueInfo.Add(obj);
+                            StatisticDate = ((DateTime)reader["NgayBan"]),
+                            Profit = Convert.ToInt32(reader["DoanhThu"])
+                        });
+                       
                     }
+                    reader.Close();
                 }
+                conn.Close();
             }
             return revenueInfo;
         }
