@@ -26,6 +26,5 @@ namespace SportswearShop_Ver2.Controllers
             ViewBag.statisticInfo = context.getStatistic(tu_ngay, den_ngay);
             return View();
         }
-
     }
 }

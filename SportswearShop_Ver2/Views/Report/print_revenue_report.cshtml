@@ -38,16 +38,13 @@
     <!-- <button onclick="window.print();" class="noPrint">Print</button> -->
     <div class="container" style="font-size:22px;">
         <div class="row" style="margin-top: 40px;">
-            <div class="col-sm-1">
-                <img src="~/public/client/Images/logo3.png" alt="">
+            <div class="col-sm-2">
+                <img src="~/public/images/icons/sport.png" alt="SportswearShop" style="margin-top: 15px;" width="150" height="auto">
             </div>
-            <div class="col-sm-11">
-                <b>CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ ITGOSHOP</b>
-                <p>Tầng 5, Số 117-119-121 Nguyễn Du, Phường Bến Thành, Quận 1, Thành Phố Hồ Chí Minh</p>
+            <div class="col-sm-10">
+                <b>SPORTSWEAR SHOP</b>
+                <p>Trường ĐH Công nghệ Thông tin, khu phố 6, Linh Trung, Thủ Đức, TP Hồ Chí Minh</p>
             </div>
-            <!-- <div class="col-sm-4" style="text-align: right;">
-                <p style="color:#F70C72;font-weight: bold;">"Tất cả vì khách hàng"</p>
-            </div> -->
         </div>
         <hr style="margin:20px 0px 40px 0px">
         <div class="row" style="margin-bottom:40px;">
@@ -57,7 +54,6 @@
             </div>
             <div class="col-md-12" style="text-align: right;">
                 <p style="margin:30px 0px">Thời gian thống kê: @DateTime.Now.ToString("HH:mm dd-MM-yyyy")</p>
-                <!-- <p>Người bán hàng: Lê Thị Hồng Cúc</p> -->
             </div>
         </div>
         <div class="row">
@@ -70,42 +66,36 @@
                         <tr>
                             <th scope="col">STT</th>
                             <th scope="col">Ngày bán hàng</th>
-                            <th scope="col">Bán hàng</th>
                             <th scope="col">Doanh thu</th>
                         </tr>
                     </thead>
-                    @*<tbody>
+                    <tbody>
                         @{
-                            int stt = 1; int total_sales = 0; int total_profit = 0;
-                            int max_sales = 0; int max_profit = 0; string max_sales_date = ""; string max_profit_date = "";
-                            //Statistic first_statistic_row = ViewBag.statisticInfo[0]; int min_sales = first_statistic_row.Sales; int min_profit = first_statistic_row.Profit; string min_sales_date = ""; string min_profit_date = "";
+                            int stt = 1;
+                            int total_profit = 0;
+                            int max_profit = 0;
+                            string max_profit_date = "";
+                            
+                            Statistic first_statistic_row = ViewBag.statisticInfo[0];
+                            int min_profit = first_statistic_row.Profit;
+                            string min_profit_date = "";
                         }
                         @foreach (var item in ViewBag.statisticInfo)
                         {
                             <tr>
                                 <th scope="row">@stt</th>
                                 <td>@item.StatisticDate.ToString("dd-MM-yyyy")</td>
-                                <td>@item.Sales.ToString("#,###", cul.NumberFormat) ₫</td>
                                 <td>@item.Profit.ToString("#,###", cul.NumberFormat) ₫</td>
                             </tr>
-                            stt++; total_sales += item.Sales; total_profit += item.Profit;
-                            if (max_sales < item.Sales)
-                            {
-                                max_sales = item.Sales;
-                                max_sales_date = item.StatisticDate.ToString("dd-MM-yyyy");
-                            }
-                            if (min_sales > item.Sales)
-                            {
-                                min_sales = item.Sales;
-                                min_sales_date = item.StatisticDate.ToString("dd-MM-yyyy");
-                            }
+                            stt++;
+                            total_profit += item.Profit;
 
-                            if (max_profit < item.Profit)
+                            if (max_profit <= item.Profit)
                             {
                                 max_profit = item.Profit;
                                 max_profit_date = item.StatisticDate.ToString("dd-MM-yyyy");
                             }
-                            if (min_profit > item.Profit)
+                            if (min_profit >= item.Profit)
                             {
                                 min_profit = item.Profit;
                                 min_profit_date = item.StatisticDate.ToString("dd-MM-yyyy");
@@ -113,10 +103,9 @@
                         }
                         <tr>
                             <td colspan="2"><b>TỔNG CỘNG</b></td>
-                            <td>@total_sales.ToString("#,###", cul.NumberFormat) ₫</td>
                             <td>@total_profit.ToString("#,###", cul.NumberFormat) ₫</td>
                         </tr>
-                    </tbody>*@
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -129,8 +118,8 @@
                 </form>
                 <small>
                     Chú thích:
-                    <div style="display:inline-block;background-color:#0B62A4; height:10px; width:10px;margin-left: 20px;"></div> : Bán hàng
-                    <div style="display:inline-block;background-color:#7A92A3; height:10px; width:10px;margin-left: 20px;"></div>  : Doanh thu
+                    <div style="display:inline-block;background-color:#0B62A4; height:10px; width:10px;margin-left: 20px;"></div> : Doanh thu
+                    @*<div style="display:inline-block;background-color:#7A92A3; height:10px; width:10px;margin-left: 20px;"></div>  : Doanh thu*@
                 </small>
             </div>
         </div>
@@ -138,18 +127,18 @@
             <div class="col-md-12">
                 <p><b style="font-size: 24px;">III. Phân tích thống kê</b></p>
                 <p>Từ ngày @ViewBag.tuNgay.ToString("dd-MM-yyyy") đến ngày @ViewBag.denNgay.ToString("dd-MM-yyyy"):</p>
-                @*<div style="margin-left:40px">
-                    <p>- Ngày bán hàng có giá trị lớn nhất: @max_sales_date (@max_sales.ToString("#,###", cul.NumberFormat) ₫)</p>
-                    <p>- Ngày bán hàng có giá trị nhỏ nhất: @min_sales_date (@min_sales.ToString("#,###", cul.NumberFormat) ₫)</p>
+                <div style="margin-left:40px">
+                    @*<p>- Ngày bán hàng có giá trị lớn nhất: @max_sales_date (@max_sales.ToString("#,###", cul.NumberFormat) ₫)</p>
+                    <p>- Ngày bán hàng có giá trị nhỏ nhất: @min_sales_date (@min_sales.ToString("#,###", cul.NumberFormat) ₫)</p>*@
                     <p>- Ngày có doanh thu lớn nhất: @max_profit_date (@max_profit.ToString("#,###", cul.NumberFormat) ₫)</p>
                     <p>- Ngày có doanh thu nhỏ nhất: @min_profit_date (@min_profit.ToString("#,###", cul.NumberFormat) ₫)</p>
                     @{
-                        string sale_avg = (total_sales / ViewBag.statisticInfo.Count).ToString("#,###", cul.NumberFormat);
+                        //string sale_avg = (total_sales / ViewBag.statisticInfo.Count).ToString("#,###", cul.NumberFormat);
                         string revenue_avg = (total_profit / ViewBag.statisticInfo.Count).ToString("#,###", cul.NumberFormat);
                     }
-                    <p>- Giá trị bán hàng trung bình mỗi ngày: @sale_avg ₫</p>
+                    @*<p>- Giá trị bán hàng trung bình mỗi ngày: @sale_avg ₫</p>*@
                     <p>- Doanh thu trung bình mỗi ngày: @revenue_avg ₫</p>
-                </div>*@
+                </div>
             </div>
         </div>
         <div class="row">
@@ -166,7 +155,7 @@
         <div class="row" style="margin-bottom:10px;">
             <div class="col-md-12" style="text-align: center;">
                 <hr>
-                <b>ITGoShop - "Tất cả vì khách hàng"</b>
+                <b>SportswearShop - "Thoải mái vận động cùng chúng tôi!"</b>
                 <hr>
             </div>
         </div>
