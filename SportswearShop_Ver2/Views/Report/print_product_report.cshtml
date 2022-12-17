@@ -1,0 +1,266 @@
+﻿@model List<object>
+@using Microsoft.AspNetCore.Http;
+@using System.Globalization;
+@using System.Collections.Generic;
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    string adminFirstName = HttpContextAccessor.HttpContext.Session.GetString("adminFirstName");
+    string adminLastName = HttpContextAccessor.HttpContext.Session.GetString("adminLastName");
+    string adminImage = HttpContextAccessor.HttpContext.Session.GetString("adminImage");
+    if (string.IsNullOrEmpty(adminImage))
+    {
+        adminImage = "default-user-icon.png";
+    }
+    Layout = null;
+    CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thống kê doanh thu sản phẩm từ ngày @ViewBag.tuNgay.ToString("dd-MM-yyyy") đến ngày @ViewBag.denNgay.ToString("dd-MM-yyyy")</title>
+    <link rel="icon" type="image/png" href="~/public/admin/images/pdf-icon.jpg" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+</head>
+<body>
+    <!--<button onclick="window.print();" class="noPrint">Print</button> -->
+    <div class="container" style="font-size:22px;">
+        <div class="row" style="margin-top: 40px;">
+            <div class="col-sm-2">
+                <img src="~/public/images/icons/sport.png" alt="SportswearShop" style="margin-top: 15px;" width="150" height="auto">
+            </div>
+            <div class="col-sm-10">
+                <b>SPORTSWEAR SHOP</b>
+                <p>Trường ĐH Công nghệ Thông tin, khu phố 6, Linh Trung, Thủ Đức, TP Hồ Chí Minh</p>
+            </div>
+        </div>
+        <hr style="margin:20px 0px 40px 0px">
+        <div class="row" style="margin-bottom:40px;">
+            <div class="col-md-12" style="text-align: center;">
+                <b style="font-size: 26px;">THỐNG KÊ VÀ PHÂN TÍCH DOANH THU SẢN PHẨM</b><br>
+                <i>(Từ ngày @ViewBag.tuNgay.ToString("dd-MM-yyyy") đến ngày @ViewBag.denNgay.ToString("dd-MM-yyyy"))</i>
+            </div>
+            <div class="col-md-12" style="text-align: right;">
+                <p style="margin:30px 0px">Thời gian thống kê: @DateTime.Now.ToString("HH:mm dd-MM-yyyy")</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p><b style="font-size: 24px;">I. Số liệu thống kê</b></p>
+                <input type="hidden" id="tu-ngay" value="@ViewBag.tuNgay">
+                <input type="hidden" id="den-ngay" value="@ViewBag.denNgay">
+                <table class="table table-bordered" style="text-align:center">
+                    <thead>
+                        <tr>
+                            <th scope="col">STT</th>
+                            <th scope="col" style="max-width:250px;">Tên sản phẩm</th>
+                            <th scope="col">Giá bán</th>
+                            <th scope="col">Giá vốn</th>
+                            <th scope="col">Đã bán</th>
+                            <th scope="col">Doanh thu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int stt = 1; int total_number_solded = 0; int total_profit = 0;
+                            string max_product_name = "";
+                            int max_product_revenue = 0;
+                            var first_product = @ViewBag.topProducts[0];
+                            string min_product_name = first_product.GetType().GetProperty("ProductName").GetValue(first_product, null);
+                            long min_product_revenue = first_product.GetType().GetProperty("DoanhThuDemLai").GetValue(first_product, null);
+
+
+                            int revenue = 0; int cost = 0; int price = 0; int numberSolded = 0;
+                        }
+                        @foreach (var item in @ViewBag.topProducts)
+                        {
+                            cost = item.GetType().GetProperty("OriginalPrice").GetValue(item, null);
+                            price = item.GetType().GetProperty("SalePrice").GetValue(item, null);
+                            numberSolded = item.GetType().GetProperty("SoLuongBanRa").GetValue(item, null);
+                            revenue = numberSolded * (price - cost);
+                            <tr>
+                                <th scope="row">@stt</th>
+                                <td style="max-width:250px;">@item.GetType().GetProperty("ProductName").GetValue(item, null)</td>
+                                <td>@price.ToString("#,###", cul.NumberFormat) ₫</td>
+                                <td>@cost.ToString("#,###", cul.NumberFormat) ₫</td>
+                                <td>@numberSolded</td>
+                                <td>@revenue.ToString("#,###", cul.NumberFormat) ₫</td>
+                            </tr>
+
+                            stt++; total_number_solded += numberSolded; total_profit += revenue;
+                            if (max_product_revenue < revenue)
+                            {
+                                max_product_revenue = revenue;
+                                max_product_name = @item.GetType().GetProperty("ProductName").GetValue(item, null);
+                            }
+                            if (min_product_revenue > revenue)
+                            {
+                                min_product_revenue = revenue;
+                                min_product_name = @item.GetType().GetProperty("ProductName").GetValue(item, null);
+                            }
+                        }
+                        <tr>
+                            <td colspan="4"><b>TỔNG CỘNG</b></td>
+                            <td>@total_number_solded</td>
+                            <td>@total_profit.ToString("#,###", cul.NumberFormat) ₫</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @*<div class="row">
+            <div class="col-md-12">
+                <p><b style="font-size: 24px;">II. Biểu đồ thống kê tỉ lệ doanh thu của top 5 sản phẩm bán chạy</b></p>
+                <form>
+                    <div id="bieuDo" style="max-width:85%"></div>
+                </form>
+                @{
+                    var color_list = new List<string>() { "#819C79", "#fc8710", "#FF6541", "#A4ADD3", "#766B56", "#761C41", "#768B74" };
+                    int i = 0; int tong_doanh_thu_top_5 = 0; double rate = 0;
+                }
+                <small>
+                    Chú thích: <br>
+                    @foreach (var item in ViewBag.top5Product)
+                    {
+                        cost = item.GetType().GetProperty("Cost").GetValue(item, null);
+                        price = item.GetType().GetProperty("Price").GetValue(item, null);
+                        numberSolded = item.GetType().GetProperty("NumberSolded").GetValue(item, null);
+                        revenue = numberSolded * (price - cost);
+                        rate = Math.Round(((double)revenue / total_profit) * 100, 2);
+                        tong_doanh_thu_top_5 += revenue;
+                        string pt = "%)"; string scpace = " (";
+
+                        <div style="display:inline-block;background-color:@color_list[@i]; height:10px; width:10px;margin-left: 20px;"></div>
+
+                        @item.GetType().GetProperty("ProductName").GetValue(item, null) @scpace @rate
+
+                        @pt <br />
+
+                        i++;
+                    }
+                    <div style="display:inline-block;background-color:@color_list[0]; height:10px; width:10px;margin-left: 20px;"></div> Các sản phẩm khác @{
+                        double total_profit_cac_sp_khac = ((double)(total_profit - tong_doanh_thu_top_5) / total_profit) * 100;
+                    } (@Math.Round(total_profit_cac_sp_khac, 2))%<br>
+                </small>
+            </div>
+        </div>*@
+        @*<div class="row" style="margin-top:20px;">
+            <div class="col-md-12">
+                <p><b style="font-size: 24px;">III. Danh sách các sản phẩm không bán được từ ngày @ViewBag.tuNgay.ToString("dd-MM-yyyy") đến ngày @ViewBag.denNgay.ToString("dd-MM-yyyy")</b></p>
+                <table class="table table-bordered" style="text-align:center">
+                    <thead>
+                        <tr>
+                            <th scope="col">STT</th>
+                            <th scope="col" style="max-width:250px;">Tên sản phẩm</th>
+                            <th scope="col">Giá bán</th>
+                            <th scope="col">Giá vốn</th>
+                            <th scope="col">Đã bán</th>
+                            <th scope="col">Còn lại</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            stt = 1;
+                        }
+                        @foreach (var item in @ViewBag.sanPhamKhongBanDuoc)
+                        {
+                            <tr>
+                                <th scope="row">@stt</th>
+                                <td style="max-width:250px;">@item.ProductName</td>
+                                <td>@item.Price.ToString("#,###", cul.NumberFormat) ₫</td>
+                                <td>@item.Cost.ToString("#,###", cul.NumberFormat) ₫</td>
+                                <td>@item.Sold</td>
+                                <td>@item.Quantity</td>
+                            </tr>
+                            stt++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>*@
+        <div class="row" style="margin-top:20px;">
+            <div class="col-md-12">
+                <p><b style="font-size: 24px;">II. Phân tích thống kê </b></p>
+                <p>Từ ngày @ViewBag.tuNgay.ToString("dd-MM-yyyy") đến ngày @ViewBag.denNgay.ToString("dd-MM-yyyy"):</p>
+                <div style="margin-left:40px">
+                    <p>- Tổng số sản phẩm đã bán: @total_number_solded sản phẩm</p>
+                    @*<p>- Có @ViewBag.sanPhamKhongBanDuoc.Count sản phẩm không được bán trong thời gian này.*@
+                    <p>- Sản phẩm mang lại doanh thu lớn nhất: @max_product_name với doanh thu là @max_product_revenue.ToString("#,###", cul.NumberFormat) ₫;</p>
+                    <p>- Sản phẩm mang lại doanh thu nhỏ nhất: @min_product_name với doanh thu là @min_product_revenue.ToString("#,###", cul.NumberFormat) ₫;</p>
+                    <p>- Doanh thu trung bình của tất cả sản phẩm: @{
+                            int avg_revenue = total_profit / ViewBag.topProducts.Count;
+                            } @avg_revenue.ToString("#,###", cul.NumberFormat) ₫</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8" style="text-align: right;">
+            </div>
+            <div class="col-md-4" style="text-align: center;">
+                <p style="margin:20px 0px 100px 0px">
+                    <b style="font-size: 24px;">Người lập thống kê</b><br>
+                    <i>(Kí, đóng dấu và ghi rõ họ tên)</i>
+                </p>
+                <p>@adminLastName @adminFirstName</p>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:10px;">
+            <div class="col-md-12" style="text-align: center;">
+                <hr>
+                <b>SportswearShop - "Thoải mái vận động cùng chúng tôi!"</b>
+                <hr>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            //var pie_chart = new Morris.Donut({
+            //    element: 'bieuDo',
+            //    resize: true,
+            //    colors: ['#819C79', '#fc8710', '#FF6541', '#A4ADD3', '#766B56', '#761C41', '#768B74'],
+            //    data: [
+            //        { label: 'no data', value: 20 },
+            //    ],
+            //});
+            //load_pie_chart();
+            setTimeout(function () { window.print(); }, 500);
+            //function load_pie_chart() {
+            //    var tu_ngay = $('#tu-ngay').val();
+            //    var den_ngay = $('#den-ngay').val();
+            //    $.ajax({
+            //        url: "/Report/load_product_chart",
+            //        dataType: "json",
+            //        data: { tu_ngay: tu_ngay, den_ngay: den_ngay },
+            //        success: function (data) {
+            //            pie_chart.setData(data);
+            //        },
+            //        error: function (data) {
+            //            swal({
+            //                text: "Không tìm thấy dữ liệu",
+            //                icon: "error",
+            //            });
+            //        }
+            //    });
+            //}
+        });
+
+    </script>
+</body>
+</html>

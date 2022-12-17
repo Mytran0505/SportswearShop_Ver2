@@ -8,10 +8,6 @@ namespace SportswearShop_Ver2.Controllers
 {
     public class ReportController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         public IActionResult print_revenue_report(DateTime tu_ngay, DateTime den_ngay)
         {
@@ -25,6 +21,17 @@ namespace SportswearShop_Ver2.Controllers
             ViewBag.denNgay = den_ngay;
             ViewBag.statisticInfo = context.getStatistic(tu_ngay, den_ngay);
             return View();
+        }
+
+        public IActionResult print_product_report()
+        {
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            DateTime homNay = DateTime.Now;
+            DateTime dauThangTruoc = (new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)).AddMonths(-1);
+            ViewBag.tuNgay = dauThangTruoc;
+            ViewBag.denNgay = homNay;
+            ViewBag.topProducts = context.getTopProductNoLimit(dauThangTruoc, homNay);
+            return View(context.getTopProductNoLimit(dauThangTruoc, homNay));
         }
     }
 }

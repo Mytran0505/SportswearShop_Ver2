@@ -320,27 +320,27 @@
                         </span>
                     </li>
                     <li class="nav-item">
-                        <a data-toggle="collapse" href="#base">
+                        <a data-toggle="collapse" href="#danhmuc">
                             <i class="fas fa-layer-group"></i>
                             <p>Danh mục sản phẩm</p>
                             <span class="caret"></span>
                         </a>
-                        <div class="collapse" id="base">
+                        <div class="collapse" id="danhmuc">
                             <ul class="nav nav-collapse">
                                 <li>
-                                    <a href="/CategoryManagement/add_product_category">
+                                    <a href="/MenuManagement/add_product_menu">
                                         <span class="sub-item">Thêm danh mục sản phẩm</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/CategoryManagement/all_product_category">
+                                    <a href="/MenuManagement/view_product_menu">
                                         <span class="sub-item">Xem danh mục sản phẩm</span>
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item">
+                    @*<li class="nav-item">
                         <a data-toggle="collapse" href="#sidebarLayouts">
                             <i class="fab fa-apple"></i>
                             <p>Thương hiệu</p>
@@ -366,14 +366,14 @@
                                 </li>
                             </ul>
                         </div>
-                    </li>
+                    </li>*@
                     <li class="nav-item">
-                        <a data-toggle="collapse" href="#forms">
-                            <i class="fas fa-truck-loading"></i>
+                        <a data-toggle="collapse" href="#sanpham">
+                            <i class="fas fa-boxes"></i>
                             <p>Sản phẩm</p>
                             <span class="caret"></span>
                         </a>
-                        <div class="collapse" id="forms">
+                        <div class="collapse" id="sanpham">
                             <ul class="nav nav-collapse">
                                 <li>
                                     <a href="/ProductManagement/add_product">
@@ -395,7 +395,7 @@
                             <p>Quản lý đơn hàng</p>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    @*<li class="nav-item">
                         <a data-toggle="collapse" href="#charts">
                             <i class="fas fa-file-alt"></i>
                             <p>Quản lý Blog</p>
@@ -415,42 +415,85 @@
                                 </li>
                             </ul>
                         </div>
-                    </li>
+                    </li>*@
                     <li class="nav-item">
-                        <a data-toggle="collapse" href="#tables">
-                            <i class="fas fa-flag"></i>
-                            <p>Banner slider</p>
+                        <a data-toggle="collapse" href="#khachhang">
+                            <i class="fas fa-users"></i>
+                            <p>Khách hàng</p>
                             <span class="caret"></span>
                         </a>
-                        <div class="collapse" id="tables">
+                        <div class="collapse" id="khachhang">
                             <ul class="nav nav-collapse">
                                 <li>
-                                    <a href="/SliderManagement/add_slider">
+                                    <a href="/CustomerManagement/add_customer">
+                                        <span class="sub-item">Thêm khách hàng</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="/CustomerManagement/view_customer">
+                                        <span class="sub-item">Xem khách hàng</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a data-toggle="collapse" href="#banner">
+                            <i class="fas fa-flag"></i>
+                            <p>Banner</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="banner">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="/SliderManagement/add_banner">
                                         <span class="sub-item">Thêm Banner slider</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/SliderManagement/view_slider">
+                                    <a href="/SliderManagement/view_banner">
                                         <span class="sub-item">Xem Banner slider</span>
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </li>
-
                     <li class="nav-item">
+                        <a data-toggle="collapse" href="#khuyenmai">
+                            <i class="fas fa-hand-holding-usd"></i>
+                            <p>Chương trình khuyến mãi</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="khuyenmai">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="/PromotionManagement/add_promotion">
+                                        <span class="sub-item">Thêm chương trình khuyến mãi</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/PromotionManagement/view_promotion">
+                                        <span class="sub-item">Xem chương trình khuyến mãi</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    @*<li class="nav-item">
                         <a href="/CommentManagement/view_comment">
                             <i class="fas fa-comments"></i>
                             <p>Bình luận</p>
                         </a>
-                    </li>
-                    <li class="nav-item">
+                    </li>*@
+                    @*<li class="nav-item">
                         <a href="/RatingManagement">
                             <i class="fas fa-star"></i>
                             <p>Đánh giá</p>
                         </a>
-                    </li>
-                    <li class="nav-item">
+                    </li>*@
+                    @*<li class="nav-item">
                         <a data-toggle="collapse" href="#vanchuyen">
                             <i class="fas fa-shipping-fast"></i>
                             <p>Vận chuyển</p>
@@ -475,7 +518,7 @@
                                 </li>
                             </ul>
                         </div>
-                    </li>
+                    </li>*@
                     <!-- <li class="nav-item">
         <a href="widgets.html">
             <i class="fas fa-desktop"></i>

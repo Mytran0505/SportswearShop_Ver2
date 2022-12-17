@@ -38,5 +38,11 @@ namespace SportswearShop_Ver2.Models
             var Menus = Menu.Where(c => c.Active == 1).ToList();
             return Menus;
         }
+
+        public void saveMenu(Menu newMenu)
+        {
+            Menu.Add(newMenu);
+            SaveChanges();
+        }
     }
 }

@@ -179,12 +179,12 @@
                                         </span>
                                         In thống kê doanh thu Bán hàng
                                     </a>
-                                    <a target="_blank" rel="noopener noreferrer" id="print-customer-report" href="~/Report/print_customer_report" class="btn btn-info btn-border btn-round btn-sm">
+                                    @*<a target="_blank" rel="noopener noreferrer" id="print-customer-report" href="~/Report/print_customer_report" class="btn btn-info btn-border btn-round btn-sm">
                                         <span class="btn-label">
                                             <i class="fa fa-print"></i>
                                         </span>
                                         In thống kê doanh thu Khách hàng
-                                    </a>
+                                    </a>*@
                                 </div>
                             </div>
                         </div>
@@ -239,7 +239,7 @@
                             <div class="card-head-row">
                                 <div class="card-title">Thống kê tình trạng đơn hàng<p class="text-muted">30 ngày gần đây</p></div>
 
-                                <div class="card-tools">
+                                @*<div class="card-tools">
                                     <a href="#" class="btn btn-info btn-border btn-round btn-sm mr-2">
                                         <span class="btn-label">
                                             <i class="fa fa-pencil"></i>
@@ -252,7 +252,7 @@
                                         </span>
                                         Print
                                     </a>
-                                </div>
+                                </div>*@
 
                             </div>
                         </div>
@@ -291,40 +291,36 @@
                                             <thead>
                                                 <tr>
                                                     <th colspan="2">Sản phẩm</th>
-                                                    <th>Ngày mở bán</th>
                                                     <th>Doanh thu đem lại</th>
                                                     <th class="text-right">Số sản phẩm bán được</th>
                                                     <th class="text-right">Số sản phẩm còn lại</th>
                                                     <!-- Số sản phẩm còn lại để biết cần nhập thêm nữa không -->
                                                 </tr>
                                             </thead>
-                                            @*<tbody>
+                                            <tbody>
                                                 @foreach (var item in @ViewBag.topProducts)
                                                 {
                                                     <tr>
                                                         <td>
                                                             <div class="avatar">
-                                                                <img src="~/public/images_upload/product/@item.GetType().GetProperty("ProductImage").GetValue(item, null)" alt="..." class="avatar-img rounded">
+                                                                <img src="@item.GetType().GetProperty("ProductImage").GetValue(item, null)" alt="..." class="avatar-img rounded">
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <h6 class="fw-bold mb-1"><a href="~/product-detail">@item.GetType().GetProperty("ProductName").GetValue(item, null)</a></h6>
                                                         </td>
                                                         <td>
-                                                            @item.GetType().GetProperty("StartsAt").GetValue(item, null).ToString("dd-MM-yyyy")
-                                                        </td>
-                                                        <td>
-                                                            <h4 class="text-info fw-bold">+@((@item.GetType().GetProperty("NumberSolded").GetValue(item, null) * (@item.GetType().GetProperty("Price").GetValue(item, null) - @item.GetType().GetProperty("Cost").GetValue(item, null))).ToString("#,###", cul.NumberFormat)) ₫</h4>
+                                                            <h4 class="text-info fw-bold">+@item.GetType().GetProperty("DoanhThuDemLai").GetValue(item, null).ToString("0,000", cul.NumberFormat) ₫</h4>
                                                         </td>
                                                         <td class="text-right">
-                                                            <h4 class="text-info fw-bold"> @item.GetType().GetProperty("NumberSolded").GetValue(item, null)</h4>
+                                                            <h4 class="text-info fw-bold"> @item.GetType().GetProperty("SoLuongBanRa").GetValue(item, null)</h4>
                                                         </td>
                                                         <td class="text-right">
-                                                            <h4 class="text-info">@item.GetType().GetProperty("Quantity").GetValue(item, null)</h4>
+                                                            <h4 class="text-info">@item.GetType().GetProperty("SoLuongConTon").GetValue(item, null)</h4>
                                                         </td>
                                                     </tr>
                                                 }
-                                            </tbody>*@
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -445,14 +441,6 @@
                             newURL = newURL.replace('tu-ngay', tu_ngay);
                             newURL = newURL.replace('den-ngay', den_ngay);
                             $('#print-revenue-report').attr("href", newURL);
-                            var newProductURL = "/Report/print_product_report?tu_ngay=tu-ngay&den_ngay=den-ngay";
-                            newProductURL = newProductURL.replace('tu-ngay', tu_ngay);
-                            newProductURL = newProductURL.replace('den-ngay', den_ngay);
-                            $('#print-product-report').attr("href", newProductURL);
-                            var newCustomerURL = "/Report/print_customer_report?tu_ngay=tu-ngay&den_ngay=den-ngay";
-                            newCustomerURL = newCustomerURL.replace('tu-ngay', tu_ngay);
-                            newCustomerURL = newCustomerURL.replace('den-ngay', den_ngay);
-                            $('#print-customer-report').attr("href", newCustomerURL);
                         },
                         error: function (data) {
                             swal({

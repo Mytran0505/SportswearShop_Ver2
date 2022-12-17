@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using MySql.Data.MySqlClient;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using System.Collections.Generic;
 
 namespace SportswearShop_Ver2.Models
 {
@@ -501,6 +503,97 @@ namespace SportswearShop_Ver2.Models
             return revenueInfo;
         }
 
+        public List<object> getTopProduct(DateTime startDate, DateTime endDate)
+        {
+            List<object> products = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT id, image, name, price_sale, original_price, DoanhThuDemLai, SUM(SoLuongBanRa) AS SoLuongBanRa, SoLuongConTon " +
+                          "FROM " +
+                          "((SELECT pd.id, pd.image, pd.name, pd.price_sale, pd.original_price, (pd.price_sale - pd.original_price) * SUM(cthd.amount) AS DoanhThuDemLai, SUM(cthd.amount) as SoLuongBanRa, pd.Quantity as SoLuongConTon " +
+                          "FROM products pd, c_t_h_d_s cthd, bill_khachhangs bkh " +
+                          "WHERE pd.id = cthd.product_id AND cthd.id = bkh.id " +
+                          "AND bkh.created_at BETWEEN @startdate and @enddate " +
+                          "GROUP BY pd.id) " +
+                          "UNION " +
+                          "(SELECT pd.id, pd.image, pd.name, pd.price_sale, pd.original_price, (pd.price_sale - pd.original_price) * SUM(cthd.amount) AS DoanhThuDemLai, SUM(cthd.amount) as SoLuongBanRa, pd.Quantity as SoLuongConTon " +
+                          "FROM products pd, c_t_h_d_s cthd, bill_vanglais bvl " +
+                          "WHERE pd.id = cthd.product_id AND cthd.id = bvl.id " +
+                          "AND bvl.created_at BETWEEN @startdate and @enddate " +
+                          "GROUP BY pd.id)) x " +
+                          "GROUP BY id " +
+                          "ORDER BY SUM(SoLuongBanRa) DESC " +
+                          "LIMIT 5";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("startdate", startDate.ToString("yyyy-MM-dd"));
+                cmd.Parameters.AddWithValue("enddate", endDate.ToString("yyyy-MM-dd"));
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var obj = new
+                        {
+                            ProductId = Convert.ToInt32(reader["id"]),
+                            ProductName = reader["name"].ToString(),
+                            ProductImage = reader["image"].ToString(),
+                            SoLuongConTon = Convert.ToInt32(reader["SoLuongConTon"]),
+                            OriginalPrice = Convert.ToInt32(reader["original_price"]),
+                            SalePrice = Convert.ToInt32(reader["price_sale"]),
+                            SoLuongBanRa = Convert.ToInt32(reader["SoLuongBanRa"]),
+                            DoanhThuDemLai = Convert.ToInt64(reader["DoanhThuDemLai"])
+                        };
+                        products.Add(obj);
+                    }
+                }
+            }
+            return products;
+        }
 
+        public List<object> getTopProductNoLimit(DateTime startDate, DateTime endDate)
+        {
+            List<object> products = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT id, image, name, price_sale, original_price, DoanhThuDemLai, SUM(SoLuongBanRa) AS SoLuongBanRa, SoLuongConTon " +
+                          "FROM " +
+                          "((SELECT pd.id, pd.image, pd.name, pd.price_sale, pd.original_price, (pd.price_sale - pd.original_price) * SUM(cthd.amount) AS DoanhThuDemLai, SUM(cthd.amount) as SoLuongBanRa, pd.Quantity as SoLuongConTon " +
+                          "FROM products pd, c_t_h_d_s cthd, bill_khachhangs bkh " +
+                          "WHERE pd.id = cthd.product_id AND cthd.id = bkh.id " +
+                          "AND bkh.created_at BETWEEN @startdate and @enddate " +
+                          "GROUP BY pd.id) " +
+                          "UNION " +
+                          "(SELECT pd.id, pd.image, pd.name, pd.price_sale, pd.original_price, (pd.price_sale - pd.original_price) * SUM(cthd.amount) AS DoanhThuDemLai, SUM(cthd.amount) as SoLuongBanRa, pd.Quantity as SoLuongConTon " +
+                          "FROM products pd, c_t_h_d_s cthd, bill_vanglais bvl " +
+                          "WHERE pd.id = cthd.product_id AND cthd.id = bvl.id " +
+                          "AND bvl.created_at BETWEEN @startdate and @enddate " +
+                          "GROUP BY pd.id)) x " +
+                          "GROUP BY id " +
+                          "ORDER BY SUM(SoLuongBanRa) DESC";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("startdate", startDate.ToString("yyyy-MM-dd"));
+                cmd.Parameters.AddWithValue("enddate", endDate.ToString("yyyy-MM-dd"));
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var obj = new
+                        {
+                            ProductId = Convert.ToInt32(reader["id"]),
+                            ProductName = reader["name"].ToString(),
+                            ProductImage = reader["image"].ToString(),
+                            SoLuongConTon = Convert.ToInt32(reader["SoLuongConTon"]),
+                            OriginalPrice = Convert.ToInt32(reader["original_price"]),
+                            SalePrice = Convert.ToInt32(reader["price_sale"]),
+                            SoLuongBanRa = Convert.ToInt32(reader["SoLuongBanRa"]),
+                            DoanhThuDemLai = Convert.ToInt64(reader["DoanhThuDemLai"])
+                        };
+                        products.Add(obj);
+                    }
+                }
+            }
+            return products;
+        }
     }
 }

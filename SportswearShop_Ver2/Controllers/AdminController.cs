@@ -81,7 +81,7 @@ namespace SportswearShop_Ver2.Controllers
             ViewBag.totalRevenueThisMonth = context.getRevenueThisMonth(dauThangNay, homNay);
             ViewBag.numberOrderToday = context.countOrder(homNay, homNay);
             //ViewBag.numberLoginToday = context.countLogin(homNay, homNay);
-            //ViewBag.topProducts = context.getTopProduct(dauThangTruoc, homNay);
+            ViewBag.topProducts = context.getTopProduct(dauThangTruoc, homNay);
             //ViewBag.topBlogView = context.getTopBlogView();
             //ViewBag.topProductView = context.getTopProductView();
             //ViewBag.inventoryList = context.getInventoryList();
