@@ -1,6 +1,6 @@
 ﻿@using System.Globalization;
 @{
-    ViewData["Title"] = ViewBag.ProductDetail.GetType().GetProperty("Name").GetValue(ViewBag.ProductDetail, null);
+    ViewData["Title"] = ViewBag.ProductDetail.GetType().GetProperty("ProductName").GetValue(ViewBag.ProductDetail, null);
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
     CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
 }
@@ -12,10 +12,10 @@
             <div class="col-12">
                 <div class="bread-inner">
                     <ul class="bread-list">
-                        <li><a href="index.html">Trang chủ<i class="ti-arrow-right"></i></a></li>
+                        <li><a href="/Home/Index">Trang chủ<i class="ti-arrow-right"></i></a></li>
                         <li class="active"><a href="#">@ViewBag.ProductDetail.GetType().GetProperty("CategoryName").GetValue(ViewBag.ProductDetail, null) </a></li>
                         <li class="active"><i class="ti-arrow-right"></i></li>
-                        <li class="active"><a href="#">@ViewBag.ProductDetail.GetType().GetProperty("BrandName").GetValue(ViewBag.ProductDetail, null) </a></li>
+                        <li class="active"><a href="#">@ViewBag.ProductDetail.GetType().GetProperty("MenuName").GetValue(ViewBag.ProductDetail, null) </a></li>
                     </ul>
                 </div>
             </div>
@@ -34,28 +34,28 @@
                             <div class="ps-product__thumbnail" style="height: 350px; width: 500px;">
                                 <div class="ps-product__preview">
                                     <div class="ps-product__variants">
-                                        <div class="item"><img src="~/public/images_upload/product/@ViewBag.ProductDetail.GetType().GetProperty("ProductImage").GetValue(ViewBag.ProductDetail, null)" alt=""></div>
-                                        @foreach (var image in @ViewBag.ProductGallary)
+                                        <div class="item"><img src="@ViewBag.ProductDetail.GetType().GetProperty("ProductImage").GetValue(ViewBag.ProductDetail, null)" alt=""></div>
+                                       @* @foreach (var image in @ViewBag.ProductGallary)
                                         {
                                             <div class="item"><img src="~/public/images_upload/product-gallary/@image.GallaryImage" alt=""></div>
-                                        }
+                                        }*@
                                     </div>
                                 </div>
                                 <div class="ps-product__image" style="max-height: 350px; max-width: 350px; width: auto; height: auto;">
-                                    <div class="item"><img class="zoom" src="~/public/images_upload/product/@ViewBag.ProductDetail.GetType().GetProperty("ProductImage").GetValue(ViewBag.ProductDetail, null)" alt="" data-zoom-image="~/public/images_upload/product/@ViewBag.ProductDetail.GetType().GetProperty("ProductImage").GetValue(ViewBag.ProductDetail, null)"></div>
-                                    @foreach (var image in @ViewBag.ProductGallary)
+                                    <div class="item"><img class="zoom" src="@ViewBag.ProductDetail.GetType().GetProperty("ProductImage").GetValue(ViewBag.ProductDetail, null)" alt="" data-zoom-image="~/public/images_upload/product/@ViewBag.ProductDetail.GetType().GetProperty("ProductImage").GetValue(ViewBag.ProductDetail, null)"></div>
+                                    @*@foreach (var image in @ViewBag.ProductGallary)
                                     {
                                         <div class="item"><img class="zoom" src="~/public/images_upload/product-gallary/@image.GallaryImage" alt=""></div>
-                                    }
+                                    }*@
                                 </div>
                             </div>
                             <div class="ps-product__thumbnail--mobile">
-                                <div class="ps-product__main-img"><img src="~/public/images_upload/product/@ViewBag.ProductDetail.GetType().GetProperty("ProductImage").GetValue(ViewBag.ProductDetail, null)" alt=""></div>
+                                <div class="ps-product__main-img"><img src="@ViewBag.ProductDetail.GetType().GetProperty("ProductImage").GetValue(ViewBag.ProductDetail, null)" alt=""></div>
                                 <div class="ps-product__preview owl-slider" data-owl-auto="true" data-owl-loop="true" data-owl-speed="5000" data-owl-gap="20" data-owl-nav="true" data-owl-dots="false" data-owl-item="3" data-owl-item-xs="3" data-owl-item-sm="3" data-owl-item-md="3" data-owl-item-lg="3" data-owl-duration="1000" data-owl-mousedrag="on">
-                                    @foreach (var image in @ViewBag.ProductGallary)
+                                    @*@foreach (var image in @ViewBag.ProductGallary)
                                     {
                                         <img src="~/public/images_upload/product-gallary/@image.GallaryImage" alt="">
-                                    }
+                                    }*@
                                 </div>
                             </div>
                             <div class="ps-product__info" style="padding-left: 0px;">
@@ -63,9 +63,9 @@
                                     <h2 class="blog-title">@ViewBag.ProductDetail.GetType().GetProperty("ProductName").GetValue(ViewBag.ProductDetail, null)</h2>
                                     <div class="blog-meta" style="padding-top:30px">
                                         <span class="author">
-                                            <a><i class="fa fa-eye" aria-hidden="true"></i>@ViewBag.ProductDetail.GetType().GetProperty("View").GetValue(ViewBag.ProductDetail, null) lượt xem</a>
-                                            <a><i class="fa fa-shopping-cart"></i>Đã bán @ViewBag.ProductDetail.GetType().GetProperty("Sold").GetValue(ViewBag.ProductDetail, null)</a>
-                                            @if (ViewBag.ProductDetail.GetType().GetProperty("Quantity").GetValue(ViewBag.ProductDetail, null) >= 10)
+                                            <a><i class="fa fa-eye" aria-hidden="true"></i>@*@ViewBag.ProductDetail.GetType().GetProperty("View").GetValue(ViewBag.ProductDetail, null) lượt xem*@</a>
+@*                                            <a><i class="fa fa-shopping-cart"></i>Đã bán @ViewBag.ProductDetail.GetType().GetProperty("Sold").GetValue(ViewBag.ProductDetail, null)</a>
+*@                                            @if (ViewBag.ProductDetail.GetType().GetProperty("Quantity").GetValue(ViewBag.ProductDetail, null) >= 10)
                                             {
                                                 <a><i class="fa fa-archive"></i>Còn @ViewBag.ProductDetail.GetType().GetProperty("Quantity").GetValue(ViewBag.ProductDetail, null) sản phẩm</a>
 
@@ -86,9 +86,9 @@
                                                 @ViewBag.ProductDetail.GetType().GetProperty("Price").GetValue(ViewBag.ProductDetail, null).ToString("#,###", cul.NumberFormat) ₫
                                                 <sub style="color:black; font-size:15px ">
                                                     <!--  Phần giảm giá -->
-                                                    <del>@((@ViewBag.ProductDetail.GetType().GetProperty("Price").GetValue(ViewBag.ProductDetail, null) + @ViewBag.ProductDetail.GetType().GetProperty("Price").GetValue(ViewBag.ProductDetail, null) * ((@ViewBag.ProductDetail.GetType().GetProperty("Discount").GetValue(ViewBag.ProductDetail, null))/100)).ToString("#,###", cul.NumberFormat)) ₫</del>
-                                                    <span class="o-giam-gia">- @ViewBag.ProductDetail.GetType().GetProperty("Discount").GetValue(ViewBag.ProductDetail, null)% </span>
-                                                </sub>
+@*                                                    <del>@((@ViewBag.ProductDetail.GetType().GetProperty("Price").GetValue(ViewBag.ProductDetail, null) + @ViewBag.ProductDetail.GetType().GetProperty("Price").GetValue(ViewBag.ProductDetail, null) * ((@ViewBag.ProductDetail.GetType().GetProperty("Discount").GetValue(ViewBag.ProductDetail, null))/100)).ToString("#,###", cul.NumberFormat)) ₫</del>
+*@@*                                                    <span class="o-giam-gia">- @ViewBag.ProductDetail.GetType().GetProperty("Discount").GetValue(ViewBag.ProductDetail, null)% </span>
+*@                                                </sub>
                                             </h1>
                                         </div>
                                         @if (@ViewBag.ProductDetail.GetType().GetProperty("Quantity").GetValue(ViewBag.ProductDetail, null) > 0) {
@@ -135,7 +135,7 @@
                 <h3 class="comment-title">
                     <a style="font-weight: bold; text-transform:none">Đánh giá - Nhận xét từ khách hàng</a>
                 </h3>
-                @if(ViewBag.RatingList.Count > 0)
+                @*@if(ViewBag.RatingList.Count > 0)
                 {
                 <div class="card" style="margin-bottom:20px">
                     <div class="card-body" style="margin:20px">
@@ -307,16 +307,16 @@
                     </div>
                     
                 </div>
-                }
-                else
-                {
+                }*@
+                @*else
+                {*@
                 <div class="card" style="margin-bottom:20px">
                     <div class="card-body" style="margin:20px">
                         <img src="~/public/client/Images/rating-star.PNG" style="height:80px; margin:auto;  display: block;" alt="">
                         <p style="text-align:center; margin-top:20px">Chưa có đánh giá nào cho sản phẩm này</p>
                     </div>
                 </div>
-                }
+                @*}*@
                 <h3 class="comment-title">
                     <a style="font-weight: bold;">Bình luận</a>
                 </h3>
@@ -345,50 +345,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="owl-carousel popular-slider">
-                                @foreach (var item in @ViewBag.RelatedProduct)
-                                 { 
-                                <!-- Start Single Product -->
-                                <div class="single-product">
-                                    <div class="product-img" style="width: 250px; height: 200px;">
-                                        <a href="/ProductDetail/product_detail?productId=@item.ProductId">
-                                            <img class="default-img" style="margin: auto; max-width: 250px; max-height: 200px; width: auto; height: auto; " src="~/public/images_upload/product/@item.ProductImage" alt="#">
-                                            <img class="hover-img" src="~/public/images_upload/product/@item.ProductImage" alt="">
-                                            @{double so_ngay_da_moban = (DateTime.Now - item.StartsAt).TotalDays;}
-                                            @if (@item.Quantity < 1)
-                                            {
-                                        <span class="out-of-stock" style="background-color:#FF8C00;">Hết hàng</span>}
-                                            @if (@so_ngay_da_moban < 14)
-                                            {
-                                        <span class="new">New</span>}
-                                        </a>
-                                        <div class="button-head">
-                                            <div class="product-action">
-                                                <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Lượt xem: @item.GetType().GetProperty("View").GetValue(item, null)</span></a>
-                                                <a title="Wishlist" href="javascript:void(0)"><i class=" ti-heart "></i><span>Yêu thích</span></a>
-                                                <input type="text" class="ProductId" value="@item.ProductId" hidden>
-                                            </div>
-                                            <div class="product-action-2">
-                                                <a title="Add to cart" class="add-to-cart-a-tag" href="javascript:void(0)">Thêm vào giỏ hàng</a>
-                                                <input type="text" value="@item.ProductId" hidden>
-                                                <input type="hidden" class="Quantity" value="@item.Quantity">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <h3><a style="text-decoration: none; color: black;" href="/ProductDetail/product_detail?productId=@item.ProductId">@item.ProductName</a></h3>
-                                        <div class="product-price">
-                                            <span style="color:black; font-size:17px"><b>@item.Price.ToString("#,###", cul.NumberFormat) ₫</b></span>
-                                            @if (@item.Discount > 0)
-                                            {
-                                                double dc = @item.Price + (@item.Price * (@item.Discount / 100));
-                                    <br>
-                                                        <span class="old">@dc.ToString("#,###", cul.NumberFormat) ₫</span>
-                                                                            <span class="o-giam-gia" style="font-size:10px">-@item.Discount% </span>}
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- End Single Product -->
-                                }
+                                
                             </div>
                         </div>
                     </div>

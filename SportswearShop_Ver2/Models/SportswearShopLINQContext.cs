@@ -19,14 +19,13 @@ namespace SportswearShop_Ver2.Models
             optionsBuilder.UseMySQL(connectionString);
         }
         public DbSet<User> User { set; get; }
-        public DbSet<Menu> Menu { set; get; }
-        public DbSet<Category> Category { set; get; }
 
         public void updateLoginHistory(LoginHistory login)
         {
                 //LoginHistory.Add(login);
                 //SaveChanges();
         }
+<<<<<<< HEAD
 
         public List<Category> getAllCategory()
         {
@@ -44,5 +43,7 @@ namespace SportswearShop_Ver2.Models
             Menu.Add(newMenu);
             SaveChanges();
         }
+=======
+>>>>>>> ec17cd3de0626fb9be37f61897866ae8f15285ab
     }
 }
