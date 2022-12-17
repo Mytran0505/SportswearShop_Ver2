@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using MySql.Data.MySqlClient;
-<<<<<<< HEAD
 using System.Text.RegularExpressions;
-=======
 using System.Drawing.Drawing2D;
->>>>>>> ec17cd3de0626fb9be37f61897866ae8f15285ab
 using System.Xml.Linq;
 using System.Collections.Generic;
 
