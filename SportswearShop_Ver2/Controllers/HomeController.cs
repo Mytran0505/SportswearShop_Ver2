@@ -27,20 +27,19 @@ namespace SportswearShop_Ver2.Controllers
 		{
 			SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
 			var linqContext = new SportswearShopLINQContext();
-			//ViewBag.AllCategory = linqContext.getAllCategory();
-			//ViewBag.AllBrand = linqContext.getAllBrand();
-			//ViewBag.AllSubBrand = linqContext.getAllSubBrand();
-			//ViewBag.AllBlog = context.getAllBlog();
-			//ViewBag.AllBannerSlider = context.getAllBannerSlider();
-			//ViewBag.Top3ProductView = context.getTop3ProductView();
-			//ViewBag.Top3Product = context.get3Product();
-			//ViewBag.Blog = context.getBlog();
-			//ViewBag.New = context.get2Blog();
-			//ViewBag.LTProduct = context.getLTProduct();
-			//ViewBag.PCProduct = context.getPCProduct();
-			//ViewBag.PKProduct = context.getPKProduct();
-
-			ViewBag.SliderForHomePage = context.getSliderForHomePage();
+            ViewBag.AllCategory = context.getAllCategory();
+            ViewBag.AllMenu = context.getAllMẹnu();
+            //ViewBag.AllSubBrand = linqContext.getAllSubBrand();
+            //ViewBag.AllBlog = context.getAllBlog();
+            //ViewBag.AllBannerSlider = context.getAllBannerSlider();
+            //ViewBag.Top3ProductView = context.getTop3ProductView();
+            //ViewBag.Top3Product = context.get3Product();
+            //ViewBag.Blog = context.getBlog();
+            //ViewBag.New = context.get2Blog();
+            //ViewBag.LTProduct = context.getLTProduct();
+            //ViewBag.PCProduct = context.getPCProduct();
+            //ViewBag.PKProduct = context.getPKProduct();
+            ViewBag.SliderForHomePage = context.getSliderForHomePage();
 			ViewBag.BannerForHomePage = context.getBannerForHomePage();
 			ViewBag.ProductForHomePage = context.getProductForHomePage();
 			//ViewBag.GiamGiaSoc = context.getGiamGiaSoc();
