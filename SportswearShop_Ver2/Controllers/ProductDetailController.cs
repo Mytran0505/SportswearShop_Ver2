@@ -14,11 +14,11 @@ namespace SportswearShop_Ver2.Controllers
             ViewBag.AllMenu = context.getAllMẹnu();
 
             var productDetail = context.getProductDetail(productId);
-            //string categoryId = (string)productDetail.GetType().GetProperty("CategoryId").GetValue(productDetail, null);
-            //int brandId = (int)productDetail.GetType().GetProperty("MenuId").GetValue(productDetail, null);
+            int categoryId = (int)(productDetail.GetType().GetProperty("CategoryId").GetValue(productDetail, null));
+            int brandId = (int)(productDetail.GetType().GetProperty("MenuId").GetValue(productDetail, null));
 
             ViewBag.ProductDetail = productDetail;
-            //ViewBag.RelatedProduct = linqContext.getRelatedProduct(productId, categoryId, brandId);
+            ViewBag.RelatedProduct = context.getRelatedProduct(productId);
             //ViewBag.ProductGallary = linqContext.getProductGallary(productId);
             //List<object> ratingList = context.getRating(productId);
             //ViewBag.RatingList = ratingList;

@@ -12,7 +12,7 @@
             <div class="col-12">
                 <div class="bread-inner">
                     <ul class="bread-list">
-                        <li><a href="index.html">Trang chủ<i class="ti-arrow-right"></i></a></li>
+                        <li><a href="/Home/Index">Trang chủ<i class="ti-arrow-right"></i></a></li>
                         <li class="active"><a href="#">@ViewBag.ProductDetail.GetType().GetProperty("CategoryName").GetValue(ViewBag.ProductDetail, null) </a></li>
                         <li class="active"><i class="ti-arrow-right"></i></li>
                         <li class="active"><a href="#">@ViewBag.ProductDetail.GetType().GetProperty("MenuName").GetValue(ViewBag.ProductDetail, null) </a></li>
@@ -308,15 +308,15 @@
                     
                 </div>
                 }*@
-                else
-                {
+                @*else
+                {*@
                 <div class="card" style="margin-bottom:20px">
                     <div class="card-body" style="margin:20px">
                         <img src="~/public/client/Images/rating-star.PNG" style="height:80px; margin:auto;  display: block;" alt="">
                         <p style="text-align:center; margin-top:20px">Chưa có đánh giá nào cho sản phẩm này</p>
                     </div>
                 </div>
-                }
+                @*}*@
                 <h3 class="comment-title">
                     <a style="font-weight: bold;">Bình luận</a>
                 </h3>
@@ -345,50 +345,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="owl-carousel popular-slider">
-                                @*@foreach (var item in @ViewBag.RelatedProduct)
-                                 { 
-                                <!-- Start Single Product -->
-                                <div class="single-product">
-                                    <div class="product-img" style="width: 250px; height: 200px;">
-                                        <a href="/ProductDetail/product_detail?productId=@item.ProductId">
-                                            <img class="default-img" style="margin: auto; max-width: 250px; max-height: 200px; width: auto; height: auto; " src="~/public/images_upload/product/@item.ProductImage" alt="#">
-                                            <img class="hover-img" src="~/public/images_upload/product/@item.ProductImage" alt="">
-                                            @{double so_ngay_da_moban = (DateTime.Now - item.StartsAt).TotalDays;}
-                                            @if (@item.Quantity < 1)
-                                            {
-                                        <span class="out-of-stock" style="background-color:#FF8C00;">Hết hàng</span>}
-                                            @if (@so_ngay_da_moban < 14)
-                                            {
-                                        <span class="new">New</span>}
-                                        </a>
-                                        <div class="button-head">
-                                            <div class="product-action">
-                                                <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Lượt xem: @item.GetType().GetProperty("View").GetValue(item, null)</span></a>
-                                                <a title="Wishlist" href="javascript:void(0)"><i class=" ti-heart "></i><span>Yêu thích</span></a>
-                                                <input type="text" class="ProductId" value="@item.ProductId" hidden>
-                                            </div>
-                                            <div class="product-action-2">
-                                                <a title="Add to cart" class="add-to-cart-a-tag" href="javascript:void(0)">Thêm vào giỏ hàng</a>
-                                                <input type="text" value="@item.ProductId" hidden>
-                                                <input type="hidden" class="Quantity" value="@item.Quantity">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <h3><a style="text-decoration: none; color: black;" href="/ProductDetail/product_detail?productId=@item.ProductId">@item.ProductName</a></h3>
-                                        <div class="product-price">
-                                            <span style="color:black; font-size:17px"><b>@item.Price.ToString("#,###", cul.NumberFormat) ₫</b></span>
-                                            @if (@item.Discount > 0)
-                                            {
-                                                double dc = @item.Price + (@item.Price * (@item.Discount / 100));
-                                    <br>
-                                                        <span class="old">@dc.ToString("#,###", cul.NumberFormat) ₫</span>
-                                                                            <span class="o-giam-gia" style="font-size:10px">-@item.Discount% </span>}
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- End Single Product -->
-                                }*@
+                                
                             </div>
                         </div>
                     </div>

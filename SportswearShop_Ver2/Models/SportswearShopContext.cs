@@ -234,7 +234,7 @@ namespace SportswearShop_Ver2.Models
                             ProductName = reader["PNAME"].ToString(),
                             ProductImage = reader["PIMAGE"].ToString(),
                             Price = Convert.ToInt32(reader["price_sale"]),
-                            CategoryId = reader["CID"].ToString(),
+                            CategoryId = Convert.ToInt32(reader["CID"]),
                             MenuId = Convert.ToInt32(reader["MID"]),
                             Content = reader["content"].ToString(),
                             CategoryName = reader["CNAME"].ToString(),
@@ -250,6 +250,89 @@ namespace SportswearShop_Ver2.Models
             }
             return productInfo;
         }
+        public object getRelatedProduct(int productId)
+        {
+            object productInfo = new object();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT P.ID AS PID, Quantity, P.NAME AS PNAME, P.IMAGE AS PIMAGE, PRICE_SALE, C.ID AS CID, M.ID AS MID, content, C.NAME AS CNAME, M.NAME AS MNAME  " +
+                    "FROM MENUS M, PRODUCTS P, CATEGORY C " +
+                    "WHERE M.PARENT_ID = C.ID AND P.MENU_ID=M.ID AND P.ID = @ProductId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("ProductId", productId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        //System.Diagnostics.Debug.WriteLine("hI: " + reader["CategoryName"].ToString());
+                        productInfo = new
+                        {
+                            ProductId = Convert.ToInt32(reader["PID"]),
+                            Quantity = Convert.ToInt32(reader["Quantity"]),
+                            ProductName = reader["PNAME"].ToString(),
+                            ProductImage = reader["PIMAGE"].ToString(),
+                            Price = Convert.ToInt32(reader["price_sale"]),
+                            CategoryId = Convert.ToInt32(reader["CID"]),
+                            MenuId = Convert.ToInt32(reader["MID"]),
+                            Content = reader["content"].ToString(),
+                            CategoryName = reader["CNAME"].ToString(),
+                            MenuName = reader["MNAME"].ToString(),
+                        };
+
+                    }
+                    reader.Close();
+
+                }
+                conn.Close();
+
+            }
+            return productInfo;
+        }
+
+        //public object getRelatedProduct(int productId, int categoryId, int menuId)
+        //{
+        //    object productInfo = new object();
+        //    using (MySqlConnection conn = GetConnection())
+        //    {
+        //        conn.Open();
+        //        var str = "SELECT P.ID AS PID, Quantity, P.NAME AS PNAME, P.IMAGE AS PIMAGE, PRICE_SALE, C.ID AS CID, M.ID AS MID, content, C.NAME AS CNAME, M.NAME AS MNAME  " +
+        //            "FROM MENUS M, PRODUCTS P, CATEGORY C " +
+        //            "WHERE M.PARENT_ID = C.ID AND P.MENU_ID=M.ID AND P.ID != @ProductId " +
+        //            "and C.ID = @CategoryId AND M.ID = @MenuId";
+        //        MySqlCommand cmd = new MySqlCommand(str, conn);
+        //        cmd.Parameters.AddWithValue("ProductId", productId);
+        //        cmd.Parameters.AddWithValue("CategoryId", categoryId);
+        //        cmd.Parameters.AddWithValue("MenuId", menuId);
+
+        //        using (var reader = cmd.ExecuteReader())
+        //        {
+        //            if (reader.Read())
+        //            {
+        //                //System.Diagnostics.Debug.WriteLine("hI: " + reader["CategoryName"].ToString());
+        //                productInfo = new
+        //                {
+        //                    ProductId = Convert.ToInt32(reader["PID"]),
+        //                    Quantity = Convert.ToInt32(reader["Quantity"]),
+        //                    ProductName = reader["PNAME"].ToString(),
+        //                    ProductImage = reader["PIMAGE"].ToString(),
+        //                    Price = Convert.ToInt32(reader["price_sale"]),
+        //                    CategoryId = Convert.ToInt32(reader["CID"]),
+        //                    MenuId = Convert.ToInt32(reader["MID"]),
+        //                    Content = reader["content"].ToString(),
+        //                    CategoryName = reader["CNAME"].ToString(),
+        //                    MenuName = reader["MNAME"].ToString(),
+        //                };
+
+        //            }
+        //            reader.Close();
+
+        //        }
+        //        conn.Close();
+
+        //    }
+        //    return productInfo;
+        //}
         public User getUserInfo(string email, string password, int isAdmin)
 		{
 			User userInfo = new User();
