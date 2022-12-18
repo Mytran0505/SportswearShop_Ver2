@@ -39,7 +39,32 @@ namespace SportswearShop_Ver2.Controllers
 
         }
 
+<<<<<<< HEAD
        
+=======
+        public IActionResult check_password(User userInput)
+        {
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            User userInfo = context.getUserInfo(userInput.Email, userInput.Password, 1);
+            if (userInfo != null)
+            {
+                //System.Diagnostics.Debug.WriteLine("Admin: " + userInfo.UserId);
+                HttpContext.Session.SetInt32("adminId", userInfo.UserId);
+                HttpContext.Session.SetString("adminLastName", userInfo.LastName);
+                HttpContext.Session.SetString("adminFirstName", userInfo.FirstName);
+                HttpContext.Session.SetString("adminImage", userInfo.UserImage);
+                var LINQContext = new SportswearShopLINQContext();
+                // Update last login
+                //context.updateLastLogin(userInfo.UserId);
+                // Thêm lịch sử đăng nhập
+                //LoginHistory login = new LoginHistory(userInfo.UserId, DateTime.Now, DateTime.Now);
+                //LINQContext.updateLoginHistory(login);
+
+                return RedirectToAction("Dashboard");
+            }
+            return RedirectToAction("Index", new { message = "Mật khẩu hoặc tài khoản sai. Xin nhập lại!" });
+        }
+>>>>>>> a49b6610134879c5fd8726caed5a57ec92b277aa
 
         public IActionResult Dashboard()
         {
