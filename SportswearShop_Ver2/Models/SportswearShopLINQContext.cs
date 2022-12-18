@@ -22,10 +22,6 @@ namespace SportswearShop_Ver2.Models
 
         public void updateLoginHistory(LoginHistory login)
         {
-<<<<<<< HEAD
-=======
-
->>>>>>> da12faf37835a8ea6c67fb4ef296be16286be554
             //LoginHistory.Add(login);
             //SaveChanges();
         }
