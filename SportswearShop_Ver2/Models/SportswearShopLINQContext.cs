@@ -25,7 +25,6 @@ namespace SportswearShop_Ver2.Models
             //LoginHistory.Add(login);
             //SaveChanges();
         }
-<<<<<<< HEAD
 
         /*public List<Category> getAllCategory()
         {
@@ -43,7 +42,7 @@ namespace SportswearShop_Ver2.Models
             Menu.Add(newMenu);
             SaveChanges();
         }*/
-=======
+
         //<<<<<<< HEAD
 
         //        public List<Category> getAllCategory()
@@ -64,6 +63,5 @@ namespace SportswearShop_Ver2.Models
         //}
         //=======
         //>>>>>>> ec17cd3de0626fb9be37f61897866ae8f15285ab
->>>>>>> 11840e6ab8dc20b3d21cf7f66186468b0540f066
     }
 }
