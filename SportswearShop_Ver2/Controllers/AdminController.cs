@@ -52,10 +52,10 @@ namespace SportswearShop_Ver2.Controllers
                 HttpContext.Session.SetString("adminImage", userInfo.UserImage);
                 var LINQContext = new SportswearShopLINQContext();
                 // Update last login
-                context.updateLastLogin(userInfo.UserId);
+                //context.updateLastLogin(userInfo.UserId);
                 // Thêm lịch sử đăng nhập
-                LoginHistory login = new LoginHistory(userInfo.UserId, DateTime.Now, DateTime.Now);
-                LINQContext.updateLoginHistory(login);
+                //LoginHistory login = new LoginHistory(userInfo.UserId, DateTime.Now, DateTime.Now);
+                //LINQContext.updateLoginHistory(login);
 
                 return RedirectToAction("Dashboard");
             }
