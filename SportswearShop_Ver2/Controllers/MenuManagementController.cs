@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+﻿
+=======
 ﻿using SportswearShop_Ver2.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,3 +35,4 @@ namespace SportswearShop_Ver2.Controllers
         }
     }
 }
+>>>>>>> a49b6610134879c5fd8726caed5a57ec92b277aa

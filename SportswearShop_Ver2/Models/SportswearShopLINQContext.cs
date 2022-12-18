@@ -22,10 +22,31 @@ namespace SportswearShop_Ver2.Models
 
         public void updateLoginHistory(LoginHistory login)
         {
+<<<<<<< HEAD
+=======
+
+>>>>>>> da12faf37835a8ea6c67fb4ef296be16286be554
             //LoginHistory.Add(login);
             //SaveChanges();
         }
 
+        /*public List<Category> getAllCategory()
+        {
+            var categories = Category.Where(c => c.Active == 1).ToList();
+            return categories;
+        }
+        public List<Menu> getAllMenu()
+        {
+            var Menus = Menu.Where(c => c.Active == 1).ToList();
+            return Menus;
+        }
+
+        public void saveMenu(Menu newMenu)
+        {
+            Menu.Add(newMenu);
+            SaveChanges();
+        }*/
+
         //public List<Category> getAllCategory()
         //{
         //    var categories = Category.Where(c => c.Active == 1).ToList();
@@ -59,5 +80,6 @@ namespace SportswearShop_Ver2.Models
         //    Menu.Add(newMenu);
         //    SaveChanges();
         //}
+
     }
 }

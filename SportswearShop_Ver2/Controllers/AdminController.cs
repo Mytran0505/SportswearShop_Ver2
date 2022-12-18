@@ -39,6 +39,9 @@ namespace SportswearShop_Ver2.Controllers
 
         }
 
+<<<<<<< HEAD
+       
+=======
         public IActionResult check_password(User userInput)
         {
             SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
@@ -61,6 +64,7 @@ namespace SportswearShop_Ver2.Controllers
             }
             return RedirectToAction("Index", new { message = "Mật khẩu hoặc tài khoản sai. Xin nhập lại!" });
         }
+>>>>>>> a49b6610134879c5fd8726caed5a57ec92b277aa
 
         public IActionResult Dashboard()
         {
