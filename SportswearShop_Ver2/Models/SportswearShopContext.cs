@@ -152,6 +152,95 @@ namespace SportswearShop_Ver2.Models
 			}
 			return productInfo;
 		}
+        public Category getNameOfCategory(int CategoryId)
+        {
+            Category category = new Category();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT ID, NAME FROM CATEGORY WHERE ID = @categoryId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("categoryId", CategoryId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+
+
+                        category.Id = Convert.ToInt32(reader["ID"]);
+                        category.Name = reader["NAME"].ToString();  
+
+                    }
+                    reader.Close();
+
+                }
+                conn.Close();
+
+            }
+            return category;
+        }
+
+        public Menu getNameOfMenu(int MenuId)
+        {
+            Menu menu = new Menu();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT ID, NAME FROM MENUS WHERE ID = @menuId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("menuId", MenuId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+
+
+                        menu.Id = Convert.ToInt32(reader["ID"]);
+                        menu.Name = reader["NAME"].ToString();
+
+                    }
+                    reader.Close();
+
+                }
+                conn.Close();
+
+            }
+            return menu;
+        }
+        public object getMenuOfCategory(int CategoryId)
+        {
+            object MenuInfo = new object();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT C.ID AS CID, M.ID AS MID, C.NAME AS CNAME, M.NAME AS MNAME  " +
+                    "FROM MENUS M, CATEGORY C " +
+                    "WHERE M.PARENT_ID = C.ID AND C.ID = @categoryId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("categoryId", CategoryId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        //System.Diagnostics.Debug.WriteLine("hI: " + reader["CategoryName"].ToString());
+                        MenuInfo = new
+                        {
+           
+                            CategoryId = Convert.ToInt32(reader["CID"]),
+                            MenuId = Convert.ToInt32(reader["MID"]),
+                            CategoryName = reader["CNAME"].ToString(),
+                            MenuName = reader["MNAME"].ToString(),
+                        };
+
+                    }
+                    reader.Close();
+
+                }
+                conn.Close();
+
+            }
+            return MenuInfo;
+        }
 
         public List<Category> getAllCategory()
         {
