@@ -22,8 +22,8 @@ namespace SportswearShop_Ver2.Models
 
         public void updateLoginHistory(LoginHistory login)
         {
-            LoginHistory.Add(login);
-            SaveChanges();
+            //LoginHistory.Add(login);
+            //SaveChanges();
         }
 
         //public List<Category> getAllCategory()
