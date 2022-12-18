@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
 using MySql.Data.MySqlClient;
-<<<<<<< HEAD
 using System.Text.RegularExpressions;
-=======
 using System.Drawing.Drawing2D;
->>>>>>> ec17cd3de0626fb9be37f61897866ae8f15285ab
 using System.Xml.Linq;
 using System.Collections.Generic;
 
@@ -742,5 +739,25 @@ namespace SportswearShop_Ver2.Models
             }
             return products;
         }
+
+        public void saveMenu(Menu newMenu)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "INSERT INTO menus(id, name, parent_id, description, active, created_at, updated_at, image) VALUES (@Id,@Name,@Parent_id,@Description,@Active,@NgayTao,@NgayUpdate,@Image)";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("Id", newMenu.Id);
+                cmd.Parameters.AddWithValue("Name", newMenu.Name);
+                cmd.Parameters.AddWithValue("Parent_id", newMenu.Parent_id);
+                cmd.Parameters.AddWithValue("Description", newMenu.Description);
+                cmd.Parameters.AddWithValue("Active", newMenu.Active);
+                cmd.Parameters.AddWithValue("Image", newMenu.Image);
+                cmd.Parameters.AddWithValue("NgayTao", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("NgayUpdate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.ExecuteNonQuery();
+            }
+        }
+
     }
 }

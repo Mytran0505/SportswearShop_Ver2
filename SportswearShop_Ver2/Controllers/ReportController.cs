@@ -31,7 +31,7 @@ namespace SportswearShop_Ver2.Controllers
             ViewBag.tuNgay = dauThangTruoc;
             ViewBag.denNgay = homNay;
             ViewBag.topProducts = context.getTopProductNoLimit(dauThangTruoc, homNay);
-            return View(context.getTopProductNoLimit(dauThangTruoc, homNay));
+            return View();
         }
     }
 }

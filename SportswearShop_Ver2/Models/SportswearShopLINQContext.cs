@@ -25,9 +25,8 @@ namespace SportswearShop_Ver2.Models
                 //LoginHistory.Add(login);
                 //SaveChanges();
         }
-<<<<<<< HEAD
 
-        public List<Category> getAllCategory()
+        /*public List<Category> getAllCategory()
         {
             var categories = Category.Where(c => c.Active == 1).ToList();
             return categories;
@@ -42,8 +41,6 @@ namespace SportswearShop_Ver2.Models
         {
             Menu.Add(newMenu);
             SaveChanges();
-        }
-=======
->>>>>>> ec17cd3de0626fb9be37f61897866ae8f15285ab
+        }*/
     }
 }

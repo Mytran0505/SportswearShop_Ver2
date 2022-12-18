@@ -27,7 +27,7 @@ namespace SportswearShop_Ver2.Controllers
         public IActionResult SaveMenu(Menu newMenu)
         {
 
-            var context = new SportswearShopLINQContext();
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
             context.saveMenu(newMenu);
             return RedirectToAction("add_product_menu");
         }
