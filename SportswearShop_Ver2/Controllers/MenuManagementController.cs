@@ -27,6 +27,14 @@
 //        //public IActionResult SaveMenu(Menu newMenu)
 //        //{
 
+<<<<<<< HEAD
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            context.saveMenu(newMenu);
+            return RedirectToAction("add_product_menu");
+        }
+    }
+}
+=======
 //        //    var context = new SportswearShopLINQContext();
 //        //    context.saveMenu(newMenu);
 //        //    return RedirectToAction("add_product_menu");
@@ -34,3 +42,4 @@
 //    } }
 //        //}
 //}
+>>>>>>> 11840e6ab8dc20b3d21cf7f66186468b0540f066
