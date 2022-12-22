@@ -1,0 +1,241 @@
+﻿@using System.Globalization;
+@{
+    ViewData["Title"] = "Xem danh mục sản phẩm";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Quản lý danh mục sản phẩm</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="#">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <h4 class="card-title">Danh sách danh mục sản phẩm</h4>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="table-responsive">
+                                <table id="multi-filter-select" class="display table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Mã danh mục sản phẩm</th>
+                                            <th>Tên danh mục sản phẩm</th>
+                                            <th>Phân loại danh mục</th>
+                                            <th>Mô tả</th>
+                                            <th>Hiển thị</th>
+                                            <th>Hành động</th>
+
+                                        </tr>
+                                    </thead>
+                                    @*<tfoot>
+                                        <tr>
+                                            <th>Mã danh mục sản phẩm</th>
+                                            <th>Tên danh mục sản phẩm</th>
+                                            <th>Phân loại danh mục</th>
+                                            <th>Mô tả</th>
+                                            <th>Hiển thị</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </tfoot>*@
+                                    <tbody>
+                                        @foreach (var item in @ViewBag.AllMenu)
+                                        {
+                                            <tr>
+                                                <input type="hidden" class="Id" value="@item.GetType().GetProperty("Id").GetValue(item, null)" />
+                                                <td>@item.GetType().GetProperty("Id").GetValue(item, null)</td>
+                                                <td>@item.GetType().GetProperty("Name").GetValue(item, null)</td>
+                                                <td>
+                                                    @if (item.GetType().GetProperty("Parent_id").GetValue(item, null) == 1)
+                                                    {
+                                                        <label>Nam</label>
+                                                    }
+                                                    else
+                                                    {
+                                                        <label>Nữ</label>
+                                                    }
+                                                </td>
+                                                <td class="decode">@item.GetType().GetProperty("Description").GetValue(item, null)</td>
+                                                <td>
+                                                    <div class="form-button-action">
+                                                        @if (item.GetType().GetProperty("Active").GetValue(item, null) == 1)
+                                                        {
+                                                            <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Hiển thị danh mục">
+                                                                <span class="fa-thumb-styling fa fa-eye" style="font-size:18px"></span>
+                                                            </button>
+                                                            <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Ẩn danh mục" hidden>
+                                                                <span class="fa-thumb-styling fa fa-eye-slash" style="color:red; font-size:18px"></span>
+                                                            </button>
+                                                        }
+                                                        else
+                                                        {
+                                                            <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Hiển thị danh mục" hidden>
+                                                                <span class="fa-thumb-styling fa fa-eye" style="font-size:18px"></span>
+                                                            </button>
+                                                            <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Ẩn danh mục">
+                                                                <span class="fa-thumb-styling fa fa-eye-slash" style="color:red; font-size:18px"></span>
+                                                            </button>
+                                                        }
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-button-action">
+                                                        <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Cập nhật danh mục">
+                                                            <a href="/MenuManagement/update_product_menu?Id=@item.GetType().GetProperty("Id").GetValue(item, null)" class="active" ui-toggle-class="">
+                                                                <i class="fa fa-edit text-active"></i>
+                                                            </a>
+                                                        </button>
+                                                        <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Xóa danh mục">
+                                                            <a href="javascript:void(0)" class="active" ui-toggle-class="">
+                                                                <i class="fa fa-times text-danger text"></i>
+                                                            </a>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('button[data-original-title="Hiển thị danh mục"]').click(function () {
+            var Id = $(this).parents('tr').find('.Id').val();
+            var activeButton = $(this);
+            var unactiveButton = $(this).parent().find('button[data-original-title="Ẩn danh mục"]');
+            $.ajax({
+                url: '/MenuManagement/unactive_menu',
+                method: "GET",
+                data: { Id: Id },
+                success: function (data) {
+                    activeButton.attr('hidden', true);
+                    unactiveButton.removeAttr('hidden');
+                },
+                error: function (data) {
+                    alert('Lỗi');
+                }
+            });
+        });
+
+        $('button[data-original-title="Ẩn danh mục"]').click(function () {
+            var Id = $(this).parents('tr').find('.Id').val();
+            var unactiveButton = $(this);
+            var activeButton = $(this).parent().find('button[data-original-title="Hiển thị danh mục"]');
+            $.ajax({
+                url: '/MenuManagement/active_menu',
+                method: "GET",
+                data: { Id: Id },
+                success: function (data) {
+                    unactiveButton.attr('hidden', true);
+                    activeButton.removeAttr('hidden');
+                },
+                error: function (data) {
+                    alert('Lỗi');
+                }
+            });
+        });
+
+        $('button[data-original-title="Xóa danh mục"]').click(function () {
+            var Id = $(this).parents('tr').find('.Id').val();
+            var thisSlider = $(this).parents('tr');
+            swal({
+                title: "Xác nhận",
+                text: "Bạn có chắc muốn xóa danh mục không?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: '/MenuManagement/delete_menu',
+                            method: "GET",
+                            data: { Id: Id },
+                            success: function (data) {
+                                thisSlider.remove();
+                                swal("Xóa danh mục thành công!", {
+                                    icon: "success",
+                                });
+                            },
+                            error: function (data) {
+                                alert('Lỗi');
+                            }
+                        });
+
+                    }
+                });
+
+        });
+    });
+</script>
+<script src="~/public/admin/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script src="~/public/admin/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+<!-- jQuery Scrollbar -->
+<script src="~/public/admin/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<!-- Datatables -->
+<script src="~/public/admin/js/plugin/datatables/datatables.min.js"></script>
+<!-- Atlantis JS -->
+<script src="~/public/admin/js/atlantis.min.js"></script>
+<!-- Atlantis DEMO methods, don't include it in your project! -->
+<script src="~/public/admin/js/setting-demo2.js"></script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#basic-datatables').DataTable({
+        });
+
+        $('#multi-filter-select').DataTable({
+            "pageLength": 20,
+            initComplete: function () {
+                this.api().columns().every(function () {
+                    var column = this;
+                    var select = $('<select class="form-control"><option value=""></option></select>')
+                        .appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+
+                    column.data().unique().sort().each(function (d, j) {
+                        select.append('<option value="' + d + '">' + d + '</option>')
+                    });
+                });
+            }
+        });
+
+        $('.decode').each(function () {
+            var $this = $(this);
+            var t = $this.text();
+            $this.html(t.replace('&lt', '<').replace('&gt', '>'));
+            
+        });
+
+    });
+</script>

@@ -848,5 +848,101 @@ namespace SportswearShop_Ver2.Models
             }
         }
 
+        public List<Menu> getAllMenuForMenuManagement()
+        {
+            List<Menu> list = new List<Menu>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from menus";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new Menu()
+                        {
+                            Id = Convert.ToInt32(reader["id"]),
+                            Name = reader["name"].ToString(),
+                            Description = reader["description"].ToString(),
+                            Parent_id = Convert.ToInt32(reader["parent_id"]),
+                            Active = Convert.ToInt32(reader["active"]),
+                            Image = reader["image"].ToString(),
+                        });
+                    }
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return list;
+        }
+
+        public void updateMenuStatus(int id, int status)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE menus SET active=@status WHERE id=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("status", status);
+                cmd.Parameters.AddWithValue("id", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void deleteMenu(int id)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "DELETE FROM menus WHERE id=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("id", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public Menu getMenuById(int id)
+        {
+            Menu menu = new Menu();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from menus where id=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("id", id);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    reader.Read();
+                    menu.Id = Convert.ToInt32(reader["id"]);
+                    menu.Name = reader["name"].ToString();
+                    menu.Description = reader["description"].ToString();
+                    menu.Parent_id = Convert.ToInt32(reader["parent_id"]);
+                    menu.Active = Convert.ToInt32(reader["active"]);
+                    menu.Image = reader["image"].ToString();
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return menu;
+        }
+
+        public void saveUpdateMenu(Menu menu)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE menus SET name=@Name, parent_id=@Parent_id, description=@Description, active=@Active, updated_at=@NgayUpdate, image=@Image WHERE id=@Id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("Id", menu.Id);
+                cmd.Parameters.AddWithValue("Name", menu.Name);
+                cmd.Parameters.AddWithValue("Parent_id", menu.Parent_id);
+                cmd.Parameters.AddWithValue("Description", menu.Description);
+                cmd.Parameters.AddWithValue("Active", menu.Active);
+                cmd.Parameters.AddWithValue("Image", menu.Image);
+                cmd.Parameters.AddWithValue("NgayUpdate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

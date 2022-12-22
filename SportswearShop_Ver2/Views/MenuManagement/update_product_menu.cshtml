@@ -1,0 +1,125 @@
+﻿@using System.Globalization;
+@{
+    ViewData["Title"] = "Cập nhật danh mục sản phẩm";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Cập nhật danh mục sản phẩm</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="#">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    @*<li class="nav-item">
+                    <a href="#">Forms</a>
+                    </li>*@
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    @*<li class="nav-item">
+                    <a href="#">Basic Form</a>
+                    </li>*@
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Sửa thông tin danh mục sản phẩm ID:@ViewBag.MenuInfo.Id</div>
+                        </div>
+                        <form role="form" action="/MenuManagement/save_update_menu" method="post" enctype="multipart/form-data">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="email2">Mã danh mục sản phẩm</label>
+                                            <input type="text" class="form-control" id="email2" value=" @ViewBag.MenuInfo.Id" disabled>
+                                            <input type="hidden" name="Id" class="form-control" id="email2" value=" @ViewBag.MenuInfo.Id">
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="email2">Tên danh mục sản phẩm</label>
+                                            <input type="text" name="Name" value="@ViewBag.MenuInfo.Name" class="form-control" id="email2" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlSelect1">Phân loại danh mục</label>
+                                            <select class="form-control" name="Parent_id" id="exampleFormControlSelect1" required>
+                                                @if (ViewBag.MenuInfo.Parent_id == 1)
+                                                {
+                                                    <option value="1" selected>Nam</option>
+                                                    <option value="2">Nữ</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="1">Nam</option>
+                                                    <option value="2" selected>Nữ</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-6">
+                                        <div class="form-group">
+                                            @*<label for="exampleFormControlFile1">Thêm ảnh minh họa</label>
+                                            <input type="file" name="Image" class="form-control-file" id="exampleFormControlFile1">*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12">
+                                        <div class="form-group">
+                                            <label for="email2">Mô tả danh mục</label>
+                                            <textarea class="form-control" name="Description" id="ckeditor1" rows="5" placeholder="Mô tả danh mục" required>@ViewBag.MenuInfo.Description</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label d-block">Hiển thị</label>
+                                            @if (ViewBag.MenuInfo.Active == 1)
+                                            {
+                                                <div class="selectgroup selectgroup-secondary selectgroup-pills">
+                                                    <label class="selectgroup-item">
+                                                        <input type="radio" name="Active" value="1" class="selectgroup-input" checked="">
+                                                        <span class="selectgroup-button selectgroup-button-icon"><i class="fa fa-eye"></i></span>
+                                                    </label>
+                                                    <label class="selectgroup-item">
+                                                        <input type="radio" name="Active" value="0" class="selectgroup-input">
+                                                        <span class="selectgroup-button selectgroup-button-icon"><i class="fa fa-eye-slash"></i></span>
+                                                    </label>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="selectgroup selectgroup-secondary selectgroup-pills">
+                                                    <label class="selectgroup-item">
+                                                        <input type="radio" name="Active" value="1" class="selectgroup-input">
+                                                        <span class="selectgroup-button selectgroup-button-icon"><i class="fa fa-eye"></i></span>
+                                                    </label>
+                                                    <label class="selectgroup-item">
+                                                        <input type="radio" name="Active" value="0" class="selectgroup-input" checked="">
+                                                        <span class="selectgroup-button selectgroup-button-icon"><i class="fa fa-eye-slash"></i></span>
+                                                    </label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-action">
+                                <button type="submit" class="btn btn-success">Cập nhật danh mục sản phẩm</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal"><a href="/MenuManagement/view_product_menu" style="text-decoration:none; color:white">Hủy</a></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

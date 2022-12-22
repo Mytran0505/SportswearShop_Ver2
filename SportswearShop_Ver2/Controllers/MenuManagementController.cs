@@ -31,5 +31,44 @@ namespace SportswearShop_Ver2.Controllers
             context.saveMenu(newMenu);
             return RedirectToAction("add_product_menu");
         }
+
+        public IActionResult view_product_menu()
+        {
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            ViewBag.AllMenu = context.getAllMenuForMenuManagement();
+            return View();
+        }
+
+        public void unactive_menu(int Id)
+        {
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            context.updateMenuStatus(Id, 0);
+        }
+
+        public void active_menu(int Id)
+        {
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            context.updateMenuStatus(Id, 1);
+        }
+
+        public void delete_menu(int Id)
+        {
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            context.deleteMenu(Id);
+        }
+
+        public IActionResult update_product_menu(int Id)
+        {
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            ViewBag.MenuInfo = context.getMenuById(Id);
+            return View();
+        }
+
+        public IActionResult save_update_menu(Menu menu)
+        {
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            context.saveUpdateMenu(menu);
+            return RedirectToAction("view_product_menu");
+        }
     }
 }

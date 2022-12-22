@@ -2,15 +2,12 @@
 @{
     ViewData["Title"] = "Thêm danh mục sản phẩm";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-
-    // Cái này để format tiền
-    CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
 }
 <div class="main-panel">
     <div class="content">
         <div class="page-inner">
             <div class="page-header">
-                <h4 class="page-title">Danh mục sản phẩm</h4>
+                <h4 class="page-title">Thêm danh mục sản phẩm</h4>
                 <ul class="breadcrumbs">
                     <li class="nav-home">
                         <a href="#">
@@ -35,7 +32,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">Thêm danh mục sản phẩm</div>
+                            <div class="card-title">Điền thông tin danh mục sản phẩm</div>
                         </div>
                         <form role="form" action="/MenuManagement/SaveMenu" method="post" enctype="multipart/form-data">
                             <div class="card-body">
@@ -63,8 +60,8 @@
                                     </div>
                                     <div class="col-6 col-lg-6">
                                         <div class="form-group">
-                                            <label for="exampleFormControlFile1">Thêm ảnh minh họa</label>
-                                            <input type="file" name="Image" class="form-control-file" id="exampleFormControlFile1">
+                                            @*<label for="exampleFormControlFile1">Thêm ảnh minh họa</label>
+                                            <input type="file" name="Image" class="form-control-file" id="exampleFormControlFile1">*@
                                         </div>
                                     </div>
                                     <div class="col-md-12 col-lg-12">
@@ -90,7 +87,7 @@
                             </div>
                             <div class="card-action">
                                 <button type="submit" name="add_product_menu" class="btn btn-success">Thêm danh mục sản phẩm</button>
-                                <button class="btn btn-danger">Hủy</button>
+                                <button type="reset" class="btn btn-danger">Hủy</button>
                             </div>
                         </form>
                         </div>
