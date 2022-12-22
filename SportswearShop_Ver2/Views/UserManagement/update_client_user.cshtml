@@ -1,0 +1,91 @@
+﻿@using System.Globalization;
+@{
+    ViewData["Title"] = "Cập nhật tài khoản khách hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Cập nhật tài khoản khách hàng</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="#">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    @*<li class="nav-item">
+                    <a href="#">Forms</a>
+                    </li>*@
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    @*<li class="nav-item">
+                    <a href="#">Basic Form</a>
+                    </li>*@
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Sửa thông tin tài khoản khách hàng ID:@ViewBag.ClientUserInfo.UserId</div>
+                        </div>
+                        <form role="form" action="/UserManagement/save_update_client_user" method="post" enctype="multipart/form-data">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="email2">Mã tài khoản khách hàng</label>
+                                            <input type="text" class="form-control" id="email2" value="@ViewBag.ClientUserInfo.UserId" disabled>
+                                            <input type="hidden" name="UserId" class="form-control" id="email2" value="@ViewBag.ClientUserInfo.UserId">
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="email2">Số điện thoại</label>
+                                            <input type="text" name="Mobile" class="form-control" id="email2" value="@ViewBag.ClientUserInfo.Mobile">
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="email2">Họ và tên đệm</label>
+                                            <input type="text" name="LastName" class="form-control" id="email2" value="@ViewBag.ClientUserInfo.LastName">
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="email2">Tên</label>
+                                            <input type="text" name="FirstName" class="form-control" id="email2" value="@ViewBag.ClientUserInfo.FirstName">
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="email2">Email</label>
+                                            <input type="text" name="Email" class="form-control" id="email2" value="@ViewBag.ClientUserInfo.Email">
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="email2">Password</label>
+                                            <input type="text" name="Password" class="form-control" id="email2" value="@ViewBag.ClientUserInfo.Password">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-action">
+                                <button type="submit" class="btn btn-success">Cập nhật tài khoản khách hàng</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal"><a href="/UserManagement/view_client_user" style="text-decoration:none; color:white">Hủy</a></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,96 @@
+﻿@using System.Globalization;
+@{
+    ViewData["Title"] = "Thêm tài khoản admin";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Thêm tài khoản admin</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="#">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    @*<li class="nav-item">
+                    <a href="#">Forms</a>
+                    </li>*@
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    @*<li class="nav-item">
+                    <a href="#">Basic Form</a>
+                    </li>*@
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Điền thông tin tài khoản admin</div>
+                        </div>
+                        <form role="form" action="/UserManagement/save_admin_user" method="post" enctype="multipart/form-data">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="email2">Mã admin user</label>
+                                            <input type="text" name="UserId" class="form-control" id="email2" placeholder="Nhập mã admin user" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="email2">Số điện thoại</label>
+                                            <input type="text" name="Mobile" class="form-control" id="email2" placeholder="Nhập số điện thoại">
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="email2">Họ và tên đệm</label>
+                                            <input type="text" name="LastName" class="form-control" id="email2" placeholder="Nhập họ và tên đệm">
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="email2">Tên</label>
+                                            <input type="text" name="FirstName" class="form-control" id="email2" placeholder="Nhập tên">
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="email2">Email</label>
+                                            <input type="text" name="Email" class="form-control" id="email2" placeholder="Nhập email">
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="email2">Password</label>
+                                            <input type="text" name="Password" class="form-control" id="email2" placeholder="Nhập password">
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlFile1">Avatar</label>
+                                            <input type="file" name="UserImage" class="form-control-file" id="exampleFormControlFile1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-action">
+                                <button type="submit" name="add_admin_user" class="btn btn-success">Thêm tài khoản admin</button>
+                                <button type="reset" class="btn btn-danger">Hủy</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

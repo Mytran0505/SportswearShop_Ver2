@@ -944,5 +944,139 @@ namespace SportswearShop_Ver2.Models
                 cmd.ExecuteNonQuery();
             }
         }
+
+        public void saveNewAdminUser(User newUser)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "INSERT INTO user(UserId, FirstName, LastName, Mobile, Email, Password, Admin, UserImage, RegisteredAt, LastLogin) VALUES (@UserId, @FirstName, @LastName, @Mobile, @Email, @Password, @Admin, @UserImage, @RegisteredAt, @LastLogin)";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("UserId", newUser.UserId);
+                cmd.Parameters.AddWithValue("FirstName", newUser.FirstName);
+                cmd.Parameters.AddWithValue("LastName", newUser.LastName);
+                cmd.Parameters.AddWithValue("Mobile", newUser.Mobile);
+                cmd.Parameters.AddWithValue("Email", newUser.Email);
+                cmd.Parameters.AddWithValue("Password", newUser.Password);
+                cmd.Parameters.AddWithValue("Admin", 1);
+                cmd.Parameters.AddWithValue("UserImage", newUser.UserImage);
+                cmd.Parameters.AddWithValue("RegisteredAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("LastLogin", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public List<User> getAllAdminUser()
+        {
+            List<User> list = new List<User>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from user where Admin=1";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new User()
+                        {
+                            UserId = Convert.ToInt32(reader["UserId"]),
+                            FirstName = reader["FirstName"].ToString(),
+                            LastName = reader["LastName"].ToString(),
+                            Mobile = reader["Mobile"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            Password = reader["Password"].ToString()
+                        });
+                    }
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return list;
+        }
+
+        public List<User> getAllClientUser()
+        {
+            List<User> list = new List<User>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from user where Admin=0";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new User()
+                        {
+                            UserId = Convert.ToInt32(reader["UserId"]),
+                            FirstName = reader["FirstName"].ToString(),
+                            LastName = reader["LastName"].ToString(),
+                            Mobile = reader["Mobile"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            Password = reader["Password"].ToString()
+                        });
+                    }
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return list;
+        }
+
+        public void deleteClientUser(int id)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "DELETE FROM user WHERE UserId=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("id", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public User getClientUserById(int id)
+        {
+            User clientuser = new User();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from user where UserId=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("id", id);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    reader.Read();
+                    clientuser.UserId = Convert.ToInt32(reader["UserId"]);
+                    clientuser.FirstName = reader["FirstName"].ToString();
+                    clientuser.LastName = reader["LastName"].ToString();
+                    clientuser.Mobile = reader["Mobile"].ToString();
+                    clientuser.Email = reader["Email"].ToString();
+                    clientuser.Password = reader["Password"].ToString();
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return clientuser;
+        }
+
+        public void saveUpdateClientUser(User clientuser)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE user SET FirstName=@FirstName, LastName=@LastName, Mobile=@Mobile, Email=@Email, Password=@Password WHERE UserId=@UserId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("UserId", clientuser.UserId);
+                cmd.Parameters.AddWithValue("FirstName", clientuser.FirstName);
+                cmd.Parameters.AddWithValue("LastName", clientuser.LastName);
+                cmd.Parameters.AddWithValue("Mobile", clientuser.Mobile);
+                cmd.Parameters.AddWithValue("Email", clientuser.Email);
+                cmd.Parameters.AddWithValue("Password", clientuser.Password);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
     }
 }

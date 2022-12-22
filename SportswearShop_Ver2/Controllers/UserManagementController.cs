@@ -8,66 +8,60 @@ using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace SportswearShop_Ver2.Controllers
 {
-    public class MenuManagementController : Controller
+    public class UserManagementController : Controller
     {
         [Obsolete]
         private IHostingEnvironment Environment;
 
         [Obsolete]
-        public MenuManagementController(IHostingEnvironment _environment)
+        public UserManagementController(IHostingEnvironment _environment)
         {
             Environment = _environment;
         }
-        public IActionResult add_product_menu()
+
+        public IActionResult add_admin_user()
         {
             return View();
         }
 
-        [Obsolete]
-        public IActionResult SaveMenu(Menu newMenu)
+        public IActionResult save_admin_user(User newUser)
         {
             SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
-            context.saveMenu(newMenu);
-            return RedirectToAction("add_product_menu");
+            context.saveNewAdminUser(newUser);
+            return RedirectToAction("add_admin_user");
         }
 
-        public IActionResult view_product_menu()
+        public IActionResult view_admin_user()
         {
             SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
-            ViewBag.AllMenu = context.getAllMenuForMenuManagement();
+            ViewBag.AllAdminUser = context.getAllAdminUser();
             return View();
         }
 
-        public void unactive_menu(int Id)
+        public IActionResult view_client_user()
         {
             SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
-            context.updateMenuStatus(Id, 0);
+            ViewBag.AllClientUser = context.getAllClientUser();
+            return View();
+        }
+        public void delete_client_user(int UserId)
+        {
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            context.deleteClientUser(UserId);
         }
 
-        public void active_menu(int Id)
+        public IActionResult update_client_user(int UserId)
         {
             SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
-            context.updateMenuStatus(Id, 1);
-        }
-
-        public void delete_menu(int Id)
-        {
-            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
-            context.deleteMenu(Id);
-        }
-
-        public IActionResult update_product_menu(int Id)
-        {
-            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
-            ViewBag.MenuInfo = context.getMenuById(Id);
+            ViewBag.ClientUserInfo = context.getClientUserById(UserId);
             return View();
         }
 
-        public IActionResult save_update_menu(Menu menu)
+        public IActionResult save_update_client_user(User clientuser)
         {
             SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
-            context.saveUpdateMenu(menu);
-            return RedirectToAction("view_product_menu");
+            context.saveUpdateClientUser(clientuser);
+            return RedirectToAction("view_client_user");
         }
     }
 }
