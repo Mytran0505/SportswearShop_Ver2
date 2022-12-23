@@ -1418,5 +1418,60 @@ namespace SportswearShop_Ver2.Models
                 cmd.ExecuteNonQuery();
             }
         }
+
+        public List<BillKhachHang> getAllBillKhachHang()
+        {
+            List<BillKhachHang> list = new List<BillKhachHang>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from bill_khachhangs";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new BillKhachHang()
+                        {
+                            Id = Convert.ToInt32(reader["id"]),
+                            TotalMoney = Convert.ToInt32(reader["total_money"]),
+                            CustomerId = Convert.ToInt32(reader["customer_id"]),
+                            CreatedAt = ((DateTime)reader["created_at"])
+                        });
+                    }
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return list;
+        }
+
+        public List<BillVangLai> getAllBillVangLai()
+        {
+            List<BillVangLai> list = new List<BillVangLai>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from bill_vanglais";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new BillVangLai()
+                        {
+                            Id = Convert.ToInt32(reader["id"]),
+                            TotalMoney = Convert.ToInt32(reader["total_money"]),
+                            CustomerPhoneNumber = reader["customer_phone_number"].ToString(),
+                            CreatedAt = ((DateTime)reader["created_at"])
+                        });
+                    }
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return list;
+        }
+
     }
 }

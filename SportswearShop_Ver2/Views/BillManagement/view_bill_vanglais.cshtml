@@ -1,0 +1,127 @@
+﻿@using System.Globalization;
+@{
+    ViewData["Title"] = "Xem đơn hàng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
+}
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Quản lý đơn hàng</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="#">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <h4 class="card-title">Danh sách đơn hàng</h4>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="table-responsive">
+                                <table id="multi-filter-select" class="display table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Mã đơn hàng</th>
+                                            <th>Thành tiền</th>
+                                            <th>Số điện thoại khách hàng</th>
+                                            <th>Ngày mua hàng</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Mã đơn hàng</th>
+                                            <th>Thành tiền</th>
+                                            <th>Số điện thoại khách hàng</th>
+                                            <th>Ngày mua hàng</th>
+                                        </tr>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        @foreach (var item in @ViewBag.AllBill)
+                                        {
+                                            <tr>
+                                                <input type="hidden" class="Id" value="@item.GetType().GetProperty("Id").GetValue(item, null)" />
+                                                <td>@item.GetType().GetProperty("Id").GetValue(item, null)</td>
+                                                <td>@item.GetType().GetProperty("TotalMoney").GetValue(item, null).ToString("#,###", cul.NumberFormat) ₫</td>
+                                                <td>@item.GetType().GetProperty("CustomerPhoneNumber").GetValue(item, null)</td>
+                                                <td>@item.GetType().GetProperty("CreatedAt").GetValue(item, null).ToString("dd-MM-yyyy")</td>
+                                                <td>
+                                                    <div class="form-button-action">
+                                                        <button type="button" onclick="window.open('/Report/print_invoice/?Id=@item.GetType().GetProperty("Id").GetValue(item, null)');" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="In đơn hàng">
+                                                            <a class="active" ui-toggle-class="">
+                                                                <i class="fa fa-print text-active"></i>
+                                                            </a>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/public/admin/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script src="~/public/admin/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+<!-- jQuery Scrollbar -->
+<script src="~/public/admin/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<!-- Datatables -->
+<script src="~/public/admin/js/plugin/datatables/datatables.min.js"></script>
+<!-- Atlantis JS -->
+<script src="~/public/admin/js/atlantis.min.js"></script>
+<!-- Atlantis DEMO methods, don't include it in your project! -->
+<script src="~/public/admin/js/setting-demo2.js"></script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#basic-datatables').DataTable({
+        });
+
+        $('#multi-filter-select').DataTable({
+            "pageLength": 20,
+            initComplete: function () {
+                this.api().columns().every(function () {
+                    var column = this;
+                    var select = $('<select class="form-control"><option value=""></option></select>')
+                        .appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+
+                    column.data().unique().sort().each(function (d, j) {
+                        select.append('<option value="' + d + '">' + d + '</option>')
+                    });
+                });
+            }
+        });
+
+    });
+</script>
