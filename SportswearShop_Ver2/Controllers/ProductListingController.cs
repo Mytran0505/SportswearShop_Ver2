@@ -12,7 +12,7 @@ namespace SportswearShop_Ver2.Controllers
             ViewBag.MenuOfCategory = context.getMenuOfCategory(categoryId);
             ViewBag.NameOfCategory = context.getNameOfCategory(categoryId);
             ViewBag.AllCategory = context.getAllCategory();
-            ViewBag.AllMenu = context.getAllMẹnu();
+            ViewBag.AllMenu = context.getAllMenu();
             ViewBag.ProductOfMenu1 = context.getProductOfMenu1(categoryId);
             ViewBag.ProductOfMenu2 = context.getProductOfMenu2(categoryId);
             ViewBag.ProductOfMenu3 = context.getProductOfMenu3(categoryId);
@@ -35,7 +35,7 @@ namespace SportswearShop_Ver2.Controllers
             ViewBag.MenuOfCategory = context.getMenuOfCategory(menuId);
             ViewBag.NameOfMenu = context.getNameOfMenu(menuId);
             ViewBag.AllCategory = context.getAllCategory();
-            ViewBag.AllMenu = context.getAllMẹnu();
+            ViewBag.AllMenu = context.getAllMenu();
             ViewBag.ProductOfMenu = context.getProductOfMenu(menuId);
             
             //ViewBag.LTProduct = context.getAoProduct(categoryId);

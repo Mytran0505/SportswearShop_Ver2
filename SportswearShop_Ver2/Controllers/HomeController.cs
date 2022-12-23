@@ -27,7 +27,7 @@ namespace SportswearShop_Ver2.Controllers
 		{
 			SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
             ViewBag.AllCategory = context.getAllCategory();
-            ViewBag.AllMenu = context.getAllMẹnu();
+            ViewBag.AllMenu = context.getAllMenu();
             //ViewBag.AllSubBrand = linqContext.getAllSubBrand();
             //ViewBag.AllBlog = context.getAllBlog();
             //ViewBag.AllBannerSlider = context.getAllBannerSlider();

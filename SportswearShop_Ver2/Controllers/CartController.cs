@@ -12,7 +12,7 @@ namespace SportswearShop_Ver2.Controllers
 			SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
 			var linqContext = new SportswearShopLINQContext();
 			ViewBag.AllCategory = context.getAllCategory();
-			ViewBag.AllMenu = context.getAllMẹnu();
+			ViewBag.AllMenu = context.getAllMenu();
 			//ViewBag.AllSubBrand = linqContext.getAllSubBrand();
 			/*======*/
 

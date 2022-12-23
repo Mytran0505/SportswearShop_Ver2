@@ -422,7 +422,7 @@ namespace SportswearShop_Ver2.Models
             return list;
         }
 
-        public List<Menu> getAllMẹnu()
+        public List<Menu> getAllMenu()
         {
             List<Menu> list = new List<Menu>();
             using (MySqlConnection conn = GetConnection())
@@ -574,6 +574,104 @@ namespace SportswearShop_Ver2.Models
         //    }
         //    return productInfo;
         //}
+
+        public object getDefaultShippingAddress(int userId)
+        {
+            object item = new object();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = @"SELECT ShippingAddressId, Address, Phone, TT.name, QH.name, XP.name, ReceiverName, ShippingAddressType, ExtraShippingFee
+                        FROM shippingaddress SA, devvn_quanhuyen QH, devvn_tinhthanhpho TT, devvn_xaphuongthitran XP
+                        WHERE SA.matp = TT.matp
+                        AND SA.maqh = QH.maqh
+                        AND SA.xaid = XP.xaid
+                        AND UserId = @UserId
+                        AND IsDefault = 1;";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("UserId", userId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        item = new
+                        {
+                            ShippingAddressId = Convert.ToInt32(reader[0].ToString()),
+                            Address = reader[1].ToString(),
+                            Phone = reader[2].ToString(),
+                            ThanhPho = reader[3].ToString(),
+                            QuanHuyen = reader[4].ToString(),
+                            XaPhuong = reader[5].ToString(),
+                            ReceiverName = reader[6].ToString(),
+                            ShippingAddressType = reader[7].ToString(),
+                            ExtraShippingFee = Convert.ToInt32(reader[8].ToString()),
+                        };
+                        return item;
+                    }
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return null;
+        }
+
+        public List<object> getWishList(int customerId)
+        {
+            List<object> list = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "SELECT * FROM WISHLIST W JOIN PRODUCTs P ON P.Id = W.ProductId WHERE UserId = @userId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("userId", customerId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var obj = new
+                        {
+                            ProductId = Convert.ToInt32(reader["id"]),
+                            ProductImage = reader["image"].ToString(),
+                            ProductName = reader["name"].ToString(),
+                            Price = Convert.ToInt32(reader["price_sale"]),
+                        };
+                        list.Add(obj);
+                    }
+                    reader.Close();
+                }
+
+                conn.Close();
+
+            }
+            return list;
+        }
+        public User getProfile(int customerId)
+        {
+            User Info = new User();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT * FROM user " +
+                    "where UserId = @UserId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("UserId", customerId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        Info.UserId = Convert.ToInt32(reader["UserId"]);
+                        Info.Email = reader["Email"].ToString();
+                        Info.FirstName = reader["FirstName"].ToString();
+                        Info.LastName = reader["LastName"].ToString();
+                        Info.Mobile = reader["Mobile"].ToString();
+                        Info.UserImage = reader["UserImage"].ToString();
+                    }
+                    else
+                        return null;
+                }
+            }
+            return Info;
+        }
         public User getUserInfo(string email, string password, int isAdmin)
 		{
 			User userInfo = new User();

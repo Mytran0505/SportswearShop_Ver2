@@ -11,7 +11,7 @@ namespace SportswearShop_Ver2.Controllers
             //System.Diagnostics.Debug.WriteLine("Chạy product detail");
             SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
             ViewBag.AllCategory = context.getAllCategory();
-            ViewBag.AllMenu = context.getAllMẹnu();
+            ViewBag.AllMenu = context.getAllMenu();
 
             var productDetail = context.getProductDetail(productId);
             int categoryId = (int)(productDetail.GetType().GetProperty("CategoryId").GetValue(productDetail, null));
