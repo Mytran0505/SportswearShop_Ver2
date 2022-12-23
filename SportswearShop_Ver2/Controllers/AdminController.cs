@@ -16,6 +16,7 @@ namespace SportswearShop_Ver2.Controllers
         string adminLastName = "";
         string adminFirstName = "";
         string adminImage = "";
+        string adminEmail = "";
 
         private readonly ILogger<AdminController> _logger;
 
@@ -49,6 +50,7 @@ namespace SportswearShop_Ver2.Controllers
                 HttpContext.Session.SetString("adminLastName", userInfo.LastName);
                 HttpContext.Session.SetString("adminFirstName", userInfo.FirstName);
                 HttpContext.Session.SetString("adminImage", userInfo.UserImage);
+                HttpContext.Session.SetString("adminEmail", userInfo.Email);
                 var LINQContext = new SportswearShopLINQContext();
                 // Update last login
                 //context.updateLastLogin(userInfo.UserId);
@@ -59,6 +61,16 @@ namespace SportswearShop_Ver2.Controllers
                 return RedirectToAction("Dashboard");
             }
             return RedirectToAction("Index", new { message = "Mật khẩu hoặc tài khoản sai. Xin nhập lại!" });
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove(adminId);
+            HttpContext.Session.Remove(adminLastName);
+            HttpContext.Session.Remove(adminFirstName);
+            HttpContext.Session.Remove(adminImage);
+            HttpContext.Session.Remove(adminEmail);
+            return View("Index");
         }
 
         public IActionResult Dashboard()

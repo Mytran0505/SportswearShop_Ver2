@@ -21,6 +21,8 @@ namespace SportswearShop_Ver2.Controllers
 
         public IActionResult add_admin_user()
         {
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            ViewBag.NextId = context.getUserCurrentMaxId() + 1;
             return View();
         }
 

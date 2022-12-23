@@ -40,7 +40,8 @@
                                     <div class="col-md-12 col-lg-6">
                                         <div class="form-group">
                                             <label for="email2">Mã danh mục sản phẩm</label>
-                                            <input type="text" name="Id" class="form-control" id="email2" placeholder="Nhập mã danh mục" required>
+                                            <input type="text" name="Id" class="form-control" id="email2" value="@ViewBag.NextId" disabled>
+                                            <input type="hidden" name="Id" class="form-control" id="email2" value="@ViewBag.NextId">
                                         </div>
                                     </div>
                                     <div class="col-6 col-lg-6">
@@ -86,7 +87,7 @@
                                 </div>
                             </div>
                             <div class="card-action">
-                                <button type="submit" name="add_product_menu" class="btn btn-success">Thêm danh mục sản phẩm</button>
+                                <button type="submit" name="" class="btn btn-success">Thêm danh mục sản phẩm</button>
                                 <button type="reset" class="btn btn-danger">Hủy</button>
                             </div>
                         </form>

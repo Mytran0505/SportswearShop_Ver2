@@ -829,6 +829,25 @@ namespace SportswearShop_Ver2.Models
             return products;
         }
 
+        public int getMenuCurrentMaxId()
+        {
+            int id = 0;
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT id FROM menus ORDER BY id DESC LIMIT 1";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        id = Convert.ToInt32(reader["id"]);
+                    }
+                }
+            }
+            return id;
+        }
+
         public void saveMenu(Menu newMenu)
         {
             using (MySqlConnection conn = GetConnection())
@@ -943,6 +962,25 @@ namespace SportswearShop_Ver2.Models
                 cmd.Parameters.AddWithValue("NgayUpdate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 cmd.ExecuteNonQuery();
             }
+        }
+
+        public int getUserCurrentMaxId()
+        {
+            int id = 0;
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT UserId FROM user ORDER BY UserId DESC LIMIT 1";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        id = Convert.ToInt32(reader["UserId"]);
+                    }
+                }
+            }
+            return id;
         }
 
         public void saveNewAdminUser(User newUser)

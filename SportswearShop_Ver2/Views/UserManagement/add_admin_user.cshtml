@@ -40,7 +40,8 @@
                                     <div class="col-md-12 col-lg-6">
                                         <div class="form-group">
                                             <label for="email2">Mã admin user</label>
-                                            <input type="text" name="UserId" class="form-control" id="email2" placeholder="Nhập mã admin user" required>
+                                            <input type="text" name="UserId" class="form-control" id="email2" value="@ViewBag.NextId" disabled>
+                                            <input type="hidden" name="UserId" class="form-control" id="email2" value="@ViewBag.NextId">
                                         </div>
                                     </div>
                                     <div class="col-6 col-lg-6">
@@ -73,16 +74,16 @@
                                             <input type="text" name="Password" class="form-control" id="email2" placeholder="Nhập password">
                                         </div>
                                     </div>
-                                    <div class="col-6 col-lg-6">
+                                    @*<div class="col-6 col-lg-6">
                                         <div class="form-group">
                                             <label for="exampleFormControlFile1">Avatar</label>
                                             <input type="file" name="UserImage" class="form-control-file" id="exampleFormControlFile1">
                                         </div>
-                                    </div>
+                                    </div>*@
                                 </div>
                             </div>
                             <div class="card-action">
-                                <button type="submit" name="add_admin_user" class="btn btn-success">Thêm tài khoản admin</button>
+                                <button type="submit" name="" class="btn btn-success">Thêm tài khoản admin</button>
                                 <button type="reset" class="btn btn-danger">Hủy</button>
                             </div>
                         </form>

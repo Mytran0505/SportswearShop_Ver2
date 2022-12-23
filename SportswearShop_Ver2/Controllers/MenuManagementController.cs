@@ -20,6 +20,8 @@ namespace SportswearShop_Ver2.Controllers
         }
         public IActionResult add_product_menu()
         {
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            ViewBag.NextId = context.getMenuCurrentMaxId() + 1;
             return View();
         }
 

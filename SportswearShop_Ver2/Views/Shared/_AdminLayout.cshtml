@@ -4,6 +4,7 @@
     string adminFirstName = HttpContextAccessor.HttpContext.Session.GetString("adminFirstName");
     string adminLastName = HttpContextAccessor.HttpContext.Session.GetString("adminLastName");
     string adminImage = HttpContextAccessor.HttpContext.Session.GetString("adminImage");
+    string adminEmail = HttpContextAccessor.HttpContext.Session.GetString("adminEmail");
     if (string.IsNullOrEmpty(adminImage))
     {
         adminImage = "default-user-icon.png";
@@ -270,15 +271,16 @@
                                         ?>
                                         <div class="u-text">
                                             <h4>@adminLastName @adminFirstName</h4>
-                                            <p class="text-muted">admin1@gmail.com</p><a href="~//ad_profile/'.$userId)}}" class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                            <p class="text-muted">@adminEmail</p><a href="~/Admin/logout" class="btn btn-xs btn-secondary btn-sm">Đăng xuất</a>
                                         </div>
                                     </div>
                                 </li>
-                                <li>
+                                @*<li>
 
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="~/Admin/logout">Đăng xuất</a>
-                                </li>
+                                </li>*@
+                            
                 </div>
                 </ul>
                 </li>
