@@ -1,96 +1,26 @@
 ﻿@using System.Globalization;
 @{
-    ViewData["Title"] = "SportswearShop";
+    ViewData["Title"] = ViewBag.NameOfMenu.GetType().GetProperty("Name").GetValue(ViewBag.NameOfMenu, null);
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
     CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
 }
-
-<!-- Slider -->
-<section class="section-slide">
-	<div class="wrap-slick1">
-		<div class="slick1">
-			@foreach (var item in ViewBag.SliderForHomePage)
-			{
-				<div class="item-slick1" style="background-image: url(@item.GetType().GetProperty("Image").GetValue(item, null));">
-				<div class="container h-full">
-					<div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-						<div class="layer-slick1 animated visible-false" data-appear="fadeInDown" data-delay="0">
-							@*<span class="ltext-101 cl2 respon2">
-								Women Collection 2018
-							</span>*@
-						</div>
-
-						<div class="layer-slick1 animated visible-false" data-appear="fadeInUp" data-delay="800">
-							@*<h2 class="ltext-201 cl2 p-t-19 p-b-43 respon1">
-								NEW SEASON
-							</h2>*@
-						</div>
-
-						<div class="layer-slick1 animated visible-false" data-appear="zoomIn" data-delay="1600">
-							@*<a href="product.html" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-								Shop Now
-							</a>*@
-						</div>
-					</div>
-				</div>
-			</div>
-			}
-		</div>
-	</div>
-</section>
-
-<!-- Banner -->
-<div class="sec-banner bg0 p-t-80 p-b-50">
-	<div class="container">
-		<div class="row">
-			@foreach(var item in ViewBag.BannerForHomePage)
-			{
-				<div class="col-md-6 col-xl-4 p-b-30 m-lr-auto">
-				<!-- Block1 -->
-					<div class="block1 wrap-pic-w">
-						<img src="@item.GetType().GetProperty("Image").GetValue(item, null)" alt="IMG-BANNER">
-
-						<a href="/ProductListing/Product_Listing1?categoryId=@item.GetType().GetProperty("Id").GetValue(item, null)" class="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3">
-							<div class="block1-txt-child1 flex-col-l">
-								<span class="block1-name ltext-102 trans-04 p-b-8">
-									@item.GetType().GetProperty("Name").GetValue(item, null)
-								</span>
-
-								<span class="block1-info stext-102 trans-04">
-									HOT SUMMER 2022
-								</span>
-							</div>
-
-							<div class="block1-txt-child2 p-b-4 trans-05">
-								<div class="block1-link stext-101 cl0 trans-09">
-									Shop Now
-								</div>
-							</div>
-						</a>
-					</div>
-				</div>
-			}
-		</div>
-	</div>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
+<!-- Start Product Area -->
+<div class="product-area section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title">
+                    <h2 style="text-transform:none;">@ViewBag.NameOfMenu.GetType().GetProperty("Name").GetValue(ViewBag.NameOfMenu, null)</h2>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<!-- Product -->
 <section class="bg0 p-t-23 p-b-140">
-	<div class="container">
-		<div class="p-b-10">
-			<h3 class="ltext-103 cl5">
-				Product Overview
-			</h3>
-		</div>
-
-		<div class="flex-w flex-sb-m p-b-52">
-			<div class="flex-w flex-l-m filter-tope-group m-tb-10">
-				<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">
-					All Products
-				</button>
-			</div>
-		</div>
 		<div class="row isotope-grid">
-			@foreach (var item in ViewBag.ProductForHomePage)
+			@foreach (var item in ViewBag.ProductOfMenu)
 			{
 				<div class="col-xl-3 col-lg-4 col-md-4 col-12 isotope-item women">
 					<div class="single-product">
@@ -140,12 +70,78 @@
 				</div>
 			}
 		</div>
-
-		<!-- Load more -->
-		<div class="flex-c-m flex-w w-full p-t-45">
-			<a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
-				Load More
-			</a>
-		</div>
 	</div>
 </section>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.mySlides:first').css("display", "block"); // không có dòng này sẽ ko hiển bị banner đc
+    });
+</script>
+<script>
+    var slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("dot");
+        if (n > slides.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = slides.length }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+    }
+</script>
+<script>
+    var slideIndex = 0;
+    carousel();
+
+    function carousel() {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > x.length) { slideIndex = 1 }
+        x[slideIndex - 1].style.display = "block";
+        setTimeout(carousel, 4000); // Change image every 2 seconds
+    }
+</script>
+<style>
+    .star-wrapper {
+        direction: rtl;
+    }
+
+        .star-wrapper a {
+            font-size: 2em;
+            color: #DEDDE3;
+            text-decoration: none;
+            transition: all 0.5s;
+            margin: 4px;
+        }
+    /* .star-wrapper a:hover {
+          color: gold;
+          transform: scale(1.3);
+        } */
+    .wraper {
+        position: absolute;
+        bottom: 30px;
+        right: 50px;
+    }
+</style>
