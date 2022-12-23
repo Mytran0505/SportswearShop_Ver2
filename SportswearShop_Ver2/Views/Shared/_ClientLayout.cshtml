@@ -82,11 +82,12 @@
                 </div>
 				<div class="navigation__column center" style="height:60px; margin-bottom: 15px;">
                     <ul class="main-menu menu">
+						 <li class="category"><a href ="/Home/Index">Trang chủ</a></li>
                         @foreach (var item in @ViewBag.AllCategory)
                         {
                             
                                 <li class="menu-item menu-item-has-children has-mega-menu">
-                                    <a href="/ProductListing/Product_Listing?categoryId=@item.GetType().GetProperty("Id").GetValue(item, null)" style="text-decoration:none">@item.GetType().GetProperty("Name").GetValue(item, null)</a>
+                                    <a href="/ProductListing/Product_Listing1?categoryId=@item.GetType().GetProperty("Id").GetValue(item, null)" style="text-decoration:none">@item.GetType().GetProperty("Name").GetValue(item, null)</a>
                                     <div class="mega-menu">
                                         <div class="mega-wrap">
                                             @foreach (var brand in @ViewBag.AllMenu)
@@ -94,7 +95,7 @@
 											@if (brand.GetType().GetProperty("Parent_id").GetValue(brand, null) == @item.GetType().GetProperty("Id").GetValue(item, null))
                                                 {
                                                     <div class="mega-column">
-                                                        <a href="/ProductListing/Product_Listing1?MenuId=@brand.GetType().GetProperty("Id").GetValue(brand, null)"> <h4 class="mega-heading">@brand.GetType().GetProperty("Name").GetValue(brand, null)</h4> </a>
+                                                        <a href="/ProductListing/Product_Listing2?MenuId=@brand.GetType().GetProperty("Id").GetValue(brand, null)"> <h4 class="mega-heading">@brand.GetType().GetProperty("Name").GetValue(brand, null)</h4> </a>
                                                         @*@foreach (var subbrand in @ViewBag.AllSubBrand)
                                                         {
                                                             @if (subbrand.GetType().GetProperty("BrandId").GetValue(subbrand, null) == brand.GetType().GetProperty("BrandId").GetValue(brand, null))

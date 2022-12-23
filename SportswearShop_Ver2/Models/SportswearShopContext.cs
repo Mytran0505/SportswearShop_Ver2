@@ -207,9 +207,9 @@ namespace SportswearShop_Ver2.Models
             }
             return menu;
         }
-        public object getMenuOfCategory(int CategoryId)
+        public List<object> getMenuOfCategory(int CategoryId)
         {
-            object MenuInfo = new object();
+            List<object> MenuInfo = new List<object>();
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
@@ -220,18 +220,18 @@ namespace SportswearShop_Ver2.Models
                 cmd.Parameters.AddWithValue("categoryId", CategoryId);
                 using (var reader = cmd.ExecuteReader())
                 {
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         //System.Diagnostics.Debug.WriteLine("hI: " + reader["CategoryName"].ToString());
-                        MenuInfo = new
+                        var menuinfo = new
                         {
-           
+ 
                             CategoryId = Convert.ToInt32(reader["CID"]),
                             MenuId = Convert.ToInt32(reader["MID"]),
                             CategoryName = reader["CNAME"].ToString(),
                             MenuName = reader["MNAME"].ToString(),
                         };
-
+                        MenuInfo.Add(menuinfo);
                     }
                     reader.Close();
 
@@ -242,6 +242,156 @@ namespace SportswearShop_Ver2.Models
             return MenuInfo;
         }
 
+        public List<Product> getProductOfMenu1(int categoryId)
+        {
+            List<Product> Products = new List<Product>();
+			int MenuId = 0;
+			if (categoryId == 1)
+				MenuId = 1;
+			else
+				MenuId = 4;
+			using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT * FROM products where menu_id = @menuId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("menuId", MenuId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        //System.Diagnostics.Debug.WriteLine("hI: " + reader["CategoryName"].ToString());
+                        Products.Add(new Product()
+                        {
+
+                            Id = Convert.ToInt32(reader["id"]),
+                            Name = reader["name"].ToString(),
+                            Image = reader["image"].ToString(),
+                            Original_price = Convert.ToInt32(reader["original_price"]),
+                            Price_sale = Convert.ToInt32(reader["price_sale"]),
+                            Quantity = Convert.ToInt32(reader["Quantity"])
+                        });
+                    }
+                    reader.Close();
+
+                }
+                conn.Close();
+
+            }
+            return Products;
+        }
+        public List<Product> getProductOfMenu2(int categoryId)
+        {
+            List<Product> Products = new List<Product>();
+			int MenuId = 0;
+			if (categoryId == 1)
+				MenuId = 2;
+			else
+				MenuId = 5;
+			using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT * FROM products where menu_id = @menuId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("menuId", MenuId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        //System.Diagnostics.Debug.WriteLine("hI: " + reader["CategoryName"].ToString());
+                        Products.Add(new Product()
+                        {
+
+                            Id = Convert.ToInt32(reader["id"]),
+                            Name = reader["name"].ToString(),
+                            Image = reader["image"].ToString(),
+                            Original_price = Convert.ToInt32(reader["original_price"]),
+                            Price_sale = Convert.ToInt32(reader["price_sale"]),
+                            Quantity = Convert.ToInt32(reader["Quantity"])
+                        });
+                    }
+                    reader.Close();
+
+                }
+                conn.Close();
+
+            }
+            return Products;
+        }
+        public List<Product> getProductOfMenu3(int categoryId)
+        {
+           
+			List<Product> Products = new List<Product>();
+			int MenuId = 0;
+			if (categoryId == 1)
+                MenuId = 3;
+            else
+                MenuId = 6;
+
+			using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT * FROM products where menu_id = @menuId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("menuId", MenuId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        //System.Diagnostics.Debug.WriteLine("hI: " + reader["CategoryName"].ToString());
+                        Products.Add(new Product()
+                        {
+
+                            Id = Convert.ToInt32(reader["id"]),
+                            Name = reader["name"].ToString(),
+                            Image = reader["image"].ToString(),
+                            Original_price = Convert.ToInt32(reader["original_price"]),
+                            Price_sale = Convert.ToInt32(reader["price_sale"]),
+                            Quantity = Convert.ToInt32(reader["Quantity"])
+                        });
+                    }
+                    reader.Close();
+
+                }
+                conn.Close();
+
+            }
+            return Products;
+        }
+        public List<Product> getProductOfMenu(int MenuId)
+        {
+            List<Product> Products = new List<Product>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT * FROM products where menu_id = @menuid";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("menuid", MenuId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        //System.Diagnostics.Debug.WriteLine("hI: " + reader["CategoryName"].ToString());
+                        Products.Add(new Product()
+                        {
+
+                            Id = Convert.ToInt32(reader["id"]),
+                            Name = reader["name"].ToString(),
+                            Image = reader["image"].ToString(),
+                            Original_price = Convert.ToInt32(reader["original_price"]),
+                            Price_sale = Convert.ToInt32(reader["price_sale"]),
+                            Quantity = Convert.ToInt32(reader["Quantity"])
+                        });
+                    }
+                    reader.Close();
+
+                }
+                conn.Close();
+
+            }
+            return Products;
+        }
+        
         public List<Category> getAllCategory()
         {
             List<Category> list = new List<Category>();
