@@ -30,7 +30,7 @@ namespace SportswearShop_Ver2.Controllers
         public IActionResult save_new_banner(Banner newBanner, List<IFormFile> Image)
         {
             // Lưu ảnh sản phẩm vào trước
-            string path = Path.Combine(this.Environment.WebRootPath, "/public/images/");
+            //string path = Path.Combine(this.Environment.WebRootPath, "/public/images/");
             foreach (IFormFile postedFile in Image)
             {
                 // Lấy tên file
@@ -72,6 +72,42 @@ namespace SportswearShop_Ver2.Controllers
         {
             SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
             context.deleteBanner(Id);
+        }
+
+        public IActionResult update_banner(int Id)
+        {
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            ViewBag.BannerInfo = context.getBannerById(Id);
+            return View();
+        }
+
+        [Obsolete]
+        public IActionResult save_update_banner(Banner banner, List<IFormFile> Image)
+        {
+
+            //    foreach (IFormFile postedFile in Image)
+            //    {
+            //        banner.Image = "/public/images/" + postedFile.FileName;
+            //    }
+
+            //SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            //context.saveUpdateBanner(banner);
+            //return RedirectToAction("view_banner");
+
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+
+            foreach (IFormFile postedFile in Image)
+            {
+                banner.Image = "/public/images/" + postedFile.FileName;
+                context.saveUpdateBanner(banner);
+                return RedirectToAction("view_banner");
+            }
+
+            if (banner.Image == null)
+            {
+                context.saveUpdateBannerWithoutImage(banner);
+            }
+            return RedirectToAction("view_banner");
         }
 
     }

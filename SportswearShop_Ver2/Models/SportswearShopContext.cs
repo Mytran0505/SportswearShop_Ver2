@@ -1358,5 +1358,65 @@ namespace SportswearShop_Ver2.Models
             }
         }
 
+        public Banner getBannerById(int id)
+        {
+            Banner banner = new Banner();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from banners where id=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("id", id);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    reader.Read();
+                    banner.Id = Convert.ToInt32(reader["id"]);
+                    banner.Name = reader["name"].ToString();
+                    banner.Url = reader["url"].ToString();
+                    banner.Image = reader["image"].ToString();
+                    banner.Sort_by = Convert.ToInt32(reader["sort_by"]);
+                    banner.Active = Convert.ToInt32(reader["active"]);
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return banner;
+        }
+
+        public void saveUpdateBanner(Banner banner)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE banners SET name=@Name, url=@Url, image=@Image, sort_by=@Sort_by, active=@Active, updated_at=@NgayUpdate WHERE id=@Id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("Id", banner.Id);
+                cmd.Parameters.AddWithValue("Name", banner.Name);
+                cmd.Parameters.AddWithValue("Url", banner.Url);
+                cmd.Parameters.AddWithValue("Image", banner.Image);
+                cmd.Parameters.AddWithValue("Sort_by", banner.Sort_by);
+                cmd.Parameters.AddWithValue("Active", banner.Active);
+                cmd.Parameters.AddWithValue("NgayUpdate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void saveUpdateBannerWithoutImage(Banner banner)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE banners SET name=@Name, url=@Url, sort_by=@Sort_by, active=@Active, updated_at=@NgayUpdate WHERE id=@Id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("Id", banner.Id);
+                cmd.Parameters.AddWithValue("Name", banner.Name);
+                cmd.Parameters.AddWithValue("Url", banner.Url);
+                //cmd.Parameters.AddWithValue("Image", banner.Image);
+                cmd.Parameters.AddWithValue("Sort_by", banner.Sort_by);
+                cmd.Parameters.AddWithValue("Active", banner.Active);
+                cmd.Parameters.AddWithValue("NgayUpdate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }
