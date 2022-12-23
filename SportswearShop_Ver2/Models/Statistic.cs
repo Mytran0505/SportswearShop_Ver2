@@ -12,7 +12,7 @@ namespace SportswearShop_Ver2.Models
         {
         }
 
-        public Statistic(/*int statisticId, */DateTime statisticDate, int sales, int profit)
+        public Statistic(/*int statisticId, */DateTime statisticDate, int profit)
         {
             //this.statisticId = statisticId;
             this.statisticDate = statisticDate;

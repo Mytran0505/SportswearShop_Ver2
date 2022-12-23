@@ -1516,5 +1516,117 @@ namespace SportswearShop_Ver2.Models
                 cmd.ExecuteNonQuery();
             }
         }
+
+        public List<BillKhachHang> getAllBillKhachHang()
+        {
+            List<BillKhachHang> list = new List<BillKhachHang>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from bill_khachhangs";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new BillKhachHang()
+                        {
+                            Id = Convert.ToInt32(reader["id"]),
+                            TotalMoney = Convert.ToInt32(reader["total_money"]),
+                            CustomerId = Convert.ToInt32(reader["customer_id"]),
+                            CreatedAt = ((DateTime)reader["created_at"])
+                        });
+                    }
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return list;
+        }
+
+        public List<BillVangLai> getAllBillVangLai()
+        {
+            List<BillVangLai> list = new List<BillVangLai>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from bill_vanglais";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new BillVangLai()
+                        {
+                            Id = Convert.ToInt32(reader["id"]),
+                            TotalMoney = Convert.ToInt32(reader["total_money"]),
+                            CustomerPhoneNumber = reader["customer_phone_number"].ToString(),
+                            CreatedAt = ((DateTime)reader["created_at"])
+                        });
+                    }
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return list;
+        }
+
+        public List<Product> getAllProductForProductManagement()
+        {
+            List<Product> list = new List<Product>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from products";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new Product()
+                        {
+                            Id = Convert.ToInt32(reader["id"]),
+                            Name = reader["name"].ToString(),
+                            Description = reader["description"].ToString(),
+                            Content = reader["content"].ToString(),
+                            Menu_id = Convert.ToInt32(reader["menu_id"]),
+                            Original_price = Convert.ToInt32(reader["original_price"]),
+                            Price_sale = Convert.ToInt32(reader["price_sale"]),
+                            Image = reader["image"].ToString(),
+                            Active = Convert.ToInt32(reader["active"])
+                        });
+                    }
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return list;
+        }
+
+        public void updateProductStatus(int id, int status)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE products SET active=@status WHERE id=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("status", status);
+                cmd.Parameters.AddWithValue("id", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void deleteProduct(int id)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "DELETE FROM products WHERE id=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("id", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
     }
 }
