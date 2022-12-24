@@ -91,7 +91,7 @@ namespace SportswearShop_Ver2.Models
 			using (MySqlConnection conn = GetConnection())
 			{
 				conn.Open();
-				string str = "SELECT * FROM products";
+				string str = "SELECT * FROM products where active = 1";
 				MySqlCommand cmd = new MySqlCommand(str, conn);
 				using (var reader = cmd.ExecuteReader())
 				{
