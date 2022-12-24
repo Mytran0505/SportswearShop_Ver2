@@ -1,0 +1,578 @@
+﻿@using Microsoft.AspNetCore.Http
+@using System.Globalization;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng #" + ViewBag.OrderInfo.OrderId + " - ITGoShop";
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+    string customerId = HttpContextAccessor.HttpContext.Session.GetString("customerId");
+    string customerFirstName = HttpContextAccessor.HttpContext.Session.GetString("customerFirstName");
+    string customerLastName = HttpContextAccessor.HttpContext.Session.GetString("customerLastName");
+    string customerImage = HttpContextAccessor.HttpContext.Session.GetString("customerImage");
+    if (string.IsNullOrEmpty(customerImage))
+    {
+        customerImage = "default-user-icon.png";
+    }
+    // Cái này để format tiền
+    CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
+}
+
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Breadcrumbs -->
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="bread-inner">
+                    <ul class="bread-list">
+                        <li><a href="/">Trang chủ<i class="ti-arrow-right"></i></a></li>
+                        <li class="active"><a href="/">Tài khoản<i class="ti-arrow-right"></i></a></li>
+                        <li class="active"><a href="/Order/my_orders">Đơn hàng của tôi<i class="ti-arrow-right"></i></a></li>
+                        <li class="active"><a href="/Order/order_detail?orderId=@ViewBag.OrderInfo.OrderId">Chi tiết đơn hàng</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Start Contact -->
+<div class="row gutters-sm pt-45 pl-60 pr-60 pb-80">
+    <div class="col-md-3 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-column align-items-center text-center">
+                    <img src="~/public/images_upload/user/@customerImage" alt="User" class="rounded-circle" width="150">
+                    <div class="mt-3">
+                        <h4>Xin chào, @customerLastName @customerFirstName!</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mt-4">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h4 class="mb-0">
+                        <i style="font-size: 20px; padding-right: 15px; font-weight:bold;" class="fa fa-user-circle-o" class="fa fa-user-circle-o"></i>
+                        <a href="/profile" style="color:#333; font-weight:500;">Tài khoản</a>
+                    </h4>
+
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h4 class="mb-0">
+                        <i style="font-size: 20px; padding-right: 15px; font-weight:bold;" class="fa fa-heart-o"></i>
+                        @if (!string.IsNullOrEmpty(customerId))
+                        {
+                            <a href="/wishlist" style="color:#333; font-weight:500;">Sản phẩm yêu thích</a>
+                        }
+                    </h4>
+
+                </li>
+
+                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h4 class="mb-0">
+                        <i style="font-size: 20px; padding-right: 18px;" class="fa fa-history"></i>
+                        <a href="/my-orders" style="color:#333; font-weight:500;">Lịch sử mua hàng</a>
+                    </h4>
+                </li>
+
+            </ul>
+        </div>
+    </div>    <div class="col-md-9">
+        <h3 style="margin: 20px 0px;">Chi tiết đơn hàng #@ViewBag.OrderInfo.OrderId - <b class="OrderStatus">@ViewBag.OrderInfo.OrderStatus</b> <p style="float:right;">Ngày đặt hàng: @ViewBag.OrderInfo.OrderDate.ToString("HH:mm dd/MM/yyyy") </p></h3>
+        <input type="text" class="OrderId" value="@ViewBag.OrderInfo.OrderId" hidden>
+        @if (ViewBag.OrderInfo.PaymentMethod == "Chuyển khoản online" && ViewBag.OrderInfo.PaymentStatus == "Chờ thanh toán" && ViewBag.OrderInfo.OrderStatus != "Đã hủy" && ViewBag.OrderInfo.OrderStatus != "Giao hàng thành công")
+        {
+            <div id="payment-message" style="margin:10px">
+                <div style="background-color: #fbfbfb; border-radius: 8px; padding:20px;margin-bottom:20px">
+                    <button class="close-button" style="float:right;font-size:28px;background-color: #fbfbfb;border: none;height: 10px;margin-right: 20px;">&times;</button>
+                    <p>Với các đơn hàng thanh toán online, để được giao hàng theo thời gian dự kiến. <br> Quý khách vui lòng chuyển khoản với nội dung ghi rõ <b>Tên & Số Điện Thoại người</b> nhận hàng. Ví dụ: <b>A THANH 0988888888</b></p>
+                    <div style="border: 2px solid #fbfbfb; padding: 10px; border-radius:10px">
+                        <p style="line-height: 2;">
+                            <b>Vietcombank - Ngân Hàng Ngoại Thương Việt Nam</b> <br>
+                            Chủ tài khoản: LE LAM LINH <br>
+                            Số tài khoản: <b>0011004366653</b> <br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card panel-default">
+                    <div class="panel-heading" style="background-color: white;"><h5><b>ĐỊA CHỈ NGƯỜI NHẬN</b></h5></div>
+                    <div class="panel-body" style="height:200px">
+                        <p><b>@ViewBag.DefaultShippingAddress.GetType().GetProperty("ReceiverName").GetValue(@ViewBag.DefaultShippingAddress, null)</b></p>
+                        <p>Địa chỉ: @ViewBag.DefaultShippingAddress.GetType().GetProperty("Address").GetValue(@ViewBag.DefaultShippingAddress, null), @ViewBag.DefaultShippingAddress.GetType().GetProperty("XaPhuong").GetValue(@ViewBag.DefaultShippingAddress, null), @ViewBag.DefaultShippingAddress.GetType().GetProperty("QuanHuyen").GetValue(@ViewBag.DefaultShippingAddress, null), @ViewBag.DefaultShippingAddress.GetType().GetProperty("ThanhPho").GetValue(@ViewBag.DefaultShippingAddress, null)</p>
+                        <p>Điện thoại: @ViewBag.DefaultShippingAddress.GetType().GetProperty("Phone").GetValue(@ViewBag.DefaultShippingAddress, null)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card panel-default">
+                    <div class="panel-heading" style="background-color: white;"><h5><b>HÌNH THỨC GIAO HÀNG</b></h5></div>
+                    <div class="panel-body" style="height:200px">
+                        <p>@ViewBag.OrderInfo.ShipMethod</p>
+                        <p>Thời gian giao hàng dự kiến: @ViewBag.OrderInfo.EstimatedDeliveryTime.ToString("dd-MM-yyyy")</p>
+                        <p>Phí vận chuyển: @ViewBag.OrderInfo.ShipFee.ToString("#,###", cul.NumberFormat)  ₫</p>
+                        <p>Đơn vị vận chuyển: ITGoFast</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card panel-default">
+                    <div class="panel-heading" style="background-color: white;"><h5><b>HÌNH THỨC THANH TOÁN</b></h5></div>
+                    <div class="panel-body" style="height:200px">
+                        <p>@ViewBag.OrderInfo.PaymentMethod</p>
+                        <p>Tình trạng: @ViewBag.OrderInfo.PaymentStatus</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card panel-default mt-20 mb-4">
+            <div class="panel-body">
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col" colspan="2"><b>Sản phẩm</b></th>
+                            <th scope="col"><b>Giá</b></th>
+                            <th scope="col"><b>Số lượng</b></th>
+                            <th scope="col" style="text-align: right;"><b>Tạm tính</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.OrderDetail)
+                        {
+                            <tr>
+                                <td><img style="margin: auto; max-width: 60px; max-height: 60px; width: auto; height: auto; " src="~/public/images_upload/product/@item.GetType().GetProperty("ProductImage").GetValue(item, null)" alt=""></td>
+                                <td>
+                                    <a href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("ProductId").GetValue(item, null)" style="text-decoration:none; color:black; font-weight:bold">@item.GetType().GetProperty("ProductName").GetValue(item, null)</a>
+                                    <br>
+                                    @if (ViewBag.OrderInfo.OrderStatus == "Giao hàng thành công")
+                                    {
+                                        <button type="button" class="btn btn-primary btn-danh-gia" style="margin:10px 0px;position: inherit;">Đánh giá sản phẩm</button>
+                                        <input type="hidden" class="ProductId" value="@item.GetType().GetProperty("ProductId").GetValue(item, null)">
+                                    }
+                                </td>
+                                <td>@item.GetType().GetProperty("UnitPrice").GetValue(item, null).ToString("#,###", cul.NumberFormat)  ₫</td>
+                                <td>x@(@item.GetType().GetProperty("OrderQuantity").GetValue(item, null).ToString("#,###", cul.NumberFormat)) ₫</td>
+                                <td style="text-align: right;">@((item.GetType().GetProperty("UnitPrice").GetValue(item, null) * item.GetType().GetProperty("OrderQuantity").GetValue(item, null)).ToString("#,###", cul.NumberFormat))  ₫</td>
+                            </tr>
+                        }
+                        <tr>
+                            <td colspan="3">
+                            </td>
+                            <td>
+                                <p>Tạm tính</p>
+                                <p>Giảm giá</p>
+                                <p>Phí vận chuyển</p>
+                                <p>Tổng cộng</p>
+                            </td>
+                            <td style="text-align: right;">
+                                <p>@((ViewBag.OrderInfo.Total - @ViewBag.OrderInfo.ShipFee).ToString("#,###", cul.NumberFormat)) đ</p>
+                                <p>-0 ₫</p>
+                                <p>@ViewBag.OrderInfo.ShipFee.ToString("#,###", cul.NumberFormat) ₫</p>
+                                <p style="color: red; font-size: 20px">@ViewBag.OrderInfo.Total.ToString("#,###", cul.NumberFormat) ₫</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @{string orderStatus = @ViewBag.OrderInfo.OrderStatus; }
+        @if (orderStatus != "Đã hủy" && orderStatus != "Đang giao hàng" && orderStatus != "Đã giao cho đơn vị vận chuyển" && orderStatus != "Giao hàng thành công")
+        {
+            <button type="button" style="height:40px;width:150px;float:right;font-size: 14px;" class="btn btn-success">
+                <a href="javascript:void(0)" style="text-decoration:none; color: white;" class="button-huy-don-hang">Hủy đơn hàng</a>
+            </button>
+        }
+
+        @if (orderStatus != "Đã hủy")
+        {
+            <button type="button" style="height:40px;width:200px;float:right;font-size: 14px;margin-right:20px" class="btn btn-warning">
+                <a href="/OrderTracking?orderId=@ViewBag.OrderInfo.OrderId" style="text-decoration:none; color: white;">Theo dõi đơn hàng</a>
+            </button>
+        }
+        <!-- Trigger/Open The Modal -->
+        <div id="myModal" class="modal">
+            <div class="modal-content" style="width:50%">
+                <span class="close" style="text-align: right; background-color:white">&times;</span>
+                <div class="row" style="margin:10px;">
+                    <div class="col-12">
+                        <form>
+                            <div class="product-info"></div>
+                        </form>
+                        <p>1. Đánh giá của bạn về sản phẩm này</p>
+                        <div class="star-wrapper">
+                            <a href="javascript:void(0)" class="fa fa-star s1"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s2"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s3"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s4"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s5"></a>
+                        </div>
+                        <p>2. Tiêu đề của nhận xét</p>
+                        <input type="text" class="Title" placeholder="Nhập tiêu đề nhận xét (không bắt buộc)" style="width: 100%;margin-bottom:20px;font-size:16px; padding:10px;">
+                        <p>3. Viết nhận xét của bạn vào bên dưới</p>
+                        <textarea rows="4" class="Content" placeholder="Nhận xét của bạn về sản phẩm này" style="width: 100%; margin-bottom:20px;resize: none;font-size:16px;padding:10px;" required></textarea>
+                    </div>
+                    <button class="btn btn-warning btn-gui-danh-gia" style="color:white;margin:auto; height:40px;width:150px;font-size: 14px;">Gửi đánh giá</button>
+                </div>
+            </div>
+        </div>
+        <p><a href="/Order/my_orders"><< Quay lại đơn hàng của tôi</a></p>
+    </div>
+</div>
+<!--/ End Contact -->
+<style type="text/css">
+    body {
+        color: #1a202c;
+        text-align: left;
+    }
+
+    .card {
+        box-shadow: 0 1px 3px 0 rgb(176, 190, 197), 0 1px 2px 0 rgb(144, 164, 174);
+    }
+
+    .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0 solid rgba(0,0,0,.125);
+        border-radius: .5rem;
+        font-size: 14px;
+    }
+
+    .card-body {
+        flex: 1 1 auto;
+        min-height: 1px;
+        padding: 1.5rem;
+    }
+
+
+
+    .gutters-sm > .col, .gutters-sm > [class*=col-] {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+
+    .mb-3, .my-3 {
+        margin-bottom: 1rem !important;
+    }
+
+    .bg-gray-300 {
+        background-color: #e2e8f0;
+    }
+
+    .h-100 {
+        height: 100% !important;
+    }
+
+    .shadow-none {
+        box-shadow: none !important;
+    }
+</style>
+<!-- Thêm cái này vào Fw-->
+<style>
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        border-radius: 10px;
+        box-shadow: 2px 2px 6px 0px rgb(0 0 0 / 10%);
+    }
+
+    /* The Close Button */
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+</style>
+
+<script>
+	var modal = document.getElementById("myModal");
+	var btn = document.getElementsByClassName("myBtn");
+	var span = document.getElementsByClassName("close")[0];
+	span.onclick = function() {
+		modal.style.display = "none";
+	}
+	window.onclick = function(event) {
+		if (event.target == modal) {
+			modal.style.display = "none";
+		}
+	}
+	var ProductId = 0;
+	$(document).ready(function(){
+		$('.btn-danh-gia').click(function(){
+			ProductId = $(this).parents('tr').find('.ProductId').val();
+			$.ajax({
+				url:"/Order/is_rating_exit",
+				method: "GET",
+				data:{ProductId: ProductId},
+				success:function(data){
+					if(data == "1")
+					{
+						swal("Bạn đã đánh giá cho sản phẩm này rồi!");
+					}
+					else{
+						// Reset form
+						$('.star-wrapper .s1').css("color", "");
+						$('.star-wrapper .s3').css("color", "");
+						$('.star-wrapper .s2').css("color", "");
+						$('.star-wrapper .s4').css("color", "");
+						$('.star-wrapper .s5').css("color", "");
+						var parent = $("#myModal");
+						parent.find('.Title').val("");
+                        parent.find('.Content').val("");
+
+						modal.style.display = "block";
+						$.ajax({
+							url:"/Order/get_product",
+							method: "GET",
+							data:{ProductId: ProductId},
+                            success: function (data) {
+								$('.product-info').html(data);
+							},
+							error:function(data)
+							{
+								alert('Lỗi');
+							}
+						});
+					}
+				},
+				error:function(data)
+				{
+					alert("Lỗi");
+				}
+			});
+
+
+		});
+		$('.btn-gui-danh-gia').click(function(){
+			var parent = $(this).parents('.modal-content');
+			var Title = parent.find('.Title').val();
+						var Content = parent.find('.Content').val();
+						var Rating = 0;
+						if(parent.find('.s1').css("color") == "rgb(255, 215, 0)")
+						{
+							Rating = 5;
+						}
+						else
+						{
+							if(parent.find('.s2').css("color") == "rgb(255, 215, 0)")
+							{
+								Rating = 4;
+							}
+							else{
+								if(parent.find('.s3').css("color") == "rgb(255, 215, 0)")
+								{
+									Rating = 3;
+								}
+								else
+								{
+									if(parent.find('.s3').css("color") == "rgb(255, 215, 0)")
+									{
+										Rating = 2;
+									}
+									else
+										Rating = 1;
+								}
+							}
+						}
+						$.ajax({
+							url:"/Order/add_rating",
+							method: "GET",
+							data:{ProductId: ProductId, Title: Title, Content: Content, Rating: Rating},
+							success:function(data){
+								modal.style.display = "none";
+								swal({
+									text: "Cảm ơn bạn đã đánh giá sản phẩm!",
+									icon: "success",
+								});
+							},
+							error:function(data)
+							{
+								alert("Lỗi");
+							}
+						});
+		});
+
+	});
+</script>
+<style>
+    .star-wrapper {
+        direction: rtl;
+    }
+
+        .star-wrapper a {
+            font-size: 4em;
+            color: #DEDDE3;
+            text-decoration: none;
+            transition: all 0.5s;
+            margin: 4px;
+        }
+
+            .star-wrapper a:hover {
+                color: gold;
+                transform: scale(1.3);
+            }
+
+    .s1:hover ~ a {
+        color: gold;
+    }
+
+    .s2:hover ~ a {
+        color: gold;
+    }
+
+    .s3:hover ~ a {
+        color: gold;
+    }
+
+    .s4:hover ~ a {
+        color: gold;
+    }
+
+    .s5:hover ~ a {
+        color: gold;
+    }
+
+    .wraper {
+        position: absolute;
+        bottom: 30px;
+        right: 50px;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('.s1').click(function () { // 5 sao
+            $('.star-wrapper a').css("color", "gold");
+        });
+
+        $('.s2').click(function () { // 4 sao
+            var parent = $(this).parents('.star-wrapper');
+            parent.find('.s1').css("color", "#DEDDE3");
+            parent.find('.s2').css("color", "gold");
+            parent.find('.s3').css("color", "gold");
+            parent.find('.s4').css("color", "gold");
+            parent.find('.s5').css("color", "gold");
+        });
+
+        $('.s3').click(function () { // 3 sao
+            var parent = $(this).parents('.star-wrapper');
+            parent.find('.s1').css("color", "#DEDDE3");
+            parent.find('.s2').css("color", "#DEDDE3");
+            parent.find('.s3').css("color", "gold");
+            parent.find('.s4').css("color", "gold");
+            parent.find('.s5').css("color", "gold");
+        });
+
+        $('.s4').click(function () { // 2 sao
+            var parent = $(this).parents('.star-wrapper');
+            parent.find('.s1').css("color", "#DEDDE3");
+            parent.find('.s2').css("color", "#DEDDE3");
+            parent.find('.s3').css("color", "#DEDDE3");
+            parent.find('.s4').css("color", "gold");
+            parent.find('.s5').css("color", "gold");
+        });
+
+        $('.s5').click(function () { // 1 sao
+            var parent = $(this).parents('.star-wrapper');
+            parent.find('.s1').css("color", "#DEDDE3");
+            parent.find('.s2').css("color", "#DEDDE3");
+            parent.find('.s3').css("color", "#DEDDE3");
+            parent.find('.s4').css("color", "#DEDDE3");
+            parent.find('.s5').css("color", "gold");
+        });
+
+
+    });
+</script>
+<!-- End Fw -->
+<script>
+    $(document).ready(function () {
+        $('.button-huy-don-hang').click(function () {
+            var OrderId = $('.OrderId').val();
+            var thisbutton = $(this);
+            swal({
+                title: "Xác nhận",
+                text: "Bạn có chắc muốn hủy hóa đơn này không?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("Hãy cho ITGoShop biết lý do nhé!", {
+                            content: "input",
+                        })
+                            .then((value) => {
+                                $.ajax({
+                                    url: "/Order/cancel_order",
+                                    method: "GET",
+                                    data: { OrderId: OrderId },
+                                    success: function (data) {
+
+                                        swal("Hủy đơn hàng thành công!", {
+                                            icon: "success",
+                                        })
+                                            .then((willDelete) => {
+                                                if (willDelete) {
+                                                    thisbutton.parent().remove();
+                                                    $('.OrderStatus').text('Đã hủy');
+                                                    $('html, body').animate({ scrollTop: $('.bread-inner').offset().top }, 500);
+
+                                                }
+                                            });
+
+                                    },
+                                    error: function (data) {
+                                        alert("Lỗi");
+                                    }
+                                });
+                            });
+
+                    }
+                });
+        });
+    });
+
+</script>
+<script>
+    $(document).ready(function () {
+        $('.close-button').click(function () {
+            $('#payment-message').slideUp();
+        });
+    });
+</script>
+<!-- Map Section -->

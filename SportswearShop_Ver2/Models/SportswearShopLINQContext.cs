@@ -31,9 +31,9 @@ namespace SportswearShop_Ver2.Models
         public DbSet<Menu> Menu { set; get; }
         //public DbSet<SubBrand> SubBrand { set; get; }
         public DbSet<Category> Category { set; get; }
-        //public DbSet<BannerSlider> BannerSlider { set; get; }
+        public DbSet<Banner> Banner { set; get; }
         //public DbSet<Campaign> Campaign { set; get; }
-        //public DbSet<Order> Order { set; get; }
+        public DbSet<BillKhachHang> Order { set; get; }
         //public DbSet<OrderDetail> OrderDetail { set; get; }
         //public DbSet<Blog> Blog { set; get; }
 
@@ -523,9 +523,9 @@ namespace SportswearShop_Ver2.Models
         //    SaveChanges();
         //}
 
-        //public Order getOrderInfo(int orderId)
+        //public BillKhachHang getOrderInfo(int orderId)
         //{
-        //    var orderInfo = Order.Where(o => o.OrderId == orderId).FirstOrDefault();
+        //    var orderInfo = BillKhachHang.Where(o => o.id == orderId).FirstOrDefault();
         //    return orderInfo;
         //}
 
@@ -589,10 +589,10 @@ namespace SportswearShop_Ver2.Models
         //    SaveChanges();
         //}
 
-        //public List<Order> getOrderListOfCustomer(int userId)
+        //public list<BillKhachHang> getorderlistofcustomer(int userid)
         //{
-        //    var orderList = Order.Where(o => o.UserId == userId).OrderByDescending(o => o.OrderId).ToList();
-        //    return orderList;
+        //    var orderlist = order.where(o => o.userid == userid).orderbydescending(o => o.orderid).tolist();
+        //    return orderlist;
         //}
 
         public void remove_product_from_wishlist(int userId, int productId)

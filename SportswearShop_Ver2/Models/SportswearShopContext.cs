@@ -672,6 +672,120 @@ namespace SportswearShop_Ver2.Models
             }
             return Info;
         }
+
+        public List<BillKhachHang> getOrderListOfCustomer(int CusId)
+        {
+            List<BillKhachHang> list = new List<BillKhachHang>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from bill_khachhangs where customer_id = @cusId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("cusId", CusId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new BillKhachHang()
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            CustomerId = Convert.ToInt32(reader["customer_id"]),
+                            TotalMoney = Convert.ToInt32(reader["total_money"]),
+                        });
+                    }
+                    reader.Close();
+                }
+
+                conn.Close();
+
+            }
+            return list;
+        }
+
+        public BillKhachHang getOrderInfo(int oderId)
+        {
+            BillKhachHang billtInfo = new BillKhachHang();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT * FROM bill_khachhangs WHERE Id = @billId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("billId", oderId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        billtInfo.Id = Convert.ToInt32(reader["id"]);
+                        billtInfo.CustomerId = Convert.ToInt32(reader["customer_id"]);
+                        billtInfo.TotalMoney = Convert.ToInt32(reader["total_money"]);
+                    }
+                    else
+                        return null;
+                }
+            }
+            return billtInfo;
+        }
+
+        public List<object> getOrderDetail(int orderId)
+        {
+            List<object> list = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = @"SELECT P.id as ProductId, P.image as ProductImage, P.price_sale as UnitPrice, OD.amount as OrderQuantity, P.name as ProductName
+                            FROM c_t_h_d_s OD join Products P ON P.id = OD.product_id 
+                            WHERE OD.id = @orderid";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("orderid", orderId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var obj = new
+                        {
+                            ProductId = Convert.ToInt32(reader["ProductId"]),
+                            ProductImage = reader["ProductImage"].ToString(),
+                            ProductName = reader["ProductName"].ToString(),
+                            UnitPrice = Convert.ToInt32(reader["UnitPrice"]),
+                            OrderQuantity = Convert.ToInt32(reader["OrderQuantity"]),
+                        };
+                        list.Add(obj);
+                    }
+                }
+            }
+            return list;
+        }
+
+        public void updateOrderStatus(int OrderId, string OrderStatus)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE bill_khachhangs SET status = @status WHERE id=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("status", OrderStatus);
+                cmd.Parameters.AddWithValue("id", OrderId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void updateSoldProduct(List<object> orderDetail)
+        {
+            foreach (var item in orderDetail)
+            {
+                int productId = (int)item.GetType().GetProperty("ProductId").GetValue(item, null);
+                using (MySqlConnection conn = GetConnection())
+                {
+                    conn.Open();
+                    var str = "UPDATE products SET Quantity = Quantity + @quantity, Sold =Sold - @sold WHERE id=@id";
+                    MySqlCommand cmd = new MySqlCommand(str, conn);
+                    cmd.Parameters.AddWithValue("quantity", (int)item.GetType().GetProperty("OrderQuantity").GetValue(item, null));
+                    cmd.Parameters.AddWithValue("sold", (int)item.GetType().GetProperty("OrderQuantity").GetValue(item, null));
+                    cmd.Parameters.AddWithValue("id", productId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         public User getUserInfo(string email, string password, int isAdmin)
 		{
 			User userInfo = new User();
