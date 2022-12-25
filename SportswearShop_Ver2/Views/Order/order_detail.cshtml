@@ -2,7 +2,7 @@
 @using System.Globalization;
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
-    ViewData["Title"] = "Chi tiết đơn hàng #" + ViewBag.OrderInfo.OrderId + " - ITGoShop";
+    ViewData["Title"] = "Chi tiết đơn hàng #" + ViewBag.OrderInfo.Id + " - ITGoShop";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
     string customerId = HttpContextAccessor.HttpContext.Session.GetString("customerId");
     string customerFirstName = HttpContextAccessor.HttpContext.Session.GetString("customerFirstName");
@@ -29,7 +29,7 @@
                         <li><a href="/">Trang chủ<i class="ti-arrow-right"></i></a></li>
                         <li class="active"><a href="/">Tài khoản<i class="ti-arrow-right"></i></a></li>
                         <li class="active"><a href="/Order/my_orders">Đơn hàng của tôi<i class="ti-arrow-right"></i></a></li>
-                        <li class="active"><a href="/Order/order_detail?orderId=@ViewBag.OrderInfo.OrderId">Chi tiết đơn hàng</a></li>
+                        <li class="active"><a href="/Order/order_detail?orderId=@ViewBag.OrderInfo.Id">Chi tiết đơn hàng</a></li>
                     </ul>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                     <h4 class="mb-0">
                         <i style="font-size: 20px; padding-right: 15px; font-weight:bold;" class="fa fa-user-circle-o" class="fa fa-user-circle-o"></i>
-                        <a href="/profile" style="color:#333; font-weight:500;">Tài khoản</a>
+                        <a href="/Profile/profile" style="color:#333; font-weight:500;">Tài khoản</a>
                     </h4>
 
                 </li>
@@ -72,16 +72,19 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                     <h4 class="mb-0">
                         <i style="font-size: 20px; padding-right: 18px;" class="fa fa-history"></i>
-                        <a href="/my-orders" style="color:#333; font-weight:500;">Lịch sử mua hàng</a>
+                        <a href="/Order/my_orders" style="color:#333; font-weight:500;">Lịch sử mua hàng</a>
                     </h4>
                 </li>
 
             </ul>
         </div>
     </div>    <div class="col-md-9">
-        <h3 style="margin: 20px 0px;">Chi tiết đơn hàng #@ViewBag.OrderInfo.OrderId - <b class="OrderStatus">@ViewBag.OrderInfo.OrderStatus</b> <p style="float:right;">Ngày đặt hàng: @ViewBag.OrderInfo.OrderDate.ToString("HH:mm dd/MM/yyyy") </p></h3>
-        <input type="text" class="OrderId" value="@ViewBag.OrderInfo.OrderId" hidden>
-        @if (ViewBag.OrderInfo.PaymentMethod == "Chuyển khoản online" && ViewBag.OrderInfo.PaymentStatus == "Chờ thanh toán" && ViewBag.OrderInfo.OrderStatus != "Đã hủy" && ViewBag.OrderInfo.OrderStatus != "Giao hàng thành công")
+        <h3 style="margin: 20px 0px;">Chi tiết đơn hàng #@ViewBag.OrderInfo.Id - <b class="OrderStatus">@ViewBag.OrderInfo.Status</b> <p style="float:right;">Ngày đặt hàng:
+                @ViewBag.OrderInfo.CreatedAt.ToString("HH:mm dd/MM/yyyy")
+            </p>
+        </h3>
+        <input type="text" class="OrderId" value="@ViewBag.OrderInfo.Id" hidden>
+        @if (ViewBag.OrderInfo.PaymentMethod == "Chuyển khoản online" && ViewBag.OrderInfo.Payment_status == "Chờ thanh toán" && ViewBag.OrderInfo.Status != "Đã hủy" && ViewBag.OrderInfo.Status != "Giao hàng thành công")
         {
             <div id="payment-message" style="margin:10px">
                 <div style="background-color: #fbfbfb; border-radius: 8px; padding:20px;margin-bottom:20px">
@@ -113,9 +116,9 @@
                     <div class="panel-heading" style="background-color: white;"><h5><b>HÌNH THỨC GIAO HÀNG</b></h5></div>
                     <div class="panel-body" style="height:200px">
                         <p>@ViewBag.OrderInfo.ShipMethod</p>
-                        <p>Thời gian giao hàng dự kiến: @ViewBag.OrderInfo.EstimatedDeliveryTime.ToString("dd-MM-yyyy")</p>
+                        @*<p>Thời gian giao hàng dự kiến: @ViewBag.OrderInfo.EstimatedDeliveryTime.ToString("dd-MM-yyyy")</p>*@
                         <p>Phí vận chuyển: @ViewBag.OrderInfo.ShipFee.ToString("#,###", cul.NumberFormat)  ₫</p>
-                        <p>Đơn vị vận chuyển: ITGoFast</p>
+                        <p>Đơn vị vận chuyển: SportswearFast</p>
                     </div>
                 </div>
             </div>
@@ -124,7 +127,7 @@
                     <div class="panel-heading" style="background-color: white;"><h5><b>HÌNH THỨC THANH TOÁN</b></h5></div>
                     <div class="panel-body" style="height:200px">
                         <p>@ViewBag.OrderInfo.PaymentMethod</p>
-                        <p>Tình trạng: @ViewBag.OrderInfo.PaymentStatus</p>
+                        <p>Tình trạng: @ViewBag.OrderInfo.Payment_status</p>
                     </div>
                 </div>
             </div>
@@ -148,7 +151,7 @@
                                 <td>
                                     <a href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("ProductId").GetValue(item, null)" style="text-decoration:none; color:black; font-weight:bold">@item.GetType().GetProperty("ProductName").GetValue(item, null)</a>
                                     <br>
-                                    @if (ViewBag.OrderInfo.OrderStatus == "Giao hàng thành công")
+                                    @if (ViewBag.OrderInfo.Status == "Giao hàng thành công")
                                     {
                                         <button type="button" class="btn btn-primary btn-danh-gia" style="margin:10px 0px;position: inherit;">Đánh giá sản phẩm</button>
                                         <input type="hidden" class="ProductId" value="@item.GetType().GetProperty("ProductId").GetValue(item, null)">
@@ -169,17 +172,17 @@
                                 <p>Tổng cộng</p>
                             </td>
                             <td style="text-align: right;">
-                                <p>@((ViewBag.OrderInfo.Total - @ViewBag.OrderInfo.ShipFee).ToString("#,###", cul.NumberFormat)) đ</p>
+                                <p>@((ViewBag.OrderInfo.TotalMoney - @ViewBag.OrderInfo.ShipFee).ToString("#,###", cul.NumberFormat)) đ</p>
                                 <p>-0 ₫</p>
                                 <p>@ViewBag.OrderInfo.ShipFee.ToString("#,###", cul.NumberFormat) ₫</p>
-                                <p style="color: red; font-size: 20px">@ViewBag.OrderInfo.Total.ToString("#,###", cul.NumberFormat) ₫</p>
+                                <p style="color: red; font-size: 20px">@ViewBag.OrderInfo.TotalMoney.ToString("#,###", cul.NumberFormat) ₫</p>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        @{string orderStatus = @ViewBag.OrderInfo.OrderStatus; }
+        @{string orderStatus = @ViewBag.OrderInfo.Status; }
         @if (orderStatus != "Đã hủy" && orderStatus != "Đang giao hàng" && orderStatus != "Đã giao cho đơn vị vận chuyển" && orderStatus != "Giao hàng thành công")
         {
             <button type="button" style="height:40px;width:150px;float:right;font-size: 14px;" class="btn btn-success">
@@ -190,7 +193,7 @@
         @if (orderStatus != "Đã hủy")
         {
             <button type="button" style="height:40px;width:200px;float:right;font-size: 14px;margin-right:20px" class="btn btn-warning">
-                <a href="/OrderTracking?orderId=@ViewBag.OrderInfo.OrderId" style="text-decoration:none; color: white;">Theo dõi đơn hàng</a>
+                <a href="/OrderTracking?orderId=@ViewBag.OrderInfo.Id" style="text-decoration:none; color: white;">Theo dõi đơn hàng</a>
             </button>
         }
         <!-- Trigger/Open The Modal -->

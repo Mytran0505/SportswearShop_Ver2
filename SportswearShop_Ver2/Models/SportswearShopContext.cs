@@ -4,6 +4,8 @@ using System.Text.RegularExpressions;
 using System.Drawing.Drawing2D;
 using System.Xml.Linq;
 using System.Collections.Generic;
+using SportswearShop_Ver2.Controllers;
+using System;
 
 namespace SportswearShop_Ver2.Models
 {
@@ -691,6 +693,12 @@ namespace SportswearShop_Ver2.Models
                             Id = Convert.ToInt32(reader["Id"]),
                             CustomerId = Convert.ToInt32(reader["customer_id"]),
                             TotalMoney = Convert.ToInt32(reader["total_money"]),
+                            Status = reader["status"].ToString(),
+                            CreatedAt = Convert.ToDateTime(reader["created_at"]),
+                            PaymentMethod = reader["PaymentMethod"].ToString(),
+                            Payment_status = reader["payment_status"].ToString(),
+                            ShipMethod = reader["ShipMethod"].ToString(),
+                            ShipFee = Convert.ToInt32(reader["ShipFee"]),
                         });
                     }
                     reader.Close();
@@ -702,6 +710,127 @@ namespace SportswearShop_Ver2.Models
             return list;
         }
 
+        public List<ShipMethod> getShipMethodToCheckout()
+        {
+            List<ShipMethod> list = new List<ShipMethod>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from ShipMethod where status = 1";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new ShipMethod()
+                        {
+                            ShipMethodId = Convert.ToInt32(reader["ShipMethodId"]),
+                            Status = Convert.ToInt32(reader["Status"]),
+                            ShipFee = Convert.ToInt32(reader["ShipFee"]),
+                            ShipMethodName = reader["ShipMethodName"].ToString(),
+                            
+                        });
+                    }
+                    reader.Close();
+                }
+
+                conn.Close();
+
+            }
+            return list;
+        }
+
+        public List<devvn_tinhthanhpho> getAllThanhPho()
+        {
+            List<devvn_tinhthanhpho> list = new List<devvn_tinhthanhpho>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from devvn_tinhthanhpho";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new devvn_tinhthanhpho()
+                        {
+                            Matp = reader["matp"].ToString(),
+                            Name = reader["name"].ToString(),
+                            Type = reader["type"].ToString(),
+                            Slug = reader["slug"].ToString(),
+
+                        });
+                    }
+                    reader.Close();
+                }
+
+                conn.Close();
+
+            }
+            return list;
+        }
+
+        public List<devvn_quanhuyen> getAllQuanHuyen()
+        {
+            List<devvn_quanhuyen> list = new List<devvn_quanhuyen>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from devvn_quanhuyen";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new devvn_quanhuyen()
+                        {
+                            Matp = reader["matp"].ToString(),
+                            Name = reader["name"].ToString(),
+                            Type = reader["type"].ToString(),
+                            Maqh = reader["slug"].ToString(),
+                            ExtraShippingFee = Convert.ToInt32(reader["ExtraShippingFee"]),
+
+                        });
+                    }
+                    reader.Close();
+                }
+
+                conn.Close();
+
+            }
+            return list;
+        }
+
+        public List<devvn_quanhuyen> getAllXaPhuong()
+        {
+            List<devvn_quanhuyen> list = new List<devvn_quanhuyen>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from devvn_quanhuyen";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new devvn_quanhuyen()
+                        {
+                            Matp = reader["matp"].ToString(),
+                            Name = reader["name"].ToString(),
+                            Type = reader["type"].ToString(),
+                            Maqh = reader["slug"].ToString(),
+                            ExtraShippingFee = Convert.ToInt32(reader["ExtraShippingFee"]),
+
+                        });
+                    }
+                    reader.Close();
+                }
+
+                conn.Close();
+
+            }
+            return list;
+        }
         public BillKhachHang getOrderInfo(int oderId)
         {
             BillKhachHang billtInfo = new BillKhachHang();
@@ -718,6 +847,9 @@ namespace SportswearShop_Ver2.Models
                         billtInfo.Id = Convert.ToInt32(reader["id"]);
                         billtInfo.CustomerId = Convert.ToInt32(reader["customer_id"]);
                         billtInfo.TotalMoney = Convert.ToInt32(reader["total_money"]);
+                        billtInfo.Status = reader["status"].ToString();
+                        billtInfo.CreatedAt = Convert.ToDateTime(reader["created_at"]);
+                        billtInfo.Payment_status = reader["payment_status"].ToString();
                     }
                     else
                         return null;

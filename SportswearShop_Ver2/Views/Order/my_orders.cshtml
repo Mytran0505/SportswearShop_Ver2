@@ -105,16 +105,16 @@
                                     <td>
                                         <a href="/Order/order_detail?orderId=@item.Id" style="color: #77ACF1">@item.Id</a>
                                     </td>
-                                    @*<td>
-                                        @item.OrderDate.ToString("dd/MM/yyyy")
-                                    </td>*@
-                                    @*<td>
-                                        @item.Description
-                                    </td>*@
+                                    <td>
+                                        @item.CreatedAt.ToString("dd/MM/yyyy")
+                                    </td>
+                                    <td>
+@*                                        @item.Description
+*@                                    </td>
                                     <td>
                                         @item.TotalMoney.ToString("#,###", cul.NumberFormat) ₫
                                     </td>
-                                    @*<td>@item.OrderStatus</td>*@
+                                    <td>@item.Status</td>
                                 </tr>
                             }
                         </tbody>
