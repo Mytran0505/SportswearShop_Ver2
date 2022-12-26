@@ -24,6 +24,12 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title">Danh sách sản phẩm</h4>
+                                <form action="/ProductManagement/ExportProduct" method="POST" class="btn btn-info btn-border btn-round btn-sm">
+                                    <span class="btn-label">
+                                        <i class="fas fa-download"></i>
+                                    </span>
+                                    <input type="submit" value="Export" style="background: none;border: none;"></input>
+                                </form>
                             </div>
                         </div>
 
@@ -35,12 +41,15 @@
                                         <tr>
                                             <th>Mã sản phẩm</th>
                                             <th>Tên sản phẩm</th>
-                                            <th>Mô tả</th>
-                                            <th>Nội dung</th>
+                                            <th>Mô tả sơ lược</th>
+                                            <th>Nội dung sản phẩm</th>
                                             <th>Danh mục sản phẩm</th>
                                             <th>Giá vốn</th>
                                             <th>Giá bán</th>
                                             <th>Hình ảnh</th>
+                                            <th>% giảm giá</th>
+                                            <th>Số lượng bán được</th>
+                                            <th>Số lượng còn tồn</th>
                                             <th>Hiển thị</th>
                                             <th>Hành động</th>
                                         </tr>
@@ -49,12 +58,15 @@
                                         <tr>
                                             <th>Mã sản phẩm</th>
                                             <th>Tên sản phẩm</th>
-                                            <th>Mô tả</th>
-                                            <th>Nội dung</th>
+                                            <th>Mô tả sơ lược</th>
+                                            <th>Nội dung sản phẩm</th>
                                             <th>Danh mục sản phẩm</th>
                                             <th>Giá vốn</th>
                                             <th>Giá bán</th>
                                             <th>Hình ảnh</th>
+                                            <th>% giảm giá</th>
+                                            <th>Số lượng bán được</th>
+                                            <th>Số lượng còn tồn</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
@@ -78,6 +90,9 @@
                                                 <td>@item.GetType().GetProperty("Original_price").GetValue(item, null).ToString("#,###", cul.NumberFormat) ₫</td>
                                                 <td>@item.GetType().GetProperty("Price_sale").GetValue(item, null).ToString("#,###", cul.NumberFormat) ₫</td>
                                                 <td><img src="@item.GetType().GetProperty("Image").GetValue(item, null)" style="margin: auto; max-width: 50px; max-height: 50px; width: auto; height: auto; "></td>
+                                                <td>@item.GetType().GetProperty("Discount").GetValue(item, null)</td>
+                                                <td>@item.GetType().GetProperty("Sold").GetValue(item, null)</td>
+                                                <td>@item.GetType().GetProperty("Quantity").GetValue(item, null)</td>
                                                 <td>
                                                     <div class="form-button-action">
                                                         @if (item.GetType().GetProperty("Active").GetValue(item, null) == 1)
@@ -103,7 +118,7 @@
                                                 <td>
                                                     <div class="form-button-action">
                                                         <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Cập nhật sản phẩm">
-                                                            <a href="/BannerManagement/update_banner?Id=@item.GetType().GetProperty("Id").GetValue(item, null)" class="active" ui-toggle-class="">
+                                                            <a href="/ProductManagement/update_product?Id=@item.GetType().GetProperty("Id").GetValue(item, null)" class="active" ui-toggle-class="">
                                                                 <i class="fa fa-edit text-active"></i>
                                                             </a>
                                                         </button>
