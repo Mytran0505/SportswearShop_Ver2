@@ -848,6 +848,9 @@ namespace SportswearShop_Ver2.Models
                         billtInfo.Status = reader["status"].ToString();
                         billtInfo.CreatedAt = Convert.ToDateTime(reader["created_at"]);
                         billtInfo.Payment_status = reader["payment_status"].ToString();
+                        billtInfo.ShipFee = Convert.ToInt32(reader["ShipFee"]);
+                        billtInfo.ShipMethod = reader["ShipMethod"].ToString();
+                        billtInfo.PaymentMethod = reader["PaymentMethod"].ToString();
                     }
                     else
                         return null;
@@ -912,6 +915,39 @@ namespace SportswearShop_Ver2.Models
             }
         }
 
+        public void change_default_shipping_address(int ShippingAddressId, int customerId)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+
+                var str1 = "UPDATE shippingaddress SET IsDefault = 1 where ShippingAddressId = @addrIdd and UserId = @cusIdd";
+                MySqlCommand cmd1 = new MySqlCommand(str1, conn);
+                cmd1.Parameters.AddWithValue("addrIdd", ShippingAddressId);
+                cmd1.Parameters.AddWithValue("cusIdd", customerId);
+                cmd1.ExecuteNonQuery();
+
+                var str = "UPDATE shippingaddress SET IsDefault = 0 where ShippingAddressId != @addrId and UserId = @cusId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("addrId", ShippingAddressId);
+                cmd.Parameters.AddWithValue("cusId", customerId);
+                cmd.ExecuteNonQuery();
+
+                
+            }
+        }
+        public void deleteShippingAddress(int ShippingAddressId)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "Delete from shippingaddress WHERE ShippingAddressId=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("id", ShippingAddressId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public void updateSoldProduct(List<object> orderDetail)
         {
             foreach (var item in orderDetail)
@@ -965,7 +1001,18 @@ namespace SportswearShop_Ver2.Models
                 cmd.Parameters.AddWithValue("shipFee", order.ShipFee);
                 cmd.Parameters.AddWithValue("Des", order.Description);
                 cmd.ExecuteNonQuery();
-                return Convert.ToInt32(order.Id);
+
+                int id = 0;
+                var str1 = "SELECT id FROM bill_khachhangs ORDER BY id DESC LIMIT 1";
+                MySqlCommand cmd1 = new MySqlCommand(str1, conn);
+                using (var reader = cmd1.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        id = Convert.ToInt32(reader["id"]);
+                    }
+                }
+                return id;
             }
         }
 
@@ -1585,6 +1632,27 @@ namespace SportswearShop_Ver2.Models
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("status", status);
                 cmd.Parameters.AddWithValue("id", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void update_shipping_address(ShippingAddress shippingAddress)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE shippingaddress SET ReceiverName = @RecName, Phone = @phone ,Address = @addr, matp = @matp , maqh= @maqh , xaid = @xaid , ShippingAddressType = @shiptype " +
+                    "WHERE  ShippingAddressId = @shipAddrId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("RecName", shippingAddress.ReceiverName);
+                cmd.Parameters.AddWithValue("phone", shippingAddress.Phone);
+                cmd.Parameters.AddWithValue("addr", shippingAddress.Address);
+                cmd.Parameters.AddWithValue("matp", shippingAddress.Matp);
+                cmd.Parameters.AddWithValue("maqh", shippingAddress.Maqh);
+                cmd.Parameters.AddWithValue("xaid", shippingAddress.Xaid);
+                cmd.Parameters.AddWithValue("shiptype", shippingAddress.ShippingAddressType);
+                cmd.Parameters.AddWithValue("shipAddrId", shippingAddress.ShippingAddressId);
+
                 cmd.ExecuteNonQuery();
             }
         }

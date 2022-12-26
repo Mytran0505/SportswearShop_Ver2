@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -104,7 +105,7 @@ namespace SportswearShop_Ver2.Controllers
                     OrderQuantity = item.Quantity,
                     ProductId = item.Product.Id,
                     UnitPrice = item.Product.Price_sale * item.Quantity,
-                    OrderId = order.Id
+                    OrderId = orderId
                 };
                 context.saveOrderDetail(orderDetail);
 

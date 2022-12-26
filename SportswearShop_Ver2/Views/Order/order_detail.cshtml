@@ -147,7 +147,7 @@
                         @foreach (var item in ViewBag.OrderDetail)
                         {
                             <tr>
-                                <td><img style="margin: auto; max-width: 60px; max-height: 60px; width: auto; height: auto; " src="~/public/images_upload/product/@item.GetType().GetProperty("ProductImage").GetValue(item, null)" alt=""></td>
+                                <td><img style="margin: auto; max-width: 60px; max-height: 60px; width: auto; height: auto; " src="@item.GetType().GetProperty("ProductImage").GetValue(item, null)" alt=""></td>
                                 <td>
                                     <a href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("ProductId").GetValue(item, null)" style="text-decoration:none; color:black; font-weight:bold">@item.GetType().GetProperty("ProductName").GetValue(item, null)</a>
                                     <br>

@@ -39,8 +39,8 @@ namespace SportswearShop_Ver2.Controllers
         }
         public void delete_shipping_address(int ShippingAddressId)
         {
-            var linqContext = new SportswearShopLINQContext();
-            linqContext.deleteShippingAddress(ShippingAddressId);
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            context.deleteShippingAddress(ShippingAddressId);
         }
 
         public string load_xaphuongthitran_dropdownbox(string maqh)
@@ -69,14 +69,14 @@ namespace SportswearShop_Ver2.Controllers
         public IActionResult change_default_shipping_address(int shippingAddressId)
         {
             int customerId = Convert.ToInt32(HttpContext.Session.GetInt32("customerId"));
-            var linqContext = new SportswearShopLINQContext();
-            linqContext.change_default_shipping_address(shippingAddressId, customerId);
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            context.change_default_shipping_address(shippingAddressId, customerId);
             return RedirectToAction("Index", "Checkout");
         }
         public IActionResult update_shipping_address(ShippingAddress shippingAddress)
         {
-            var linqContext = new SportswearShopLINQContext();
-            linqContext.update_shipping_address(shippingAddress);
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            context.update_shipping_address(shippingAddress);
             return RedirectToAction("show_shipping_address");
         }
     }
