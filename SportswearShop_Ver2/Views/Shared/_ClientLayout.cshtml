@@ -471,100 +471,158 @@
 	<!--===============================================================================================-->
 	<script src="~/public/js/main.js"></script>
 	<script src="~/public/admin/js/plugin/sweetalert/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sortOrder').on('change', function () {
+                var url = $(/ProductListing/product_listing).val();
+                if (url) {
+                    window.location = url;
+                }
+                return false;
+            })
+        })
 
-	<script>
-		$(document).ready(function () {
-			load_cart();
-			load_cart_quantity();
-			setInterval(load_cart_quantity, 2000);
-			$('body').on("click", ".delete-button-in-nav", function () {
-				$(this).parent().remove();
-				var ItemId = $(this).parent().find('.item-id-for-cart').val();
-				$.ajax({
-					url: '/Cart/remove_item',
-					methed: "GET",
-					data: { id: ItemId },
-					success: function (data) {
-						load_cart();
-						load_cart_quantity();
-					},
-					error: function (data) {
-						alert('Lỗi');
-					}
-				});
-			});
-		});
-		function load_cart_quantity() {
-			$.ajax({
-				url: "/Home/load_cart_quantity",
-				success: function (data) {
-					$('#so-luong-sp-gio-hang').html(data);
-				},
-				error: function (data) {
-					alert("Lỗi");
-				}
-			});
-		}
-		function load_cart() {
-			$.ajax({
-				url: "/Home/load_cart",
-				success: function (data) {
-					$('#load_cart').html(data);
-				},
-				error: function (data) {
-					alert("Lỗi");
-				}
-			});
-		}
-	</script>
-	<script>
-		$(document).ready(function () {
-			$('a[title="Wishlist"]').click(function () {
-				var customer_id = $('#input-customer-id').val();
-				if (customer_id) {
-					var ProductId = $(this).parents('.button-head').find('.ProductId').val();
-					$.ajax({
-						url: "/Wishlist/add_product_to_wishlist",
-						method: "GET",
-						data: { ProductId: ProductId },
-						success: function (data) {
-							if (data == '1') {
-								swal({
-									title: "Thành công",
-									text: "Đã thêm sản phẩm vào danh sách yêu thích.",
-									icon: "success",
-									button: "OK",
-								});
-							}
-							else {
-								swal({
-									text: "Sản phẩm đã tồn tại trong danh sách yêu thích",
-									icon: "info",
-									button: "OK",
-								});
-							}
+    </script>
+    <script type="text/javascript">
+        $('.brand-filter').click(function () {
+            var brand = [], tempArray = [];
+            $.each($("[data-filters='brand']:checked"), function () {
+                tempArray.push($(this).val());
 
-						},
-						error: function (data) {
-							alert("Lỗi");
-						}
-					});
-				} else {
-					swal({
-						text: "Bạn cần đăng nhập để thêm sản phẩm vào danh sách yêu thích",
-						icon: "info",
-						buttons: ["OK", "Đăng nhập"],
-					}).then(function (isConfirm) {
-						if (isConfirm) {
-							window.location = "/Home/login";
-						}
-					})
-				}
+            });
+            tempArray.reverse();
+            if (tempArray.length !== 0) {
+                brand += '?brand=' + tempArray.toString();
+            }
+            window.location.href = brand
+        })
 
-			});
-		});
-	</script>
-	<script>
+    </script>
+
+    <script type="text/javascript">
+        $('.subbrand-filter').click(function () {
+            var subbrand = [], tempArray = [];
+            $.each($("[data-filters='subbrand']:checked"), function () {
+                tempArray.push($(this).val());
+
+            });
+            tempArray.reverse();
+            if (tempArray.length !== 0) {
+                subbrand += '?subbrand=' + tempArray.toString();
+            }
+            window.location.href = subbrand
+        })
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            load_cart();
+            load_cart_quantity();
+            setInterval(load_cart_quantity, 2000);
+            $('body').on("click", ".delete-button-in-nav", function () {
+                $(this).parent().remove();
+                var ItemId = $(this).parent().find('.item-id-for-cart').val();
+                $.ajax({
+                    url: '/Cart/remove_item',
+                    methed: "GET",
+                    data: { id: ItemId },
+                    success: function (data) {
+                        load_cart();
+                        load_cart_quantity();
+                    },
+                    error: function (data) {
+                        alert('Lỗi');
+                    }
+                });
+            });
+        });
+        function load_cart_quantity() {
+            $.ajax({
+                url: "/Home/load_cart_quantity",
+                success: function (data) {
+                    $('#so-luong-sp-gio-hang').html(data);
+                },
+                error: function (data) {
+                    alert("Lỗi");
+                }
+            });
+        }
+        function load_cart() {
+            $.ajax({
+                url: "/Home/load_cart",
+                success: function (data) {
+                    $('#load_cart').html(data);
+                },
+                error: function (data) {
+                    alert("Lỗi");
+                }
+            });
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('a[title="Wishlist"]').click(function () {
+                var customer_id = $('#input-customer-id').val();
+                if (customer_id) {
+                    var ProductId = $(this).parents('.button-head').find('.ProductId').val();
+                    $.ajax({
+                        url: "/Wishlist/add_product_to_wishlist",
+                        method: "GET",
+                        data: { ProductId: ProductId },
+                        success: function (data) {
+                            if (data == '1') {
+                                swal({
+                                    title: "Thành công",
+                                    text: "Đã thêm sản phẩm vào danh sách yêu thích.",
+                                    icon: "success",
+                                    button: "OK",
+                                });
+                            }
+                            else {
+                                swal({
+                                    text: "Sản phẩm đã tồn tại trong danh sách yêu thích",
+                                    icon: "info",
+                                    button: "OK",
+                                });
+                            }
+
+                        },
+                        error: function (data) {
+                            alert("Lỗi");
+                        }
+                    });
+                } else {
+                    swal({
+                        text: "Bạn cần đăng nhập để thêm sản phẩm vào danh sách yêu thích",
+                        icon: "info",
+                        buttons: ["OK", "Đăng nhập"],
+                    }).then(function (isConfirm) {
+                        if (isConfirm) {
+                            window.location = "/Home/login";
+                        }
+                    })
+                }
+
+            });
+        });
+    </script>
+    <script>
+        $('body').on('click', '.btn-thanh-toan', function () {
+            var numberOfProduct = Number($('#so-luong-sp-gio-hang').text());
+            if (numberOfProduct == 0) {
+                swal({
+                    // title: "Giỏ hàng trống",
+                    text: "Bạn vẫn chưa chọn sản phẩm nào để mua.",
+                    // icon: "warning",
+                    button: "OK",
+                });
+            }
+            else {
+                window.location.href = '/Checkout/Index';
+            }
+        });
+    </script>
+    <script>
         $('.add-to-cart-a-tag').click(function () {
             var productId = $(this).parent().find('input[type=text]').val();
             var Quantity = $(this).parent().find('.Quantity').val();
@@ -600,10 +658,47 @@
             }
         });
     </script>
+    <script type="text/javascript">
+        // Hàm load data vào dropdownbox Phường/Xã
+        function load_xaphuong_dropdownbox() {
+            var maqh = $(".select-quanhuyen").val();
+            $.ajax({
+                url: '/ShippingAddress/load_xaphuongthitran_dropdownbox',
+                method: "GET",
+                data: { maqh: maqh },
+                success: function (data) {
+                    $(".select-xaphuongthitran").html(data);
+                },
+                error: function (data) {
+                    alert('Lỗi');
+                }
+            });
+        }
 
+        $(document).ready(function () {
+            $('.select-tinhthanhpho').change(function () {
+                var matp = $(this).val();
+                $.ajax({
+                    url: '/ShippingAddress/load_quanhuyen_dropdownbox',
+                    method: "GET",
+                    data: { matp: matp },
+                    success: function (data) {
+                        $(".select-quanhuyen").html(data);
+                        load_xaphuong_dropdownbox();
+                    },
+                    error: function (data) {
+                        alert('Lỗi');
+                    }
+                });
+            });
 
-
+            $('.select-quanhuyen').change(function () {
+                load_xaphuong_dropdownbox();
+            });
+        });
+    </script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
     <!-- Jquery -->
     <script src="~/public/client/js/jquery.min.js"></script>
     <script src="~/public/client/js/jquery-migrate-3.0.0.js"></script>

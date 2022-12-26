@@ -787,7 +787,7 @@ namespace SportswearShop_Ver2.Models
                             Matp = reader["matp"].ToString(),
                             Name = reader["name"].ToString(),
                             Type = reader["type"].ToString(),
-                            Maqh = reader["slug"].ToString(),
+                            Maqh = reader["maqh"].ToString(),
                             ExtraShippingFee = Convert.ToInt32(reader["ExtraShippingFee"]),
 
                         });
@@ -807,7 +807,7 @@ namespace SportswearShop_Ver2.Models
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                string str = "select * from devvn_quanhuyen";
+                string str = "select * from devvn_xaphuongthitran";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -815,10 +815,10 @@ namespace SportswearShop_Ver2.Models
                     {
                         list.Add(new devvn_xaphuongthitran()
                         {
-                            Xaid = reader["matp"].ToString(),
+                            Xaid = reader["xaid"].ToString(),
                             Name = reader["name"].ToString(),
                             Type = reader["type"].ToString(),
-                            Maqh = reader["slug"].ToString(),
+                            Maqh = reader["maqh"].ToString(),
                         });
                     }
                     reader.Close();
@@ -898,6 +898,19 @@ namespace SportswearShop_Ver2.Models
                 cmd.ExecuteNonQuery();
             }
         }
+        public void updateSoldProduct(int productId, int newSold)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE products SET sold = sold + @new , quantity = quantity - @new1 WHERE id=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("new", newSold);
+                cmd.Parameters.AddWithValue("new1", newSold);
+                cmd.Parameters.AddWithValue("id", productId);
+                cmd.ExecuteNonQuery();
+            }
+        }
 
         public void updateSoldProduct(List<object> orderDetail)
         {
@@ -914,6 +927,45 @@ namespace SportswearShop_Ver2.Models
                     cmd.Parameters.AddWithValue("id", productId);
                     cmd.ExecuteNonQuery();
                 }
+            }
+        }
+
+        public void saveOrderDetail(CTHD orderDetail)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "INSERT INTO c_t_h_d_s(id, product_id, amount, UnitPrice) VALUES (@Id, @proId, @Amount, @unitPrice)";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("Id", orderDetail.OrderId);
+                cmd.Parameters.AddWithValue("proId", orderDetail.ProductId);
+                cmd.Parameters.AddWithValue("Amount", orderDetail.OrderQuantity);
+                cmd.Parameters.AddWithValue("unitPrice", orderDetail.UnitPrice);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public int createOrder(BillKhachHang order)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "INSERT INTO bill_khachhangs (id, total_money, customer_id, created_at, status, payment_status, PaymentMethod, ShipMethod, ShippingAddressId, ShipFee, Description) " +
+                    "VALUES (@Id, @total, @cusId, @date, @tus, @paytus, @PayMet, @ShipMet, @shipAdd, @shipFee, @Des)";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("Id", order.Id);
+                cmd.Parameters.AddWithValue("total", order.TotalMoney);
+                cmd.Parameters.AddWithValue("cusId", order.CustomerId);
+                cmd.Parameters.AddWithValue("date", order.CreatedAt);
+                cmd.Parameters.AddWithValue("tus", order.Status);
+                cmd.Parameters.AddWithValue("paytus", order.Payment_status);
+                cmd.Parameters.AddWithValue("PayMet", order.PaymentMethod);
+                cmd.Parameters.AddWithValue("ShipMet", order.ShipMethod);
+                cmd.Parameters.AddWithValue("shipAdd", order.ShippingAddressId);
+                cmd.Parameters.AddWithValue("shipFee", order.ShipFee);
+                cmd.Parameters.AddWithValue("Des", order.Description);
+                cmd.ExecuteNonQuery();
+                return Convert.ToInt32(order.Id);
             }
         }
         public User getUserInfo(string email, string password, int isAdmin)

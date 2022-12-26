@@ -76,76 +76,76 @@ namespace SportswearShop_Ver2.Controllers
             return RedirectToAction("login_to_checkout", new { message = "Mật khẩu hoặc tài khoản sai. Xin nhập lại!" });
         }
 
-        //public async Task<IActionResult> create_orderAsync(BillKhachHang order)
-        //{
-        //    Lấy thông tin từ cart để thêm thông tin đơn hàng vào bảng ORDER
-        //    var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
-        //    SportswearShopLINQContext linqContext = new SportswearShopLINQContext();
-        //    SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
-        //    order.TotalMoney = order.ShipFee + cart.Sum(item => item.Product.Price_sale * item.Quantity);
-        //    order.CustomerId = Convert.ToInt32(HttpContext.Session.GetInt32("customerId"));
-        //    order. = DateTime.Now;
-        //    order.OrderDate = DateTime.Now;
-        //    order.Status = "Đặt hàng thành công";
-        //    order.Payment_status = "Chờ thanh toán";
-        //    int numberOfProduct = cart.Sum(item => item.Quantity);
-        //    order.Description = cart.First().Product.Name;
-        //    if (numberOfProduct > 1)
-        //        order.Description += " và " + (numberOfProduct - 1) + " sản phẩm khác";
-        //    int orderId = linqContext.createOrder(order);
+        public async Task<IActionResult> create_orderAsync(BillKhachHang order)
+        {
+            // Lấy thông tin từ cart để thêm thông tin đơn hàng vào bảng ORDER
+            var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+            SportswearShopLINQContext linqContext = new SportswearShopLINQContext();
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            order.TotalMoney = order.ShipFee + cart.Sum(item => item.Product.Price_sale * item.Quantity);
+            order.CustomerId = Convert.ToInt32(HttpContext.Session.GetInt32("customerId"));
+            //order.DateUpdate = DateTime.Now;
+            order.CreatedAt = DateTime.Now;
+            order.Status = "Đặt hàng thành công";
+            order.Payment_status = "Chờ thanh toán";
+            int numberOfProduct = cart.Sum(item => item.Quantity);
+            order.Description = cart.First().Product.Name;
+            if (numberOfProduct > 1)
+                order.Description += " và " + (numberOfProduct - 1) + " sản phẩm khác";
+            int orderId = context.createOrder(order);
 
-        //    Thêm theo dõi đơn hàng
-        //    linqContext.addOrderTracking(orderId, "Đặt hàng thành công");
+            //// Thêm theo dõi đơn hàng
+            //linqContext.addOrderTracking(orderId, "Đặt hàng thành công");
 
-        //    foreach (var item in cart)
-        //    {
-        //        Thêm các thông tin vào bảng chi tiết hóa đơn
-        //        OrderDetail orderDetail = new OrderDetail()
-        //        {
-        //            OrderQuantity = item.Quantity,
-        //            ProductId = item.Product.ProductId,
-        //            UnitPrice = item.Product.Price,
-        //            OrderId = order.OrderId
-        //        };
-        //        linqContext.saveOrderDetail(orderDetail);
+            foreach (var item in cart)
+            {
+                // Thêm các thông tin vào bảng chi tiết hóa đơn
+                CTHD orderDetail = new CTHD()
+                {
+                    OrderQuantity = item.Quantity,
+                    ProductId = item.Product.Id,
+                    UnitPrice = item.Product.Price_sale,
+                    OrderId = order.Id
+                };
+                context.saveOrderDetail(orderDetail);
 
-        //        Product productInfo = context.getProductInfo(item.Product.ProductId);
+                Product productInfo = context.getProductInfo(item.Product.Id);
 
-        //        Update thông tin doanh thu lên bảng statistic
-        //        Statistic statistic = linqContext.getStatistic(DateTime.Now);
-        //        Statistic newStatisticInfo = new Statistic()
-        //        {
-        //            StatisticDate = DateTime.Now,
-        //            Sales = (int)(item.Quantity * item.Product.Price),
-        //            Profit = (int)((item.Product.Price - item.Product.Cost) * item.Quantity)
-        //        };
-        //        if (statistic != null)
-        //        {
-        //            Nếu đã có dòng thống kê doanh thu cho hôm nay thì cập nhật dữ liệu
-        //            linqContext.updateStatistic(newStatisticInfo);
-        //        }
-        //        else
-        //        {
-        //            Nếu chưa có dòng thống kê cho hôm nay thì tạo mới
-        //            linqContext.addStatistic(newStatisticInfo);
-        //        }
+                ////Update thông tin doanh thu lên bảng statistic
+                //Statistic statistic = linqContext.getStatistic(DateTime.Now);
+                //Statistic newStatisticInfo = new Statistic()
+                //{
+                //    StatisticDate = DateTime.Now,
+                //    Sales = (int)(item.Quantity * item.Product.Price),
+                //    Profit = (int)((item.Product.Price - item.Product.Cost) * item.Quantity)
+                //};
+                //if (statistic != null)
+                //{
+                //    // Nếu đã có dòng thống kê doanh thu cho hôm nay thì cập nhật dữ liệu
+                //    linqContext.updateStatistic(newStatisticInfo);
+                //}
+                //else
+                //{
+                //    // Nếu chưa có dòng thống kê cho hôm nay thì tạo mới
+                //    linqContext.addStatistic(newStatisticInfo);
+                //}
 
-        //        Trừ số lượng tồn kho
-        //        linqContext.updateSoldProduct(productInfo.ProductId, item.Quantity);
-        //    }
-        //    cart.Clear();
-        //    SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+                // Trừ số lượng tồn kho
+                context.updateSoldProduct(productInfo.Id, item.Quantity);
+            }
+            cart.Clear();
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
 
-        //    Gửi mail
+            // Gửi mail
 
-        //    string customerFirstName = HttpContext.Session.GetString("customerFirstName");
-        //    string customerLastName = HttpContext.Session.GetString("customerLastName");
-        //    string customerEmail = HttpContext.Session.GetString("customerEmail");
-        //    string mailContent = getMailContent(order, customerFirstName, customerLastName);
-        //    await MailUtils.SendMailGoogleSmtp("itgoshop863@gmail.com", customerEmail, $"Chào {customerFirstName}, ITGoShop đã nhận được đơn hàng của bạn", mailContent,
-        //                                  "itgoshop863@gmail.com", "Itgoshop");
-        //    return RedirectToAction("order_detail", "Order", new { orderId = orderId });
-        //}
+            //string customerFirstName = HttpContext.Session.GetString("customerFirstName");
+            //string customerLastName = HttpContext.Session.GetString("customerLastName");
+            //string customerEmail = HttpContext.Session.GetString("customerEmail");
+            //string mailContent = getMailContent(order, customerFirstName, customerLastName);
+            //await MailUtils.SendMailGoogleSmtp("itgoshop863@gmail.com", customerEmail, $"Chào {customerFirstName}, ITGoShop đã nhận được đơn hàng của bạn", mailContent,
+            //                              "itgoshop863@gmail.com", "Itgoshop");
+            return RedirectToAction("order_detail", "Order", new { orderId = orderId });
+        }
         //public string getMailContent(Order orderInfo, string customerFirstName, string customerLastName)
         //{
         //    CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");

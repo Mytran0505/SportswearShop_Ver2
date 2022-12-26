@@ -83,12 +83,12 @@
                                         {
                                             <tr style="font-size: 14px;">
                                                 <td style=" height:80px">
-                                                    <img style="margin: auto; max-width: 60px; max-height: 60px; width: auto; height: auto; " src="~/public/images_upload/product/@item.Product.ProductImage" alt="">
+                                                    <img style="margin: auto; max-width: 60px; max-height: 60px; width: auto; height: auto; " src="@item.Product.Image" alt="">
                                                 </td>
-                                                <td><a href="/ProductDetail/product_detail?productId=@item.Product.ProductId" style="text-decoration:none; color:black;">@item.Product.ProductName</a></td>
-                                                <td>@item.Product.Price.ToString("#,###", cul.NumberFormat) ₫</td>
+                                                <td><a href="/ProductDetail/product_detail?productId=@item.Product.Id" style="text-decoration:none; color:black;">@item.Product.Name</a></td>
+                                                <td>@item.Product.Price_sale.ToString("#,###", cul.NumberFormat) ₫</td>
                                                 <td style="text-align:center">x@(@item.Quantity)</td>
-                                                <td>@((@item.Quantity * @item.Product.Price).ToString("#,###", cul.NumberFormat)) ₫</td>
+                                                <td>@((@item.Quantity * @item.Product.Price_sale).ToString("#,###", cul.NumberFormat)) ₫</td>
                                             </tr>
                                         }
                                     </tbody>

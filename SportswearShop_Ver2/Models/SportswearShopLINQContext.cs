@@ -34,7 +34,7 @@ namespace SportswearShop_Ver2.Models
         public DbSet<Banner> Banner { set; get; }
         //public DbSet<Campaign> Campaign { set; get; }
         public DbSet<BillKhachHang> Order { set; get; }
-        //public DbSet<OrderDetail> OrderDetail { set; get; }
+        public DbSet<CTHD> CTHD { set; get; }
         //public DbSet<Blog> Blog { set; get; }
 
         public DbSet<LoginHistory> LoginHistory { set; get; }
@@ -505,11 +505,11 @@ namespace SportswearShop_Ver2.Models
         //    }
         //}
 
-        //public int createOrder(Order order)
+        //public int createOrder(BillKhachHang order)
         //{
         //    Order.Add(order);
         //    SaveChanges();
-        //    return order.OrderId;
+        //    return order.Id;
         //}
 
         ////public ShipMethod getShipMethod(int ShipMethodId)
@@ -517,9 +517,9 @@ namespace SportswearShop_Ver2.Models
         ////    var shipMethod = ShipMethod.Where(s => s.ShipMethodId == ShipMethodId).FirstOrDefault();
         ////    return shipMethod;
         ////}
-        //public void saveOrderDetail(OrderDetail orderDetail)
+        //public void saveOrderDetail(CTHD orderDetail)
         //{
-        //    OrderDetail.Add(orderDetail);
+        //    CTHD.Add(orderDetail);
         //    SaveChanges();
         //}
 
@@ -571,7 +571,7 @@ namespace SportswearShop_Ver2.Models
 
         //public void updateSoldProduct(int productId, int newSold)
         //{
-        //    var product = Product.Where(p => p.ProductId == productId).FirstOrDefault();
+        //    var product = Product.Where(p => p.Id == productId).FirstOrDefault();
         //    product.Sold += newSold;
         //    product.Quantity -= newSold;
         //    SaveChanges();
