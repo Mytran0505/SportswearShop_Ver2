@@ -135,5 +135,12 @@ namespace SportswearShop_Ver2.Controllers
         //{
         //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         //}
+        public IActionResult customer_register(User newCustomer)
+        {
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            context.saveCustomer(newCustomer);
+            System.Diagnostics.Debug.WriteLine(newCustomer.Email);
+            return RedirectToAction("check_password", "Home", new RouteValueDictionary(newCustomer));
+        }
     }
 }
