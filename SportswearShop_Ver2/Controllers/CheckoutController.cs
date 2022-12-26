@@ -14,36 +14,36 @@ namespace SportswearShop_Ver2.Controllers
     {
         public IActionResult Index()
         {
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            ViewBag.AllCategory = context.getAllCategory();
+            ViewBag.AllMenu = context.getAllMenu();
+            ViewBag.AllThanhPho = context.getAllThanhPho();
+            ViewBag.AllQuanHuyen = context.getAllQuanHuyen();
+            ViewBag.AllXaPhuong = context.getAllXaPhuong();
+
             int customerId = Convert.ToInt32(HttpContext.Session.GetInt32("customerId"));
             if (customerId != 0) // Nếu customer đã đăng nhập
             {
-                /*===Cái này để load layout ===*/
-                SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
-                ViewBag.AllCategory = context.getAllCategory();
-                ViewBag.AllMenu = context.getAllMenu();
-                //ViewBag.AllSubBrand = context.getAllSubBrand();
-                /*======*/
-
                 ViewBag.DefaultShippingAddress = context.getDefaultShippingAddress(customerId);
-                ViewBag.AllShipMethod = context.getShipMethodToCheckout();
-                var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
-                ViewBag.cart = cart;
-                if (cart == null)
-                {
-                    ViewBag.total = 0;
-                    ViewBag.numberItem = 0;
-                }
-                else
-                {
-                    ViewBag.numberItem = cart.Sum(item => item.Quantity);
-                    ViewBag.total = cart.Sum(item => item.Product.Price_sale * item.Quantity);
-                }
-                ViewBag.AllThanhPho = context.getAllThanhPho();
-                ViewBag.AllQuanHuyen = context.getAllQuanHuyen();
-                ViewBag.AllXaPhuong = context.getAllXaPhuong();
-                return View();
+                
             }
-            return RedirectToAction("login_to_checkout");
+            ViewBag.AllShipMethod = context.getShipMethodToCheckout();
+            var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+            ViewBag.cart = cart;
+            if (cart == null)
+            {
+                ViewBag.total = 0;
+                ViewBag.numberItem = 0;
+            }
+            else
+            {
+                ViewBag.numberItem = cart.Sum(item => item.Quantity);
+                ViewBag.total = cart.Sum(item => item.Product.Price_sale * item.Quantity);
+            }
+
+            //return RedirectToAction("login_to_checkout");
+            return View();
+
         }
         public IActionResult login_to_checkout(string message)
         {
@@ -80,7 +80,6 @@ namespace SportswearShop_Ver2.Controllers
         {
             // Lấy thông tin từ cart để thêm thông tin đơn hàng vào bảng ORDER
             var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
-            SportswearShopLINQContext linqContext = new SportswearShopLINQContext();
             SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
             order.TotalMoney = order.ShipFee + cart.Sum(item => item.Product.Price_sale * item.Quantity);
             order.CustomerId = Convert.ToInt32(HttpContext.Session.GetInt32("customerId"));
@@ -104,7 +103,7 @@ namespace SportswearShop_Ver2.Controllers
                 {
                     OrderQuantity = item.Quantity,
                     ProductId = item.Product.Id,
-                    UnitPrice = item.Product.Price_sale,
+                    UnitPrice = item.Product.Price_sale * item.Quantity,
                     OrderId = order.Id
                 };
                 context.saveOrderDetail(orderDetail);

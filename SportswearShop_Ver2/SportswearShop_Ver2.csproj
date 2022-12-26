@@ -9,20 +9,18 @@
   <ItemGroup>
     <PackageReference Include="EPPlus" Version="6.1.1" />
     <PackageReference Include="FontAwesome" Version="4.7.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="7.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="7.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.0" />
     <PackageReference Include="MySql.Data" Version="8.0.31" />
-    <PackageReference Include="MySql.Data.EntityFramework" Version="8.0.31" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.22" />
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.0-preview5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.23" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.24" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="MySql.Data.EntityFrameworkCore">
+      <HintPath>C:\Users\20520\.nuget\packages\mysql.data.entityframeworkcore\8.0.22\lib\netstandard2.1\MySql.Data.EntityFrameworkCore.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

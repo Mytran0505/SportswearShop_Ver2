@@ -28,16 +28,7 @@ namespace SportswearShop_Ver2.Controllers
 			SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
             ViewBag.AllCategory = context.getAllCategory();
             ViewBag.AllMenu = context.getAllMenu();
-            //ViewBag.AllSubBrand = linqContext.getAllSubBrand();
-            //ViewBag.AllBlog = context.getAllBlog();
-            //ViewBag.AllBannerSlider = context.getAllBannerSlider();
-            //ViewBag.Top3ProductView = context.getTop3ProductView();
-            //ViewBag.Top3Product = context.get3Product();
             //ViewBag.Blog = context.getBlog();
-            //ViewBag.New = context.get2Blog();
-            //ViewBag.LTProduct = context.getLTProduct();
-            //ViewBag.PCProduct = context.getPCProduct();
-            //ViewBag.PKProduct = context.getPKProduct();
             ViewBag.SliderForHomePage = context.getSliderForHomePage();
 			ViewBag.BannerForHomePage = context.getBannerForHomePage();
 			ViewBag.ProductForHomePage = context.getProductForHomePage();
@@ -126,16 +117,23 @@ namespace SportswearShop_Ver2.Controllers
 			}
 			return RedirectToAction("login", new { message = "Mật khẩu hoặc tài khoản sai. Xin nhập lại!" });
 		}
+        public IActionResult Logout()
+        {
+            HttpContext.Session.SetString("customerId", "");
+            HttpContext.Session.SetString("customerLastName", "");
+            HttpContext.Session.SetString("customerFirstName", "");
+            HttpContext.Session.SetString("customerImage", "");
+            return RedirectToAction("Index");
+        }
+        //public IActionResult Privacy()
+        //{
+        //    return View();
+        //}
 
-		//public IActionResult Privacy()
-		//{
-		//    return View();
-		//}
-
-		//[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-		//public IActionResult Error()
-		//{
-		//    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-		//}
-	}
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Error()
+        //{
+        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        //}
+    }
 }

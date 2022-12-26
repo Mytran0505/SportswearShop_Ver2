@@ -5,16 +5,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace SportswearShop_Ver2.Models
 {
     public class SportswearShopLINQContext : DbContext
     {
         private const string connectionString = "server=localhost;port=3306;database=sportshop_ver22;uid=root;password=;Convert Zero Datetime=True";
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseMySQL(connectionString);
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    base.OnConfiguring(optionsBuilder);
+        //    optionsBuilder.UseMySQL(connectionString);
+        //}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Hàm này để set primary key cho Entity Framework
@@ -23,7 +24,7 @@ namespace SportswearShop_Ver2.Models
             //modelBuilder.Entity<OrderTracking>().HasKey(ot => new { ot.OrderId, ot.OrderStatus });
             //modelBuilder.Entity<ProductRating>().HasKey(pt => new { pt.ProductId, pt.UserId });
             modelBuilder.Entity<LoginHistory>().HasKey(lh => new { lh.UserId });
-            //modelBuilder.Entity<devvn_quanhuyen>().HasKey(qh => new { qh.Maqh });
+            modelBuilder.Entity<devvn_quanhuyen>().HasKey(qh => new { qh.Maqh });
         }
 
         public DbSet<User> User { set; get; }   // Bảng User trong DataBase, <User> tên lớp
@@ -41,10 +42,10 @@ namespace SportswearShop_Ver2.Models
         //public DbSet<ShipMethod> ShipMethod { set; get; }
         //public DbSet<ProductGallary> ProductGallary { set; get; }
         //public DbSet<Comment> Comment { set; get; }
-        //public DbSet<devvn_quanhuyen> devvn_quanhuyen { set; get; }
-        //public DbSet<devvn_tinhthanhpho> devvn_tinhthanhpho { set; get; }
-        //public DbSet<devvn_xaphuongthitran> devvn_xaphuongthitran { set; get; }
-        //public DbSet<ShippingAddress> ShippingAddress { set; get; }
+        public DbSet<devvn_quanhuyen> devvn_quanhuyen { set; get; }
+        public DbSet<devvn_tinhthanhpho> devvn_tinhthanhpho { set; get; }
+        public DbSet<devvn_xaphuongthitran> devvn_xaphuongthitran { set; get; }
+        public DbSet<ShippingAddress> ShippingAddress { set; get; }
         public DbSet<Statistic> Statistic { set; get; }
         public DbSet<WishList> WishList { set; get; }
         //public DbSet<OrderTracking> OrderTracking { set; get; }
@@ -432,78 +433,78 @@ namespace SportswearShop_Ver2.Models
         //    return relatedProduct;
         //}
 
-        //public void deleteShippingAddress(int ShippingAddressId)
-        //{
-        //    var shippingAddress = ShippingAddress.Where(p => p.ShippingAddressId == ShippingAddressId).FirstOrDefault();
+        public void deleteShippingAddress(int ShippingAddressId)
+        {
+            var shippingAddress = ShippingAddress.Where(p => p.ShippingAddressId == ShippingAddressId).FirstOrDefault();
 
-        //    if (shippingAddress != null)
-        //    {
-        //        Remove(shippingAddress);
-        //        SaveChanges();
-        //    }
-        //}
+            if (shippingAddress != null)
+            {
+                Remove(shippingAddress);
+                SaveChanges();
+            }
+        }
 
-        //public List<devvn_xaphuongthitran> load_xaphuongthitran_dropdownbox(string maqh)
-        //{
-        //    var xaphuong = devvn_xaphuongthitran.Where(x => x.Maqh == maqh).ToList();
-        //    return xaphuong;
-        //}
-        //public List<devvn_quanhuyen> load_quanhuyen_dropdownbox(string matp)
-        //{
-        //    var quanhuyen = devvn_quanhuyen.Where(q => q.Matp == matp).ToList();
-        //    return quanhuyen;
-        //}
+        public List<devvn_xaphuongthitran> load_xaphuongthitran_dropdownbox(string maqh)
+        {
+            var xaphuong = devvn_xaphuongthitran.Where(x => x.Maqh == maqh).ToList();
+            return xaphuong;
+        }
+        public List<devvn_quanhuyen> load_quanhuyen_dropdownbox(string matp)
+        {
+            var quanhuyen = devvn_quanhuyen.Where(q => q.Matp == matp).ToList();
+            return quanhuyen;
+        }
 
-        //public void change_default_shipping_address(int ShippingAddressId, int customerId)
-        //{
+        public void change_default_shipping_address(int ShippingAddressId, int customerId)
+        {
 
-        //    // Set các địa chỉ isDefault = 0
-        //    var shippingAddressList = ShippingAddress.Where(s => s.UserId == customerId).ToList();
-        //    foreach (var item in shippingAddressList)
-        //    {
-        //        System.Diagnostics.Debug.WriteLine("id=" + item.ShippingAddressId);
-        //        item.IsDefault = 0;
-        //    }
-        //    SaveChanges();
+            // Set các địa chỉ isDefault = 0
+            var shippingAddressList = ShippingAddress.Where(s => s.UserId == customerId).ToList();
+            foreach (var item in shippingAddressList)
+            {
+                System.Diagnostics.Debug.WriteLine("id=" + item.ShippingAddressId);
+                item.IsDefault = 0;
+            }
+            SaveChanges();
 
-        //    // Set isDefault = 1 đối với địa chỉ đã chọn
-        //    var shippingAddress = ShippingAddress.Where(s => s.ShippingAddressId == ShippingAddressId).FirstOrDefault();
-        //    shippingAddress.IsDefault = 1;
-        //    System.Diagnostics.Debug.WriteLine("cus=" + shippingAddress.ReceiverName + shippingAddress.IsDefault);
-        //    SaveChanges();
-        //}
+            // Set isDefault = 1 đối với địa chỉ đã chọn
+            var shippingAddress = ShippingAddress.Where(s => s.ShippingAddressId == ShippingAddressId).FirstOrDefault();
+            shippingAddress.IsDefault = 1;
+            System.Diagnostics.Debug.WriteLine("cus=" + shippingAddress.ReceiverName + shippingAddress.IsDefault);
+            SaveChanges();
+        }
 
-        //public void saveShippingAddress(ShippingAddress shippingAddress)
-        //{
-        //    // Set các địa chỉ isDefault = 0
-        //    var shippingAddressList = ShippingAddress.Where(s => s.UserId == shippingAddress.UserId).ToList();
-        //    foreach (var item in shippingAddressList)
-        //    {
-        //        item.IsDefault = 0;
-        //    }
-        //    SaveChanges();
+        public void saveShippingAddress(ShippingAddress shippingAddress)
+        {
+            // Set các địa chỉ isDefault = 0
+            var shippingAddressList = ShippingAddress.Where(s => s.UserId == shippingAddress.UserId).ToList();
+            foreach (var item in shippingAddressList)
+            {
+                item.IsDefault = 0;
+            }
+            SaveChanges();
 
-        //    shippingAddress.IsDefault = 1;
-        //    shippingAddress.UpdatedAt = DateTime.Now;
-        //    shippingAddress.CreatedAt = DateTime.Now;
-        //    ShippingAddress.Add(shippingAddress);
-        //    SaveChanges();
-        //}
-        //public void update_shipping_address(ShippingAddress shippingAddress)
-        //{
-        //    var shippingAddressUpdate = ShippingAddress.Where(s => s.ShippingAddressId == shippingAddress.ShippingAddressId).FirstOrDefault();
-        //    if (shippingAddressUpdate != null)
-        //    {
-        //        shippingAddressUpdate.ReceiverName = shippingAddress.ReceiverName;
-        //        shippingAddressUpdate.ShippingAddressType = shippingAddress.ShippingAddressType;
-        //        shippingAddressUpdate.Xaid = shippingAddress.Xaid;
-        //        shippingAddressUpdate.Maqh = shippingAddress.Maqh;
-        //        shippingAddressUpdate.Matp = shippingAddress.Matp;
-        //        shippingAddressUpdate.Address = shippingAddress.Address;
-        //        shippingAddressUpdate.Phone = shippingAddress.Phone;
-        //        SaveChanges();
-        //    }
-        //}
+            shippingAddress.IsDefault = 1;
+            shippingAddress.UpdatedAt = DateTime.Now;
+            shippingAddress.CreatedAt = DateTime.Now;
+            ShippingAddress.Add(shippingAddress);
+            SaveChanges();
+        }
+        public void update_shipping_address(ShippingAddress shippingAddress)
+        {
+            var shippingAddressUpdate = ShippingAddress.Where(s => s.ShippingAddressId == shippingAddress.ShippingAddressId).FirstOrDefault();
+            if (shippingAddressUpdate != null)
+            {
+                shippingAddressUpdate.ReceiverName = shippingAddress.ReceiverName;
+                shippingAddressUpdate.ShippingAddressType = shippingAddress.ShippingAddressType;
+                shippingAddressUpdate.Xaid = shippingAddress.Xaid;
+                shippingAddressUpdate.Maqh = shippingAddress.Maqh;
+                shippingAddressUpdate.Matp = shippingAddress.Matp;
+                shippingAddressUpdate.Address = shippingAddress.Address;
+                shippingAddressUpdate.Phone = shippingAddress.Phone;
+                SaveChanges();
+            }
+        }
 
         //public int createOrder(BillKhachHang order)
         //{

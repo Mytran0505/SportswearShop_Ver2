@@ -968,6 +968,45 @@ namespace SportswearShop_Ver2.Models
                 return Convert.ToInt32(order.Id);
             }
         }
+
+        public List<object> getShippingAddressOfCustomer(int userId)
+        {
+            List<object> list = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = @"SELECT ShippingAddressId, Address, Phone, TT.name, QH.name, XP.name, ReceiverName, ShippingAddressType
+                        FROM shippingaddress SA, devvn_quanhuyen QH, devvn_tinhthanhpho TT, devvn_xaphuongthitran XP
+                        WHERE SA.matp = TT.matp
+                        AND SA.maqh = QH.maqh
+                        AND SA.xaid = XP.xaid
+                        AND IsDefault = 0
+                        AND UserId = @UserId;";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("UserId", userId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        //System.Diagnostics.Debug.WriteLine("hI: " + reader["CategoryName"].ToString());
+                        var obj = new
+                        {
+                            ShippingAddressId = Convert.ToInt32(reader[0].ToString()),
+                            Address = reader[1].ToString(),
+                            Phone = reader[2].ToString(),
+                            ThanhPho = reader[3].ToString(),
+                            QuanHuyen = reader[4].ToString(),
+                            XaPhuong = reader[5].ToString(),
+                            ReceiverName = reader[6].ToString(),
+                            ShippingAddressType = reader[7].ToString(),
+                        };
+                        list.Add(obj);
+                    }
+                    reader.Close();
+                }
+            }
+            return list;
+        }
         public User getUserInfo(string email, string password, int isAdmin)
 		{
 			User userInfo = new User();
@@ -997,7 +1036,104 @@ namespace SportswearShop_Ver2.Models
 			}
 			return userInfo;
 		}
-		public void updateLastLogin(int userId)
+        public List<devvn_quanhuyen> load_quanhuyen_dropdownbox(string matp) {
+            List<devvn_quanhuyen> list = new List<devvn_quanhuyen>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from devvn_quanhuyen where matp = @matp";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("matp", matp);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new devvn_quanhuyen()
+                        {
+                            Matp = reader["matp"].ToString(),
+                            Name = reader["name"].ToString(),
+                            Type = reader["type"].ToString(),
+                            Maqh = reader["maqh"].ToString(),
+                            ExtraShippingFee = Convert.ToInt32(reader["ExtraShippingFee"]),
+                        });
+                    }
+                    reader.Close();
+                }
+
+                conn.Close();
+
+            }
+            return list;
+        }
+
+        public List<devvn_xaphuongthitran> load_xaphuongthitran_dropdownbox(string maqh)
+        {
+            List<devvn_xaphuongthitran> list = new List<devvn_xaphuongthitran>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from devvn_xaphuongthitran where maqh = @maqh";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("maqh", maqh);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new devvn_xaphuongthitran()
+                        {
+                            Xaid = reader["xaid"].ToString(),
+                            Name = reader["name"].ToString(),
+                            Type = reader["type"].ToString(),
+                            Maqh = reader["maqh"].ToString(),
+                        });
+                    }
+                    reader.Close();
+                }
+
+                conn.Close();
+
+            }
+            return list;
+        }
+        public void saveShippingAddress(ShippingAddress shippingAddress)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE `shippingAddress` set `IsDefault` = 0 where UserId =@userId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("UserId", shippingAddress.UserId);
+                cmd.ExecuteNonQuery();
+            }
+            // Set các địa chỉ isDefault = 0
+            shippingAddress.IsDefault = 1;
+            shippingAddress.UpdatedAt = DateTime.Now;
+            shippingAddress.CreatedAt = DateTime.Now;
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "INSERT INTO `shippingaddress`(`ShippingAddressId`, `ReceiverName`, `Phone`, `Address`, `matp`, `maqh`, `xaid`, `ShippingAddressType`, `UserId`, `IsDefault`, `UpdatedAt`, `CreatedAt`) " +
+                    "VALUES (@shipId,@RecName,@Phone,@Addr, @matp,@maqh,@xaid,@shipType,@Userid,@isdefault,@updated,@createdat)";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("shipId", shippingAddress.ShippingAddressId);
+                cmd.Parameters.AddWithValue("RecName", shippingAddress.ReceiverName);
+                cmd.Parameters.AddWithValue("Phone", shippingAddress.Phone);
+                cmd.Parameters.AddWithValue("Addr", shippingAddress.Address);
+                cmd.Parameters.AddWithValue("matp", shippingAddress.Matp);
+                cmd.Parameters.AddWithValue("maqh", shippingAddress.Maqh);
+                cmd.Parameters.AddWithValue("xaid", shippingAddress.Xaid);
+                cmd.Parameters.AddWithValue("shipType", shippingAddress.ShippingAddressType);
+                cmd.Parameters.AddWithValue("Userid", shippingAddress.UserId);
+                cmd.Parameters.AddWithValue("isdefault", shippingAddress.IsDefault);
+                cmd.Parameters.AddWithValue("updated", shippingAddress.UpdatedAt);
+                cmd.Parameters.AddWithValue("createdat", shippingAddress.CreatedAt);
+                cmd.ExecuteNonQuery();
+            }
+
+            
+        }
+
+        public void updateLastLogin(int userId)
 		{
 			using (MySqlConnection conn = GetConnection())
 			{
