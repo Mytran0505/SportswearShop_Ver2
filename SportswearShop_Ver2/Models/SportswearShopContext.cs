@@ -1815,6 +1815,50 @@ namespace SportswearShop_Ver2.Models
             return list;
         }
 
+        public int getProductCurrentMaxId()
+        {
+            int id = 0;
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT id FROM products ORDER BY id DESC LIMIT 1";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        id = Convert.ToInt32(reader["id"]);
+                    }
+                }
+            }
+            return id;
+        }
+
+        public void saveNewProduct(Product newProduct)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "INSERT INTO products(id, name, description, content, menu_id, original_price, price_sale, active, image, quantity, sold, discount, created_at, updated_at) VALUES (@Id, @Name, @Description, @Content, @Menu_id, @Original_price, @Price_sale, @Active, @Image, @Quantity, @Sold, @Discount, @NgayTao, @NgayUpdate)";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("Id", newProduct.Id);
+                cmd.Parameters.AddWithValue("Name", newProduct.Name);
+                cmd.Parameters.AddWithValue("Description", newProduct.Description);
+                cmd.Parameters.AddWithValue("Content", newProduct.Content);
+                cmd.Parameters.AddWithValue("Menu_id", newProduct.Menu_id);
+                cmd.Parameters.AddWithValue("Original_price", newProduct.Original_price);
+                cmd.Parameters.AddWithValue("Price_sale", newProduct.Price_sale);
+                cmd.Parameters.AddWithValue("Active", newProduct.Active);
+                cmd.Parameters.AddWithValue("Image", newProduct.Image);
+                cmd.Parameters.AddWithValue("Quantity", newProduct.Quantity);
+                cmd.Parameters.AddWithValue("Sold", 0);
+                cmd.Parameters.AddWithValue("Discount", newProduct.Discount);
+                cmd.Parameters.AddWithValue("NgayTao", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("NgayUpdate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public List<Product> getAllProductForProductManagement()
         {
             List<Product> list = new List<Product>();
@@ -1837,7 +1881,10 @@ namespace SportswearShop_Ver2.Models
                             Original_price = Convert.ToInt32(reader["original_price"]),
                             Price_sale = Convert.ToInt32(reader["price_sale"]),
                             Image = reader["image"].ToString(),
-                            Active = Convert.ToInt32(reader["active"])
+                            Active = Convert.ToInt32(reader["active"]),
+                            Quantity = Convert.ToInt32(reader["quantity"]),
+                            Sold = Convert.ToInt32(reader["sold"]),
+                            Discount = Convert.ToInt32(reader["discount"])
                         });
                     }
                     reader.Close();
@@ -1870,6 +1917,90 @@ namespace SportswearShop_Ver2.Models
                 cmd.Parameters.AddWithValue("id", id);
                 cmd.ExecuteNonQuery();
             }
+        }
+
+        public Product getProductById(int id)
+        {
+            Product product = new Product();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from products where id=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("id", id);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    reader.Read();
+                    product.Id = Convert.ToInt32(reader["id"]);
+                    product.Name = reader["name"].ToString();
+                    product.Description = reader["description"].ToString();
+                    product.Content = reader["content"].ToString();
+                    product.Menu_id = Convert.ToInt32(reader["menu_id"]);
+                    product.Original_price = Convert.ToInt32(reader["original_price"]);
+                    product.Price_sale = Convert.ToInt32(reader["price_sale"]);
+                    product.Quantity = Convert.ToInt32(reader["quantity"]);
+                    product.Discount = Convert.ToInt32(reader["discount"]);
+                    product.Image = reader["image"].ToString();
+                    product.Active = Convert.ToInt32(reader["active"]);
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return product;
+        }
+
+        public void saveUpdateProduct(Product product)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE products SET name=@Name, description=@Description, content=@Content, menu_id=@Menu_id, original_price=@Original_price, price_sale=@Price_sale, active=@Active, image=@Image, quantity=@Quantity, discount=@Discount, updated_at=@NgayUpdate WHERE id=@Id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("Id", product.Id);
+                cmd.Parameters.AddWithValue("Name", product.Name);
+                cmd.Parameters.AddWithValue("Description", product.Description);
+                cmd.Parameters.AddWithValue("Content", product.Content);
+                cmd.Parameters.AddWithValue("Menu_id", product.Menu_id);
+                cmd.Parameters.AddWithValue("Original_price", product.Original_price);
+                cmd.Parameters.AddWithValue("Price_sale", product.Price_sale);
+                cmd.Parameters.AddWithValue("Active", product.Active);
+                cmd.Parameters.AddWithValue("Image", product.Image);
+                cmd.Parameters.AddWithValue("Quantity", product.Quantity);
+                cmd.Parameters.AddWithValue("Discount", product.Discount);
+                cmd.Parameters.AddWithValue("NgayUpdate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public List<Product> getAllProductForExport()
+        {
+            List<Product> list = new List<Product>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from products";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new Product()
+                        {
+                            Id = Convert.ToInt32(reader["id"]),
+                            Name = reader["name"].ToString(),
+                            Description = reader["description"].ToString(),
+                            Menu_id = Convert.ToInt32(reader["menu_id"]),
+                            Original_price = Convert.ToInt32(reader["original_price"]),
+                            Price_sale = Convert.ToInt32(reader["price_sale"]),
+                            Quantity = Convert.ToInt32(reader["quantity"]),
+                            Sold = Convert.ToInt32(reader["sold"])
+                        });
+                    }
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return list;
         }
 
     }
