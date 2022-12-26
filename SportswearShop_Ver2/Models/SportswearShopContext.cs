@@ -801,9 +801,9 @@ namespace SportswearShop_Ver2.Models
             return list;
         }
 
-        public List<devvn_quanhuyen> getAllXaPhuong()
+        public List<devvn_xaphuongthitran> getAllXaPhuong()
         {
-            List<devvn_quanhuyen> list = new List<devvn_quanhuyen>();
+            List<devvn_xaphuongthitran> list = new List<devvn_xaphuongthitran>();
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
@@ -813,14 +813,12 @@ namespace SportswearShop_Ver2.Models
                 {
                     while (reader.Read())
                     {
-                        list.Add(new devvn_quanhuyen()
+                        list.Add(new devvn_xaphuongthitran()
                         {
-                            Matp = reader["matp"].ToString(),
+                            Xaid = reader["matp"].ToString(),
                             Name = reader["name"].ToString(),
                             Type = reader["type"].ToString(),
                             Maqh = reader["slug"].ToString(),
-                            ExtraShippingFee = Convert.ToInt32(reader["ExtraShippingFee"]),
-
                         });
                     }
                     reader.Close();

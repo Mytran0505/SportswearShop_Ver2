@@ -47,14 +47,14 @@
                                             <input class="form-control" type="radio" id="radio-btn[@item.ShipMethodId]" name="ShipMethod" value="@item.ShipMethodName" required>
                                             <label for="radio-btn[@item.ShipMethodId]">
                                                 <img src="~/public/client/Images/thanh-toan-khi-nhan-hang.PNG" alt="#" hidden>@item.ShipMethodName
-                                                @if (@item.EstimatedDeliveryTime <= 24)
+                                                @*@if (@item.EstimatedDeliveryTime <= 24)
                                                 {
                                                     <i>(Thời gian giao hàng dự kiến: khoảng @DateTime.Now.AddHours(@item.EstimatedDeliveryTime).ToString("HH:mm dd-MM-yyyy"))</i>
                                                 }
                                                 else
                                                 {
                                                     <i>(Thời gian giao hàng dự kiến: @DateTime.Now.AddHours(@item.EstimatedDeliveryTime).ToString("dd-MM-yyyy"))</i>
-                                                }
+                                                }*@
                                             </label>
                                             <input type="text" class="ShipFee" name="ShipFee" value="@(@item.ShipFee + @ViewBag.DefaultShippingAddress.GetType().GetProperty("ExtraShippingFee").GetValue(@ViewBag.DefaultShippingAddress, null))" hidden>
                                             <input type="text" class="EstimatedDeliveryTime" name="EstimatedDeliveryTime" value="@DateTime.Now.AddHours(item.EstimatedDeliveryTime)" hidden>
