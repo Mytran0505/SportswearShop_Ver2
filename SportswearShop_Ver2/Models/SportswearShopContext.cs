@@ -865,7 +865,7 @@ namespace SportswearShop_Ver2.Models
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                var str = @"SELECT P.id as ProductId, P.image as ProductImage, P.price_sale as UnitPrice, OD.amount as OrderQuantity, P.name as ProductName
+                var str = @"SELECT P.id as ProductId, P.image as ProductImage, OD.UnitPrice as UnitPrice, OD.amount as OrderQuantity, P.name as ProductName
                             FROM c_t_h_d_s OD join Products P ON P.id = OD.product_id 
                             WHERE OD.id = @orderid";
                 MySqlCommand cmd = new MySqlCommand(str, conn);

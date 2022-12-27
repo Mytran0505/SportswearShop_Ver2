@@ -104,7 +104,7 @@ namespace SportswearShop_Ver2.Controllers
                 {
                     OrderQuantity = item.Quantity,
                     ProductId = item.Product.Id,
-                    UnitPrice = item.Product.Price_sale * item.Quantity,
+                    UnitPrice = item.Product.Price_sale,
                     OrderId = orderId
                 };
                 context.saveOrderDetail(orderDetail);
