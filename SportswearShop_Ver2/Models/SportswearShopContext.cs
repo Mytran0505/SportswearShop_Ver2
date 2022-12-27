@@ -6,6 +6,8 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using SportswearShop_Ver2.Controllers;
 using System;
+using ITGoShop_F_Ver2.Controllers;
+using System.ComponentModel.Design;
 
 namespace SportswearShop_Ver2.Models
 {
@@ -486,6 +488,185 @@ namespace SportswearShop_Ver2.Models
 
                 conn.Close();
 
+            }
+            return list;
+        }
+
+        public List<object> getAllComments()
+        {
+            List<object> list = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT * FROM (COMMENT C " +
+                    "JOIN USER U ON C.UserId = U.UserId) " +
+                    "JOIN PRODUCTs P ON P.Id = C.ProductId " +
+                    "WHERE ParentComment IS NULL " +
+                    "ORDER BY Reply ASC, CommentId DESC;";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var obj = new
+                        {
+                            CommentId = Convert.ToInt32(reader["CommentId"]),
+                            CommentContent = reader["CommentContent"].ToString(),
+                            UserName = reader["LastName"].ToString() + " " + reader["FirstName"].ToString(),
+                            ProductName = reader["Name"].ToString(),
+                            CreatedAt = ((DateTime)reader["CreatedAt"]).ToString("dd-MM-yyyy"),
+                            Reply = Convert.ToInt32(reader["Reply"]),
+                            CommentStatus = Convert.ToInt32(reader["CommentStatus"]),
+                            ProductId = Convert.ToInt32(reader["Id"]),
+                        };
+                        list.Add(obj);
+                    }
+                }
+            }
+            return list;
+        }
+
+        public void updateCommentStatus(int CommentId, int Status)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE comment SET CommentStatus = @status WHERE CommentId=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("status", Status);
+                cmd.Parameters.AddWithValue("id", CommentId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void updateCommentStatus(int ParentComment)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE comment set Reply =1  WHERE CommentId=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("id", ParentComment);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void addComment(Comment comment)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "INSERT INTO comment(CommentId, CommentContent, UserId, ProductId, CommentStatus, Reply, ParentComment, CreatedAt, UpdatedAt) " +
+                    "VALUES (@comId, @comcont,@userId, @ProID, @comsta, @rep, @parentcom, @CreateAt, @UpdateAt)";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("comId", comment.CommentId);
+                cmd.Parameters.AddWithValue("comcont", comment.CommentContent);
+                cmd.Parameters.AddWithValue("userId", comment.UserId);
+                cmd.Parameters.AddWithValue("ProID", comment.ProductId);
+                cmd.Parameters.AddWithValue("comsta", comment.CommentStatus);
+                cmd.Parameters.AddWithValue("rep", comment.Reply);
+                cmd.Parameters.AddWithValue("parentcom", comment.ParentComment);
+                cmd.Parameters.AddWithValue("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("UpdateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void updateCommentReply(int CommentId, int Reply)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE comment SET Reply = @rep WHERE CommentId=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("rep", Reply);
+                cmd.Parameters.AddWithValue("id", CommentId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void deleteComment(int commentId)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "Delete from comment where ParentComment = @Parcomt";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("Parcomt", commentId);
+                cmd.ExecuteNonQuery();
+
+                var str1 = "Delete from comment where CommentId = @comt";
+                MySqlCommand cmd1 = new MySqlCommand(str1, conn);
+                cmd1.Parameters.AddWithValue("comt", commentId);
+                cmd1.ExecuteNonQuery();
+            }
+        }
+
+        public List<object> getCommentParentCommentForProductDetail(int productId)
+        {
+            List<object> list = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = @"SELECT CommentId, ProductId, C.UserId, UserImage, LastName, FirstName, CommentContent, Admin, C.CreatedAt
+                            FROM COMMENT C JOIN user P ON C.UserId = P.UserId 
+                            WHERE ProductId = @productid
+                            AND ParentComment IS NULL 
+                            AND CommentStatus = 1 
+                            ORDER BY CommentId DESC";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("productid", productId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var obj = new
+                        {
+                            CommentId = Convert.ToInt32(reader[0]),
+                            ProductId = Convert.ToInt32(reader[1]),
+                            UserId = Convert.ToInt32(reader[2]),
+                            UserImage = reader[3].ToString(),
+                            LastName = reader[4].ToString(),
+                            FirstName = reader[5].ToString(),
+                            CommentContent = reader[6].ToString(),
+                            Admin = Convert.ToInt32(reader[7]),
+                            CreatedAt = (DateTime)reader[8],
+                        };
+                        list.Add(obj);
+                    }
+                }
+            }
+            return list;
+        }
+        public List<object> getSubCommentForProductDetail(int commendId)
+        {
+            List<object> list = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = @"SELECT CommentId, ProductId, C.UserId, UserImage, LastName, FirstName, CommentContent, Admin, C.CreatedAt
+                            FROM COMMENT C JOIN user P ON C.UserId = P.UserId 
+                            AND ParentComment = @parentcomment
+                            ORDER BY CommentId DESC";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("parentcomment", commendId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var obj = new
+                        {
+                            CommentId = Convert.ToInt32(reader[0]),
+                            ProductId = Convert.ToInt32(reader[1]),
+                            UserId = Convert.ToInt32(reader[2]),
+                            UserImage = reader[3].ToString(),
+                            LastName = reader[4].ToString(),
+                            FirstName = reader[5].ToString(),
+                            CommentContent = reader[6].ToString(),
+                            Admin = Convert.ToInt32(reader[7]),
+                            CreatedAt = (DateTime)reader[8],
+                        };
+                        list.Add(obj);
+                    }
+                }
             }
             return list;
         }
