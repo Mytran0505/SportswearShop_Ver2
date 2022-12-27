@@ -76,7 +76,7 @@
     <div class=" col-md-9">
         @if (ViewBag.WishList.Count > 0)
         {
-            <h1 style="margin-bottom:20px">Danh sách sản phẩm yêu thích (@ViewBag.WishList.Count)</h1>
+            <h1 style="margin-bottom:20px">Danh sách sản phẩm yêu thích @*(@ViewBag.WishList.Count)*@</h1>
             @foreach (var item in ViewBag.WishList)
             {
                 <div class="card" style="margin-bottom:15px; padding: 30px">

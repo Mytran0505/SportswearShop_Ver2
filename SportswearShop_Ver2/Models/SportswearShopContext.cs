@@ -107,9 +107,10 @@ namespace SportswearShop_Ver2.Models
 							Image = reader["image"].ToString(),
 							Original_price = Convert.ToInt32(reader["original_price"]),
 							Price_sale = Convert.ToInt32(reader["price_sale"]),
-							Quantity = Convert.ToInt32(reader["Quantity"])
+							Quantity = Convert.ToInt32(reader["Quantity"]),
+                            Menu_id = Convert.ToInt32(reader["menu_id"])
 
-						});
+                        });
 					}
 					reader.Close();
 				}
@@ -217,7 +218,7 @@ namespace SportswearShop_Ver2.Models
                 conn.Open();
                 var str = "SELECT C.ID AS CID, M.ID AS MID, C.NAME AS CNAME, M.NAME AS MNAME  " +
                     "FROM MENUS M, CATEGORY C " +
-                    "WHERE M.PARENT_ID = C.ID AND C.ID = @categoryId";
+                    "WHERE M.active =1 AND M.PARENT_ID = C.ID AND C.ID = @categoryId";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("categoryId", CategoryId);
                 using (var reader = cmd.ExecuteReader())
@@ -255,7 +256,7 @@ namespace SportswearShop_Ver2.Models
 			using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                var str = "SELECT * FROM products where menu_id = @menuId";
+                var str = "SELECT * FROM products where active =1 and menu_id = @menuId";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("menuId", MenuId);
                 using (var reader = cmd.ExecuteReader())
@@ -293,7 +294,7 @@ namespace SportswearShop_Ver2.Models
 			using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                var str = "SELECT * FROM products where menu_id = @menuId";
+                var str = "SELECT * FROM products where active =1 and menu_id = @menuId";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("menuId", MenuId);
                 using (var reader = cmd.ExecuteReader())
@@ -333,7 +334,7 @@ namespace SportswearShop_Ver2.Models
 			using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                var str = "SELECT * FROM products where menu_id = @menuId";
+                var str = "SELECT * FROM products where active =1 and menu_id = @menuId";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("menuId", MenuId);
                 using (var reader = cmd.ExecuteReader())
@@ -366,7 +367,7 @@ namespace SportswearShop_Ver2.Models
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                var str = "SELECT * FROM products where menu_id = @menuid";
+                var str = "SELECT * FROM products where active =1 and menu_id = @menuid";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("menuid", MenuId);
                 using (var reader = cmd.ExecuteReader())
@@ -502,7 +503,7 @@ namespace SportswearShop_Ver2.Models
                 conn.Open();
                 var str = "SELECT C.ID AS CID, M.ID AS MID, C.NAME AS CNAME, M.NAME AS MNAME  " +
                     "FROM MENUS M, CATEGORY C " +
-                    "WHERE M.PARENT_ID = C.ID AND C.ID = @categoryId";
+                    "WHERE M.active =1 and M.PARENT_ID = C.ID AND C.ID = @categoryId";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("categoryId", CategoryId);
                 using (var reader = cmd.ExecuteReader())
@@ -536,7 +537,7 @@ namespace SportswearShop_Ver2.Models
                 conn.Open();
                 var str = "SELECT P.ID AS PID, Quantity, P.NAME AS PNAME, P.IMAGE AS PIMAGE, PRICE_SALE, C.ID AS CID, M.ID AS MID, content, C.NAME AS CNAME, M.NAME AS MNAME " +
                     "FROM MENUS M, PRODUCTS P, CATEGORY C" +
-                    " WHERE M.PARENT_ID = C.ID AND P.MENU_ID = M.ID AND P.id != @ProId AND M.ID = @MenuId";
+                    " WHERE active =1 and M.PARENT_ID = C.ID AND P.MENU_ID = M.ID AND P.id != @ProId AND M.ID = @MenuId";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("ProId", productId);
                 cmd.Parameters.AddWithValue("MenuId", menuId);

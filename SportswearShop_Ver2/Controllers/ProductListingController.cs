@@ -5,17 +5,19 @@ namespace SportswearShop_Ver2.Controllers
 {
 	public class ProductListingController : Controller
 	{
-        public object Product_Listing1(int categoryId, int menuId)
+        public object Product_Listing1(int categoryId)
         {
             //System.Diagnostics.Debug.WriteLine("Chạy product detail");
             SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
-            ViewBag.MenuOfCategory = context.getMenuOfCategory(categoryId);
-            ViewBag.NameOfCategory = context.getNameOfCategory(categoryId);
             ViewBag.AllCategory = context.getAllCategory();
             ViewBag.AllMenu = context.getAllMenu();
+            ViewBag.NameOfCategory = context.getNameOfCategory(categoryId);
+            ViewBag.MenuOfCategory = context.getMenuOfCategory(categoryId);
+            ViewBag.ProductForHomePage = context.getProductForHomePage();
             ViewBag.ProductOfMenu1 = context.getProductOfMenu1(categoryId);
             ViewBag.ProductOfMenu2 = context.getProductOfMenu2(categoryId);
             ViewBag.ProductOfMenu3 = context.getProductOfMenu3(categoryId);
+            //ViewBag.ProductOfMenu = context.getProductOfMenu(menuId);
 
             //ViewBag.LTProduct = context.getAoProduct(categoryId);
             //ViewBag.PCProduct = context.getQuanProduct(int categoryId);
