@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ITGoShop_F_Ver2.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using MyCardSession.Helpers;
 using SportswearShop_Ver2.Models;
 
@@ -66,6 +67,41 @@ namespace SportswearShop_Ver2.Controllers
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
             return RedirectToAction("show_cart", "Cart");
+        }
+
+        public void send_comment(int ProductId, string CommentContent, int ParentComment)
+        {
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+
+            int customerId = Convert.ToInt32(HttpContext.Session.GetInt32("customerId"));
+            int adminId = Convert.ToInt32(HttpContext.Session.GetInt32("adminId"));
+            if (customerId != 0 || adminId != 0)
+            {
+                Comment comment = new Comment();
+                comment.CommentContent = CommentContent;
+                comment.ProductId = ProductId;
+
+                comment.CreatedAt = DateTime.Now;
+                comment.UpdatedAt = DateTime.Now;
+                if (customerId != 0)
+                {
+                    comment.UserId = customerId;
+                }
+                else
+                {
+                    comment.UserId = adminId;
+                    if (ParentComment != 0)
+                    {
+                        context.updateCommentStatus(ParentComment);
+                    }
+                }
+                comment.CommentStatus = 1;
+                if (ParentComment != 0)
+                    comment.ParentComment = ParentComment;
+                else
+                    comment.ParentComment = null;
+                context.addComment(comment);
+            }
         }
 
     }

@@ -1,0 +1,265 @@
+﻿@{ ViewData["Title"] = "Xem và trả lời bình luận";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">BÌNH LUẬN</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="#">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">Quản lý bình luận sản phẩm</a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">Xem và phản hồi bình luận</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <h4 class="card-title">Bình luận của sản phẩm</h4>
+                                <!-- <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#addRowModal">
+                                    <i class="fa fa-plus"></i>
+
+                                </button> -->
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <div id="add-row_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+                                    <table id="multi-filter-select" class="display table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:80px">Thời gian</th>
+                                                <th style="max-width:320px">Nội dung bình luận</th>
+                                                <th>Tên khách hàng</th>
+                                                <th>Tên sản phẩm</th>
+                                                <th>Trả lời</th>
+                                                <th>Hành động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="show-all-comment"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            load_reply();
+            setInterval(load_reply, 2000);
+
+            function load_reply() {
+                $.ajax({
+                    url: "/CommentManagement/load_comment",
+                    method: "POST",
+                    //data:{ _token:_token},
+                    //dataType: "text",
+                    success: function (data) {
+                        //alert(data);
+                        $('#show-all-comment').html(data);
+                    },
+                    error: function (data) {
+                        alert("Lỗi");
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+		$(document).ready(function(){
+			$('body').on('click', 'button[data-original-title="Hiển thị bình luận"]', function(){
+				var CommentId = $(this).parents('tr').find('.CommentId').val();
+				var activeButton = $(this);
+                var unactiveButton = $(this).parent().find('button[data-original-title="Ẩn bình luận"]');
+				$.ajax({
+                    url: '/CommentManagement/update_comment_status',
+					method:"GET",
+					data:{CommentId: CommentId, Status: 0},
+					success:function(data)
+					{
+						activeButton.attr('hidden',true);
+						unactiveButton.removeAttr('hidden');
+					},
+					error:function(data)
+					{
+						alert('Lỗi');
+					}
+				});
+			});
+
+			$('body').on('click', 'button[data-original-title="Ẩn bình luận"]', function(){
+				var CommentId = $(this).parents('tr').find('.CommentId').val();
+				var unactiveButton = $(this);
+                var activeButton = $(this).parent().find('button[data-original-title="Hiển thị bình luận"]');
+				$.ajax({
+                    url: '/CommentManagement/update_comment_status',
+					method:"GET",
+                    data: { CommentId: CommentId, Status: 1},
+					success:function(data)
+					{
+						unactiveButton.attr('hidden',true);
+						activeButton.removeAttr('hidden');
+					},
+					error:function(data)
+					{
+						alert('Lỗi');
+					}
+				});
+			});
+
+			$('body').on('click', 'button[data-original-title="Xóa bình luận"]', function(){
+				var comment_id = $(this).parents('tr').find('.CommentId').val();
+                var thisImage = $(this).parents('tr');
+				swal({
+					title: "Xác nhận",
+					text: "Bạn có chắc muốn xóa bình luận này không?",
+					icon: "warning",
+					buttons: true,
+					dangerMode: true,
+					})
+					.then((willDelete) => {
+					if (willDelete) {
+						$.ajax({
+                            url: '/CommentManagement/delete_comment',
+							method:"GET",
+							data:{CommentId: comment_id},
+							success:function(data)
+							{
+								thisImage.remove();
+								swal("Xóa bình luận thành công!", {
+								icon: "success",
+								});
+							},
+							error:function(data)
+							{
+								alert('Lỗi xóa bình luận');
+							}
+						});
+
+					}
+				});
+			});
+			$('body').on('change', '.reply-check-box', function(){
+				var thisRow = $(this).parents('tr');
+                var CommentId = thisRow.find('.CommentId').val();
+				if(this.checked)
+				{
+					$.ajax({
+                        url: '/CommentManagement/reply_comment',
+						method:"GET",
+						data:{CommentId: CommentId, Reply: 1},
+						// success:function(data)
+						// {
+						// 	alert('Thành công');
+						// },
+						error:function(data)
+						{
+							alert('Lỗi');
+						}
+					});
+				}
+				else
+				{
+					$.ajax({
+                        url: '/CommentManagement/reply_comment',
+						method:"GET",
+						data:{CommentId: CommentId, Reply: 0},
+						// success:function(data)
+						// {
+						// 	alert('Thành công');
+						// },
+						error:function(data)
+						{
+							alert('Lỗi');
+						}
+					});
+				}
+			});
+		});
+    </script>
+
+    <!-- jQuery UI -->
+    <script src="~/public/admin/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    <script src="~/public/admin/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="~/public/admin/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- Datatables -->
+    <script src="~/public/admin/js/plugin/datatables/datatables.min.js"></script>
+    <!-- Atlantis JS -->
+    <script src="~/public/admin/js/atlantis.min.js"></script>
+    <!-- Atlantis DEMO methods, don't include it in your project! -->
+    <script src="~/public/admin/js/setting-demo2.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#basic-datatables').DataTable({
+            });
+
+            // Add Row
+            $('#add-row').DataTable({
+                "pageLength": 10,
+            });
+
+            $('#multi-filter-select').DataTable({
+                "pageLength": 10,
+                initComplete: function () {
+                    this.api().columns().every(function () {
+                        var column = this;
+                        var select = $('<select class="form-control"><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        });
+                    });
+                },
+                "bDestroy": true
+            });
+            var action = '<td> <div class="form-button-action"> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Cập nhật bình luận"> <i class="fa fa-edit"></i> </button> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+
+            $('#addRowButton').click(function () {
+                $('#add-row').dataTable().fnAddData([
+                    $("#addName").val(),
+                    $("#addPosition").val(),
+                    $("#addOffice").val(),
+                    action
+                ]);
+                $('#addRowModal').modal('hide');
+
+            });
+        });
+    </script>
+

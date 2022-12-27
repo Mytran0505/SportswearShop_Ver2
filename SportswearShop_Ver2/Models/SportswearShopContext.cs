@@ -6,6 +6,8 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using SportswearShop_Ver2.Controllers;
 using System;
+using ITGoShop_F_Ver2.Controllers;
+using System.ComponentModel.Design;
 
 namespace SportswearShop_Ver2.Models
 {
@@ -454,6 +456,115 @@ namespace SportswearShop_Ver2.Models
 
             }
             return list;
+        }
+
+        public List<Comment> getAllComments()
+        {
+            List<Comment> list = new List<Comment>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from comment";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new Comment()
+                        {
+                            CommentId = Convert.ToInt32(reader["CommentId"]),
+                            CommentContent = reader["CommentContent"].ToString(),
+                            UserId = Convert.ToInt32(reader["UserId"]),
+                            ProductId = Convert.ToInt32(reader["ProductId"]),
+                            CommentStatus = Convert.ToInt32(reader["CommentStatus"]),
+                            Reply = Convert.ToInt32(reader["Reply"]),
+                            ParentComment = Convert.ToInt32(reader["ParentComment"]),
+                            CreatedAt = Convert.ToDateTime(reader["CreatedAt"]),
+                            UpdatedAt = Convert.ToDateTime(reader["UpdatedAt"]),
+                         
+                        });
+                    }
+                    reader.Close();
+                }
+
+                conn.Close();
+
+            }
+            return list;
+        }
+
+        public void updateCommentStatus(int CommentId, int Status)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE comment SET CommentStatus = @status WHERE CommentId=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("status", Status);
+                cmd.Parameters.AddWithValue("id", CommentId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void updateCommentStatus(int ParentComment)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE comment Reply =1  WHERE CommentId=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("id", ParentComment);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void addComment(Comment comment)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "INSERT INTO comment(CommentId, CommentContent, UserId, ProductId, CommentStatus, Reply, ParentComment, CreatedAt, UpdatedAt) " +
+                    "VALUES (@comId, @comcont,@userId, @ProID, @comsta, @rep, @parentcom, @CreateAt, @UpdateAt)";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("comId", comment.CommentId);
+                cmd.Parameters.AddWithValue("comcont", comment.CommentContent);
+                cmd.Parameters.AddWithValue("userId", comment.UserId);
+                cmd.Parameters.AddWithValue("ProID", comment.ProductId);
+                cmd.Parameters.AddWithValue("comsta", comment.CommentStatus);
+                cmd.Parameters.AddWithValue("rep", comment.Reply);
+                cmd.Parameters.AddWithValue("parentcom", comment.ParentComment);
+                cmd.Parameters.AddWithValue("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("UpdateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void updateCommentReply(int CommentId, int Reply)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE comment SET Replay = @rep WHERE CommentId=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("rep", Reply);
+                cmd.Parameters.AddWithValue("id", CommentId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void deleteComment(int commentId)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "Delete from wishlist where ParentComment = @Parcomt";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("Parcomt", commentId);
+                cmd.ExecuteNonQuery();
+
+                var str1 = "Delete from wishlist where CommentId = @comt";
+                MySqlCommand cmd1 = new MySqlCommand(str1, conn);
+                cmd1.Parameters.AddWithValue("comt", commentId);
+                cmd1.ExecuteNonQuery();
+            }
         }
         public object getProductDetail(int productId)
         {
