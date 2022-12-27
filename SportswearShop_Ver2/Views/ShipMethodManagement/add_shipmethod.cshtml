@@ -1,0 +1,92 @@
+﻿@{ ViewData["Title"] = "Thêm phương thức vận chuyển";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Forms</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="#">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">Forms</a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">Basic Form</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Thêm phương thức vận chuyển</div>
+                        </div>
+                        <form role="form" action="/ShipMethodManagement/save_shipmethod" method="post" enctype="multipart/form-data">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="email2">Tên phương thức vận chuyển</label>
+                                            <input type="text" name="ShipMethodName" class="form-control" id="email2" required>
+                                            <!-- <small id="emailHelp2" class="form-text text-muted">Lưu ý: ...</small> -->
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label for="email2">Thời gian vận chuyển (DVT: giờ/hours)</label>
+                                            <input type="number" min="0" name="EstimatedDeliveryTime" class="form-control" id="email2" placeholder="Nhập số ngày vận chuyển dự kiến" required>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="mb-3"><b>Phí vận chuyển</b></label>
+                                            <div class="input-group mb-3">
+                                                <input type="text" name="ShipFee" class="form-control" aria-label="Amount (to the nearest dollar)" required>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">VND</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label d-block">Hiển thị</label>
+                                            <div class="selectgroup selectgroup-secondary selectgroup-pills">
+                                                <label class="selectgroup-item">
+                                                    <input type="radio" name="Status" value="1" class="selectgroup-input" checked="">
+                                                    <span class="selectgroup-button selectgroup-button-icon"><i class="fa fa-eye"></i></span>
+                                                </label>
+                                                <label class="selectgroup-item">
+                                                    <input type="radio" name="Status" value="0" class="selectgroup-input">
+                                                    <span class="selectgroup-button selectgroup-button-icon"><i class="fa fa-eye-slash"></i></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="card-action">
+                                <button type="submit" class="btn btn-success">Thêm phương thức vận chuyển</button>
+                                <a href="/ShipMethodManagement/view_shipmethod" class="btn btn-danger">Hủy</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

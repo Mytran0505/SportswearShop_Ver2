@@ -1313,7 +1313,115 @@ namespace SportswearShop_Ver2.Models
 
             
         }
+        public List<ShipMethod> getAllShipMethod()
+        {
+            List<ShipMethod> list = new List<ShipMethod>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from shipmethod";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new ShipMethod()
+                        {
+                            ShipMethodId = Convert.ToInt32(reader["ShipMethodId"]),
+                            ShipMethodName = reader["ShipMethodName"].ToString(),
+                            ShipFee = Convert.ToInt32(reader["ShipFee"]),
+                            EstimatedDeliveryTime = Convert.ToInt32(reader["EstimatedDeliveryTime"]),
+                            Status = Convert.ToInt32(reader["Status"])
+                        });
+                    }
+                    reader.Close();
+                }
 
+                conn.Close();
+
+            }
+            return list;
+        }
+        public void updateShipMethodStatus(int shipMethodId, int status)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE shipmethod SET Status = @status WHERE ShipMethodId=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("status", status);
+                cmd.Parameters.AddWithValue("id", shipMethodId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void deleteShipMethod(int shipmethodId)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "delete from shipmethod WHERE ShipMethodId=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("id", shipmethodId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void saveShipMethod(ShipMethod newShipMethod)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "INSERT INTO shipmethod(ShipMethodId, ShipMethodName, ShipFee, EstimatedDeliveryTime, Status, CreatedAt) VALUES (@MethobId,@methobName,@fee,@Estimate,@tus,@createAt)";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("MethobId", newShipMethod.ShipMethodId);
+                cmd.Parameters.AddWithValue("methobName", newShipMethod.ShipMethodName);
+                cmd.Parameters.AddWithValue("fee", newShipMethod.ShipFee);
+                cmd.Parameters.AddWithValue("Estimate", newShipMethod.EstimatedDeliveryTime);
+                cmd.Parameters.AddWithValue("tus", newShipMethod.Status);
+                cmd.Parameters.AddWithValue("createAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public List<object> getAllExtraShipfee()
+        {
+            List<object> list = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = @"SELECT QH.name as quanhuyen , TP.name as tinhtp, maqh, ExtraShippingFee 
+                            FROM devvn_quanhuyen QH JOIN devvn_tinhthanhpho TP ON QH.matp = TP.matp;";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var obj = new
+                        {
+                            quanhuyen = reader["quanhuyen"].ToString(),
+                            maqh = reader["maqh"].ToString(),
+                            ExtraShippingFee = Convert.ToInt32(reader["ExtraShippingFee"]),
+                            tinhtp = reader["tinhtp"].ToString(),
+                        };
+                        list.Add(obj);
+                    }
+                }
+            }
+            return list;
+        }
+
+        public void updateExtraShipfee(string maqh, int newExtraShippingFee)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE devvn_quanhuyen SET ExtraShippingFee = @ExtraFee WHERE maqh=@ma";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("ExtraFee", newExtraShippingFee);
+                cmd.Parameters.AddWithValue("ma", maqh);
+                cmd.ExecuteNonQuery();
+            }
+        }
         public void updateLastLogin(int userId)
 		{
 			using (MySqlConnection conn = GetConnection())
