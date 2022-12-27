@@ -35,14 +35,13 @@
 <body>
     <div class="container" style="font-size:22px;">
         <div class="row" style="margin-top: 40px;">
-            <div class="col-sm-1">
-                <img src="~/public/client/Images/logo3.png" alt="">
+            <div class="col-sm-2">
+                <img src="~/public/images/icons/sport.png" alt="SportswearShop" style="margin-top: 15px;" width="150" height="auto">
             </div>
-            <div class="col-sm-11">
+            <div class="col-sm-10">
                 <b>SPORTSWEAR SHOP</b>
                 <p>Trường ĐH Công nghệ Thông tin, khu phố 6, Linh Trung, Thủ Đức, TP Hồ Chí Minh</p>
             </div>
-            
         </div>
         <hr style="margin:20px 0px 40px 0px">
         <div class="row" style="margin-bottom:40px;">
@@ -50,21 +49,29 @@
                 <b style="font-size: 26px;">HÓA ĐƠN BÁN HÀNG</b>
                 <br><p style="color:#F70C72;">(Số hóa đơn: #@orderInfo.GetType().GetProperty("Id").GetValue(orderInfo, null))</p></div>
             <div class="col-md-12" style="text-align: right;">
-                <p>Ngày hóa đơn: 30/11/2021</p>
+                <p>Ngày hóa đơn: @orderInfo.GetType().GetProperty("CreatedAt").GetValue(orderInfo, null).ToString("dd-MM-yyyy")</p>
                 <!-- <p>Người bán hàng: Lê Thị Hồng Cúc</p> -->
             </div>
         </div>
         <p><b style="font-size: 24px;">I. Thông tin hóa đơn</b></p>
         <div class="row">
             <div class="col-md-6">
+                <p>Thông tin khách hàng mua:</p>
+                <p>ID: @ViewBag.CustomerId</p>
                 <p>Tên khách hàng: @orderInfo.GetType().GetProperty("LastName").GetValue(orderInfo, null)  @orderInfo.GetType().GetProperty("FirstName").GetValue(orderInfo, null)</p>
-                <p>Số điện thoại: @ViewBag.DefaultShippingAddress.GetType().GetProperty("Phone").GetValue(@ViewBag.DefaultShippingAddress, null)</p>
-                <p>Địa chỉ: @ViewBag.DefaultShippingAddress.GetType().GetProperty("Address").GetValue(@ViewBag.DefaultShippingAddress, null), @ViewBag.DefaultShippingAddress.GetType().GetProperty("XaPhuong").GetValue(@ViewBag.DefaultShippingAddress, null), @ViewBag.DefaultShippingAddress.GetType().GetProperty("QuanHuyen").GetValue(@ViewBag.DefaultShippingAddress, null), @ViewBag.DefaultShippingAddress.GetType().GetProperty("ThanhPho").GetValue(@ViewBag.DefaultShippingAddress, null)</p>
 
+                
             </div>
             <div class="col-md-6">
                 <p>Hình thức giao hàng: @orderInfo.GetType().GetProperty("ShipMethod").GetValue(orderInfo, null)</p>
                 <p>Hình thức thanh toán:  @orderInfo.GetType().GetProperty("PaymentMethod").GetValue(orderInfo, null)</p>
+            </div>
+            <div class="col-md-12">
+                <p>Thông tin nhận hàng:</p>
+                <p>Họ tên người nhận: @ViewBag.DefaultShippingAddress.GetType().GetProperty("ReceiverName").GetValue(@ViewBag.DefaultShippingAddress, null)</p>
+                <p>Số điện thoại: @ViewBag.DefaultShippingAddress.GetType().GetProperty("Phone").GetValue(@ViewBag.DefaultShippingAddress, null)</p>
+                <p>Địa chỉ: @ViewBag.DefaultShippingAddress.GetType().GetProperty("Address").GetValue(@ViewBag.DefaultShippingAddress, null), @ViewBag.DefaultShippingAddress.GetType().GetProperty("XaPhuong").GetValue(@ViewBag.DefaultShippingAddress, null), @ViewBag.DefaultShippingAddress.GetType().GetProperty("QuanHuyen").GetValue(@ViewBag.DefaultShippingAddress, null), @ViewBag.DefaultShippingAddress.GetType().GetProperty("ThanhPho").GetValue(@ViewBag.DefaultShippingAddress, null)</p>
+
             </div>
         </div>
 
@@ -84,7 +91,7 @@
                             <tr>
                                 <td>@item.GetType().GetProperty("ProductName").GetValue(item, null)</td>
                                 <td>@item.GetType().GetProperty("UnitPrice").GetValue(item, null).ToString("#,###", cul.NumberFormat)  ₫</td>
-                                <td>x@(@item.GetType().GetProperty("OrderQuantity").GetValue(item, null).ToString("#,###", cul.NumberFormat)) ₫</td>
+                                <td style="text-align:right">x@(@item.GetType().GetProperty("OrderQuantity").GetValue(item, null).ToString("#,###", cul.NumberFormat))</td>
                                 <td style="text-align:right">@((item.GetType().GetProperty("UnitPrice").GetValue(item, null) * item.GetType().GetProperty("OrderQuantity").GetValue(item, null)).ToString("#,###", cul.NumberFormat))  ₫</td>
                             </tr>
                             sum += (item.GetType().GetProperty("UnitPrice").GetValue(item, null) * item.GetType().GetProperty("OrderQuantity").GetValue(item, null));
@@ -103,7 +110,7 @@
                             <p>@sum.ToString("#,###", cul.NumberFormat) ₫</p>
                             <p>- 0 ₫</p>
                             <p>@orderInfo.GetType().GetProperty("ShipFee").GetValue(orderInfo, null).ToString("#,###", cul.NumberFormat) ₫</p>
-                            <p style="color: red; font-size: 24px;">@orderInfo.GetType().GetProperty("Total").GetValue(orderInfo, null).ToString("#,###", cul.NumberFormat) ₫</p>
+                            <p style="color: red; font-size: 24px;">@orderInfo.GetType().GetProperty("TotalMoney").GetValue(orderInfo, null).ToString("#,###", cul.NumberFormat) ₫</p>
                         </td>
                     </tr>
                 </table>
@@ -132,7 +139,7 @@
         <div class="row" style="margin-bottom:10px;">
             <div class="col-md-12" style="text-align: center;">
                 <hr>
-                <b>Cảm ơn quý khách đã tin tưởng và mua hàng tại ITGoShop!</b>
+                <b>Cảm ơn quý khách đã tin tưởng và mua hàng tại SportswearShop!</b>
                 <hr>
             </div>
         </div>

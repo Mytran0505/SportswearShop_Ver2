@@ -889,7 +889,7 @@ namespace SportswearShop_Ver2.Models
                             CreatedAt = Convert.ToDateTime(reader["created_at"]),
                             Payment_status = reader["payment_status"].ToString(),
                             ShipFee = Convert.ToInt32(reader["ShipFee"]),
-                            ShipMethodd = reader["ShipMethod"].ToString(),
+                            ShipMethod = reader["ShipMethod"].ToString(),
                             PaymentMethod = reader["PaymentMethod"].ToString(),
                             Mobile = reader["Mobile"].ToString(),
                             Email = reader["Email"].ToString(),
@@ -902,6 +902,27 @@ namespace SportswearShop_Ver2.Models
             }
             return billtInfo;
         }
+
+        public int getCustomerIdFromOrderInfo(int oderId)
+        {
+            int cusID = 0;
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT customer_id FROM bill_khachhangs WHERE Id = @billId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("billId", oderId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        cusID = Convert.ToInt32(reader["customer_id"]);
+                    }
+                }
+            }
+            return cusID;
+        }
+
         public List<object> getOrderDetail(int orderId)
         {
             List<object> list = new List<object>();

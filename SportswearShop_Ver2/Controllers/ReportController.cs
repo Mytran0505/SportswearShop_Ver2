@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Org.BouncyCastle.Asn1.X9;
 
 namespace SportswearShop_Ver2.Controllers
 {
@@ -38,9 +39,11 @@ namespace SportswearShop_Ver2.Controllers
         {
             SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
             var OrderInfo = context.getOrderInfo(orderId);
-            ViewBag.DefaultShippingAddress = context.getDefaultShippingAddress((int)OrderInfo.GetType().GetProperty("Id").GetValue(OrderInfo, null));
-            ViewBag.OrderInfo = OrderInfo;
+            int customerId = context.getCustomerIdFromOrderInfo(orderId);
+            ViewBag.CustomerId = customerId;
             ViewBag.OrderDetail = context.getOrderDetail(orderId);
+            ViewBag.DefaultShippingAddress = context.getDefaultShippingAddress(customerId);
+            ViewBag.OrderInfo = OrderInfo;
             return View();
         }
     }
