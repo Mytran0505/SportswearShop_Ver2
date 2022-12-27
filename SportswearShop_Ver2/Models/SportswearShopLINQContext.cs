@@ -322,7 +322,7 @@ namespace SportswearShop_Ver2.Models
         //{
         //    OrderTracking orderTracking = new OrderTracking(OrderId, OrderStatus, DateTime.Now);
         //    var ot = OrderTracking.Where(p => p.OrderId == OrderId && p.OrderStatus == OrderStatus).FirstOrDefault();
-        //    if(ot == null) // nếu dữ liệu chưa tồn tài thì mới thêm
+        //    if (ot == null) // nếu dữ liệu chưa tồn tài thì mới thêm
         //    {
         //        OrderTracking.Add(orderTracking);
         //        SaveChanges();

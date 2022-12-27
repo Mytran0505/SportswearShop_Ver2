@@ -981,6 +981,47 @@ namespace SportswearShop_Ver2.Models
             }
         }
 
+        public void addOrderTracking(int OrderId, string OrderStatus)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "INSERT INTO ordertracking(OrderId, OrderStatus, CreatedAt) VALUES (@OrderId,@OderStatus,@CreateAt)";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("OrderId", OrderId);
+                cmd.Parameters.AddWithValue("OderStatus", OrderStatus);
+                cmd.Parameters.AddWithValue("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public List<OrderTracking> getOrderTracking(int orderId)
+        {
+            List<OrderTracking> list = new List<OrderTracking>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from ordertracking where OrderId = @OrderId order by CreatedAt desc";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("OrderId", orderId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new OrderTracking()
+                        {
+                            OrderId = Convert.ToInt32(reader["OrderId"]),
+                            OrderStatus = reader["OrderStatus"].ToString(),
+                            CreatedAt = Convert.ToDateTime(reader["CreatedAt"]),
+                        });
+                    }
+                    reader.Close();
+                }
+
+                conn.Close();
+
+            }
+            return list;
+        }
         public int createOrder(BillKhachHang order)
         {
             using (MySqlConnection conn = GetConnection())

@@ -95,7 +95,7 @@ namespace SportswearShop_Ver2.Controllers
             int orderId = context.createOrder(order);
 
             //// Thêm theo dõi đơn hàng
-            //linqContext.addOrderTracking(orderId, "Đặt hàng thành công");
+            context.addOrderTracking(orderId, "Đặt hàng thành công");
 
             foreach (var item in cart)
             {
