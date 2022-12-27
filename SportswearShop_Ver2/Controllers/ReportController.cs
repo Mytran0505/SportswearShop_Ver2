@@ -33,5 +33,15 @@ namespace SportswearShop_Ver2.Controllers
             ViewBag.topProducts = context.getTopProductNoLimit(dauThangTruoc, homNay);
             return View();
         }
+
+        public IActionResult print_invoice(int orderId)
+        {
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            var OrderInfo = context.getOrderInfo(orderId);
+            ViewBag.DefaultShippingAddress = context.getDefaultShippingAddress((int)OrderInfo.GetType().GetProperty("Id").GetValue(OrderInfo, null));
+            ViewBag.OrderInfo = OrderInfo;
+            ViewBag.OrderDetail = context.getOrderDetail(orderId);
+            return View();
+        }
     }
 }

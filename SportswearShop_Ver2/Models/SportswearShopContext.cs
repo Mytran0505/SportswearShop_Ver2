@@ -537,7 +537,7 @@ namespace SportswearShop_Ver2.Models
                 conn.Open();
                 var str = "SELECT P.ID AS PID, Quantity, P.NAME AS PNAME, P.IMAGE AS PIMAGE, PRICE_SALE, C.ID AS CID, M.ID AS MID, content, C.NAME AS CNAME, M.NAME AS MNAME " +
                     "FROM MENUS M, PRODUCTS P, CATEGORY C" +
-                    " WHERE active =1 and M.PARENT_ID = C.ID AND P.MENU_ID = M.ID AND P.id != @ProId AND M.ID = @MenuId";
+                    " WHERE P.active =1 and M.PARENT_ID = C.ID AND P.MENU_ID = M.ID AND P.id != @ProId AND M.ID = @MenuId";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("ProId", productId);
                 cmd.Parameters.AddWithValue("MenuId", menuId);

@@ -1,0 +1,146 @@
+﻿@using Microsoft.AspNetCore.Http
+@using System.Globalization
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{ string adminFirstName = HttpContextAccessor.HttpContext.Session.GetString("adminFirstName");
+    string adminLastName = HttpContextAccessor.HttpContext.Session.GetString("adminLastName");
+    string adminImage = HttpContextAccessor.HttpContext.Session.GetString("adminImage");
+    if (string.IsNullOrEmpty(adminImage))
+    {
+        adminImage = "default-user-icon.png";
+    }
+    Layout = null;
+    CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
+    var orderInfo = ViewBag.OrderInfo;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In đơn hàng #@orderInfo.GetType().GetProperty("Id").GetValue(orderInfo, null)</title>
+    <link rel="icon" type="image/png" href="~/public/admin/images/pdf-icon.jpg" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container" style="font-size:22px;">
+        <div class="row" style="margin-top: 40px;">
+            <div class="col-sm-1">
+                <img src="~/public/client/Images/logo3.png" alt="">
+            </div>
+            <div class="col-sm-11">
+                <b>SPORTSWEAR SHOP</b>
+                <p>Trường ĐH Công nghệ Thông tin, khu phố 6, Linh Trung, Thủ Đức, TP Hồ Chí Minh</p>
+            </div>
+            
+        </div>
+        <hr style="margin:20px 0px 40px 0px">
+        <div class="row" style="margin-bottom:40px;">
+            <div class="col-md-12" style="text-align: center;">
+                <b style="font-size: 26px;">HÓA ĐƠN BÁN HÀNG</b>
+                <br><p style="color:#F70C72;">(Số hóa đơn: #@orderInfo.GetType().GetProperty("Id").GetValue(orderInfo, null))</p></div>
+            <div class="col-md-12" style="text-align: right;">
+                <p>Ngày hóa đơn: 30/11/2021</p>
+                <!-- <p>Người bán hàng: Lê Thị Hồng Cúc</p> -->
+            </div>
+        </div>
+        <p><b style="font-size: 24px;">I. Thông tin hóa đơn</b></p>
+        <div class="row">
+            <div class="col-md-6">
+                <p>Tên khách hàng: @orderInfo.GetType().GetProperty("LastName").GetValue(orderInfo, null)  @orderInfo.GetType().GetProperty("FirstName").GetValue(orderInfo, null)</p>
+                <p>Số điện thoại: @ViewBag.DefaultShippingAddress.GetType().GetProperty("Phone").GetValue(@ViewBag.DefaultShippingAddress, null)</p>
+                <p>Địa chỉ: @ViewBag.DefaultShippingAddress.GetType().GetProperty("Address").GetValue(@ViewBag.DefaultShippingAddress, null), @ViewBag.DefaultShippingAddress.GetType().GetProperty("XaPhuong").GetValue(@ViewBag.DefaultShippingAddress, null), @ViewBag.DefaultShippingAddress.GetType().GetProperty("QuanHuyen").GetValue(@ViewBag.DefaultShippingAddress, null), @ViewBag.DefaultShippingAddress.GetType().GetProperty("ThanhPho").GetValue(@ViewBag.DefaultShippingAddress, null)</p>
+
+            </div>
+            <div class="col-md-6">
+                <p>Hình thức giao hàng: @orderInfo.GetType().GetProperty("ShipMethod").GetValue(orderInfo, null)</p>
+                <p>Hình thức thanh toán:  @orderInfo.GetType().GetProperty("PaymentMethod").GetValue(orderInfo, null)</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <p><b style="font-size: 24px;">II. Chi tiết hóa đơn</b></p>
+                <table class="table">
+                    <tr>
+                        <th style="max-width: 200px;">Sản phẩm</th>
+                        <th>Đơn giá</th>
+                        <th>Số lượng</th>
+                        <th style="text-align:right">Thành tiền</th>
+                    </tr>
+                     @{ int sum = 0; }
+                        @foreach(var item in ViewBag.OrderDetail)
+                        {
+                            <tr>
+                                <td>@item.GetType().GetProperty("ProductName").GetValue(item, null)</td>
+                                <td>@item.GetType().GetProperty("UnitPrice").GetValue(item, null).ToString("#,###", cul.NumberFormat)  ₫</td>
+                                <td>x@(@item.GetType().GetProperty("OrderQuantity").GetValue(item, null).ToString("#,###", cul.NumberFormat)) ₫</td>
+                                <td style="text-align:right">@((item.GetType().GetProperty("UnitPrice").GetValue(item, null) * item.GetType().GetProperty("OrderQuantity").GetValue(item, null)).ToString("#,###", cul.NumberFormat))  ₫</td>
+                            </tr>
+                            sum += (item.GetType().GetProperty("UnitPrice").GetValue(item, null) * item.GetType().GetProperty("OrderQuantity").GetValue(item, null));
+                        }                     
+                    <tr>
+                        <td colspan="2">
+                        </td>
+                        <td>
+                            <p>Tạm tính</p>
+                            <p>Giảm giá</p>
+                            <p>Phí vận chuyển</p>
+                            <p style="font-weight: bold;">Tổng cộng</p>
+                        </td>
+
+                        <td style="text-align: right;">
+                            <p>@sum.ToString("#,###", cul.NumberFormat) ₫</p>
+                            <p>- 0 ₫</p>
+                            <p>@orderInfo.GetType().GetProperty("ShipFee").GetValue(orderInfo, null).ToString("#,###", cul.NumberFormat) ₫</p>
+                            <p style="color: red; font-size: 24px;">@orderInfo.GetType().GetProperty("Total").GetValue(orderInfo, null).ToString("#,###", cul.NumberFormat) ₫</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-4" style="text-align: center;">
+                <p style="margin:20px 0px 100px 0px">
+                    <b>Khách hàng</b><br>
+                    <i>(Kí và ghi rõ họ tên)</i>
+                </p>
+
+                <p>@orderInfo.GetType().GetProperty("LastName").GetValue(orderInfo, null)  @orderInfo.GetType().GetProperty("FirstName").GetValue(orderInfo, null)</p>
+            </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-4" style="text-align: center;">
+                <p style="margin:20px 0px 100px 0px">
+                    <b>Người lập hóa đơn</b><br>
+                    <i>(Kí, đóng dấu và ghi rõ họ tên)</i>
+                </p>
+
+                <p>@adminLastName @adminFirstName</p>
+            </div>
+        </div>
+        <div class="row" style="margin-bottom:10px;">
+            <div class="col-md-12" style="text-align: center;">
+                <hr>
+                <b>Cảm ơn quý khách đã tin tưởng và mua hàng tại ITGoShop!</b>
+                <hr>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            window.print();
+        });
+    </script>
+</body>
+</html>
