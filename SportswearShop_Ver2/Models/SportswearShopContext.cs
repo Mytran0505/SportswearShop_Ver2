@@ -534,7 +534,9 @@ namespace SportswearShop_Ver2.Models
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                var str = "SELECT P.ID AS PID, Quantity, P.NAME AS PNAME, P.IMAGE AS PIMAGE, PRICE_SALE, C.ID AS CID, M.ID AS MID, content, C.NAME AS CNAME, M.NAME AS MNAME FROM MENUS M, PRODUCTS P, CATEGORY C WHERE M.PARENT_ID = C.ID AND P.MENU_ID = M.ID AND P.id != @ProId AND M.ID = @MenuId";
+                var str = "SELECT P.ID AS PID, Quantity, P.NAME AS PNAME, P.IMAGE AS PIMAGE, PRICE_SALE, C.ID AS CID, M.ID AS MID, content, C.NAME AS CNAME, M.NAME AS MNAME " +
+                    "FROM MENUS M, PRODUCTS P, CATEGORY C" +
+                    " WHERE M.PARENT_ID = C.ID AND P.MENU_ID = M.ID AND P.id != @ProId AND M.ID = @MenuId";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("ProId", productId);
                 cmd.Parameters.AddWithValue("MenuId", menuId);
@@ -1016,6 +1018,8 @@ namespace SportswearShop_Ver2.Models
             }
         }
 
+        
+
         public void addOrderTracking(int OrderId, string OrderStatus)
         {
             using (MySqlConnection conn = GetConnection())
@@ -1217,6 +1221,59 @@ namespace SportswearShop_Ver2.Models
 
             }
             return list;
+        }
+
+        public int isProductExistInWishlist(int userId, int productId)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                int wishlist = 0;
+                conn.Open();
+                var str = "SELECT count(*) as SL from wishlist where UserId = @userId and ProductId = @ProId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("userId", userId);
+                cmd.Parameters.AddWithValue("ProId", productId);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        wishlist = Convert.ToInt32(reader["SL"]);
+                    }
+                }
+                if (wishlist > 0)
+                {
+                    System.Diagnostics.Debug.WriteLine("Wish list: " + userId + " " + productId);
+                    return 0; //Sản phẩm đã tồn tại trong wishlist
+                }
+            }
+            return 1;
+        }
+        public void remove_product_from_wishlist(int userId, int productId)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                int wishlist = 0;
+                conn.Open();
+                var str = "Delete from wishlist where UserId = @userId and ProductId = @ProId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("userId", userId);
+                cmd.Parameters.AddWithValue("ProId", productId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void add_product_to_wishlist(int userId, int productId)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "INSERT INTO wishlist(userId, productId, CreatedAt) VALUES (@Id, @proId,@CreateAt)";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("Id", userId);
+                cmd.Parameters.AddWithValue("proId", productId);
+                cmd.Parameters.AddWithValue("CreateAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.ExecuteNonQuery();
+            }
         }
         public void saveShippingAddress(ShippingAddress shippingAddress)
         {

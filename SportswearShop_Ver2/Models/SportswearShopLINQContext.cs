@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MySql.Data.EntityFrameworkCore;
 
 
 namespace SportswearShop_Ver2.Models
@@ -14,7 +15,7 @@ namespace SportswearShop_Ver2.Models
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
         //    base.OnConfiguring(optionsBuilder);
-        //    optionsBuilder.UseMySQL(connectionString);
+        //    optionsBuilder.UseMySql(connectionString);
         //}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

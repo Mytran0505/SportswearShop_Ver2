@@ -83,7 +83,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-4">
-                                <img style="margin: auto; max-width: 250px; max-height: 250px; width: auto; height: auto; " src="~/public/images_upload/product/@item.GetType().GetProperty("ProductImage").GetValue(item, null)" alt="#">
+                                <img style="margin: auto; max-width: 250px; max-height: 250px; width: auto; height: auto; " src="@item.GetType().GetProperty("ProductImage").GetValue(item, null)" alt="#">
                             </div>
                             <div class="col-sm-8">
                                 <div class="button" style="float:right">

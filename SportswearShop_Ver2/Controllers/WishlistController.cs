@@ -30,18 +30,18 @@ namespace ITGoShop_F_Ver2.Controllers
         }
         public void remove_product_from_wishlist(int ProductId)
         {
-            SportswearShopLINQContext linqContext = new SportswearShopLINQContext();
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
             int customerId = Convert.ToInt32(HttpContext.Session.GetInt32("customerId"));
-            linqContext.remove_product_from_wishlist(customerId, ProductId);
+            context.remove_product_from_wishlist(customerId, ProductId);
         }
 
         public int add_product_to_wishlist(int ProductId)
         {
-            SportswearShopLINQContext linqContext = new SportswearShopLINQContext();
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
             int customerId = Convert.ToInt32(HttpContext.Session.GetInt32("customerId"));
-            if (linqContext.isProductExistInWishlist(customerId, ProductId) != 0)
+            if (context.isProductExistInWishlist(customerId, ProductId) != 0)
             {
-                linqContext.add_product_to_wishlist(customerId, ProductId);
+                context.add_product_to_wishlist(customerId, ProductId);
                 return 1;
             }
             return 0; // Sản phẩm đã tồn tại trong wishlist
