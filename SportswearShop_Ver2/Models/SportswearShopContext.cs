@@ -458,37 +458,36 @@ namespace SportswearShop_Ver2.Models
             return list;
         }
 
-        public List<Comment> getAllComments()
+        public List<object> getAllComments()
         {
-            List<Comment> list = new List<Comment>();
+            List<object> list = new List<object>();
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                string str = "select * from comment";
+                var str = "SELECT * FROM (COMMENT C " +
+                    "JOIN USER U ON C.UserId = U.UserId) " +
+                    "JOIN PRODUCTs P ON P.Id = C.ProductId " +
+                    "WHERE ParentComment IS NULL " +
+                    "ORDER BY Reply ASC, CommentId DESC;";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        list.Add(new Comment()
+                        var obj = new
                         {
                             CommentId = Convert.ToInt32(reader["CommentId"]),
                             CommentContent = reader["CommentContent"].ToString(),
-                            UserId = Convert.ToInt32(reader["UserId"]),
-                            ProductId = Convert.ToInt32(reader["ProductId"]),
-                            CommentStatus = Convert.ToInt32(reader["CommentStatus"]),
+                            UserName = reader["LastName"].ToString() + " " + reader["FirstName"].ToString(),
+                            ProductName = reader["Name"].ToString(),
+                            CreatedAt = ((DateTime)reader["CreatedAt"]).ToString("dd-MM-yyyy"),
                             Reply = Convert.ToInt32(reader["Reply"]),
-                            ParentComment = Convert.ToInt32(reader["ParentComment"]),
-                            CreatedAt = Convert.ToDateTime(reader["CreatedAt"]),
-                            UpdatedAt = Convert.ToDateTime(reader["UpdatedAt"]),
-                         
-                        });
+                            CommentStatus = Convert.ToInt32(reader["CommentStatus"]),
+                            ProductId = Convert.ToInt32(reader["Id"]),
+                        };
+                        list.Add(obj);
                     }
-                    reader.Close();
                 }
-
-                conn.Close();
-
             }
             return list;
         }
@@ -511,7 +510,7 @@ namespace SportswearShop_Ver2.Models
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                var str = "UPDATE comment Reply =1  WHERE CommentId=@id";
+                var str = "UPDATE comment set Reply =1  WHERE CommentId=@id";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("id", ParentComment);
                 cmd.ExecuteNonQuery();
@@ -543,7 +542,7 @@ namespace SportswearShop_Ver2.Models
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                var str = "UPDATE comment SET Replay = @rep WHERE CommentId=@id";
+                var str = "UPDATE comment SET Reply = @rep WHERE CommentId=@id";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("rep", Reply);
                 cmd.Parameters.AddWithValue("id", CommentId);
@@ -555,16 +554,87 @@ namespace SportswearShop_Ver2.Models
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                var str = "Delete from wishlist where ParentComment = @Parcomt";
+                var str = "Delete from comment where ParentComment = @Parcomt";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("Parcomt", commentId);
                 cmd.ExecuteNonQuery();
 
-                var str1 = "Delete from wishlist where CommentId = @comt";
+                var str1 = "Delete from comment where CommentId = @comt";
                 MySqlCommand cmd1 = new MySqlCommand(str1, conn);
                 cmd1.Parameters.AddWithValue("comt", commentId);
                 cmd1.ExecuteNonQuery();
             }
+        }
+
+        public List<object> getCommentParentCommentForProductDetail(int productId)
+        {
+            List<object> list = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = @"SELECT CommentId, ProductId, C.UserId, UserImage, LastName, FirstName, CommentContent, Admin, C.CreatedAt
+                            FROM COMMENT C JOIN user P ON C.UserId = P.UserId 
+                            WHERE ProductId = @productid
+                            AND ParentComment IS NULL 
+                            AND CommentStatus = 1 
+                            ORDER BY CommentId DESC";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("productid", productId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var obj = new
+                        {
+                            CommentId = Convert.ToInt32(reader[0]),
+                            ProductId = Convert.ToInt32(reader[1]),
+                            UserId = Convert.ToInt32(reader[2]),
+                            UserImage = reader[3].ToString(),
+                            LastName = reader[4].ToString(),
+                            FirstName = reader[5].ToString(),
+                            CommentContent = reader[6].ToString(),
+                            Admin = Convert.ToInt32(reader[7]),
+                            CreatedAt = (DateTime)reader[8],
+                        };
+                        list.Add(obj);
+                    }
+                }
+            }
+            return list;
+        }
+        public List<object> getSubCommentForProductDetail(int commendId)
+        {
+            List<object> list = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = @"SELECT CommentId, ProductId, C.UserId, UserImage, LastName, FirstName, CommentContent, Admin, C.CreatedAt
+                            FROM COMMENT C JOIN user P ON C.UserId = P.UserId 
+                            AND ParentComment = @parentcomment
+                            ORDER BY CommentId DESC";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("parentcomment", commendId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var obj = new
+                        {
+                            CommentId = Convert.ToInt32(reader[0]),
+                            ProductId = Convert.ToInt32(reader[1]),
+                            UserId = Convert.ToInt32(reader[2]),
+                            UserImage = reader[3].ToString(),
+                            LastName = reader[4].ToString(),
+                            FirstName = reader[5].ToString(),
+                            CommentContent = reader[6].ToString(),
+                            Admin = Convert.ToInt32(reader[7]),
+                            CreatedAt = (DateTime)reader[8],
+                        };
+                        list.Add(obj);
+                    }
+                }
+            }
+            return list;
         }
         public object getProductDetail(int productId)
         {
