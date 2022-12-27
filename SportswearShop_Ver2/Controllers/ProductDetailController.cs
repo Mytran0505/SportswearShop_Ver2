@@ -18,7 +18,7 @@ namespace SportswearShop_Ver2.Controllers
             int brandId = (int)(productDetail.GetType().GetProperty("MenuId").GetValue(productDetail, null));
 
             ViewBag.ProductDetail = productDetail;
-            ViewBag.RelatedProduct = context.getRelatedProduct(productId);
+            ViewBag.RelatedProduct = context.getRelatedProduct(productId, brandId);
             //ViewBag.ProductGallary = linqContext.getProductGallary(productId);
             //List<object> ratingList = context.getRating(productId);
             //ViewBag.RatingList = ratingList;

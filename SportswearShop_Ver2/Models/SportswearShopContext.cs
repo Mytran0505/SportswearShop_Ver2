@@ -460,7 +460,7 @@ namespace SportswearShop_Ver2.Models
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                var str = "SELECT P.ID AS PID, Quantity, P.NAME AS PNAME, P.IMAGE AS PIMAGE, PRICE_SALE, C.ID AS CID, M.ID AS MID, content, C.NAME AS CNAME, M.NAME AS MNAME  " +
+                var str = "SELECT P.ID AS PID, Quantity, P.NAME AS PNAME, P.IMAGE AS PIMAGE, SOLD, PRICE_SALE, C.ID AS CID, M.ID AS MID, content, C.NAME AS CNAME, M.NAME AS MNAME  " +
                     "FROM MENUS M, PRODUCTS P, CATEGORY C " +
                     "WHERE M.PARENT_ID = C.ID AND P.MENU_ID=M.ID AND P.ID = @ProductId";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
@@ -482,6 +482,7 @@ namespace SportswearShop_Ver2.Models
                             Content = reader["content"].ToString(),
                             CategoryName = reader["CNAME"].ToString(),
                             MenuName = reader["MNAME"].ToString(),
+                            Sold = Convert.ToInt32(reader["SOLD"]),
                         };
 
                     }
@@ -493,23 +494,56 @@ namespace SportswearShop_Ver2.Models
             }
             return productInfo;
         }
-        public object getRelatedProduct(int productId)
+        public List<object> getMenuOfCatgory(int CategoryId)
         {
-            object productInfo = new object();
+            List<object> MenuInfo = new List<object>();
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                var str = "SELECT P.ID AS PID, Quantity, P.NAME AS PNAME, P.IMAGE AS PIMAGE, PRICE_SALE, C.ID AS CID, M.ID AS MID, content, C.NAME AS CNAME, M.NAME AS MNAME  " +
-                    "FROM MENUS M, PRODUCTS P, CATEGORY C " +
-                    "WHERE M.PARENT_ID = C.ID AND P.MENU_ID=M.ID AND P.ID = @ProductId";
+                var str = "SELECT C.ID AS CID, M.ID AS MID, C.NAME AS CNAME, M.NAME AS MNAME  " +
+                    "FROM MENUS M, CATEGORY C " +
+                    "WHERE M.PARENT_ID = C.ID AND C.ID = @categoryId";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
-                cmd.Parameters.AddWithValue("ProductId", productId);
+                cmd.Parameters.AddWithValue("categoryId", CategoryId);
                 using (var reader = cmd.ExecuteReader())
                 {
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         //System.Diagnostics.Debug.WriteLine("hI: " + reader["CategoryName"].ToString());
-                        productInfo = new
+                        var menuinfo = new
+                        {
+
+                            CategoryId = Convert.ToInt32(reader["CID"]),
+                            MenuId = Convert.ToInt32(reader["MID"]),
+                            CategoryName = reader["CNAME"].ToString(),
+                            MenuName = reader["MNAME"].ToString(),
+                        };
+                        MenuInfo.Add(menuinfo);
+                    }
+                    reader.Close();
+
+                }
+                conn.Close();
+
+            }
+            return MenuInfo;
+        }
+        public List<object> getRelatedProduct(int productId, int menuId)
+        {
+            List<object> list = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT P.ID AS PID, Quantity, P.NAME AS PNAME, P.IMAGE AS PIMAGE, PRICE_SALE, C.ID AS CID, M.ID AS MID, content, C.NAME AS CNAME, M.NAME AS MNAME FROM MENUS M, PRODUCTS P, CATEGORY C WHERE M.PARENT_ID = C.ID AND P.MENU_ID = M.ID AND P.id != @ProId AND M.ID = @MenuId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("ProId", productId);
+                cmd.Parameters.AddWithValue("MenuId", menuId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        //System.Diagnostics.Debug.WriteLine("hI: " + reader["CategoryName"].ToString());
+                        var productInfo = new
                         {
                             ProductId = Convert.ToInt32(reader["PID"]),
                             Quantity = Convert.ToInt32(reader["Quantity"]),
@@ -522,6 +556,7 @@ namespace SportswearShop_Ver2.Models
                             CategoryName = reader["CNAME"].ToString(),
                             MenuName = reader["MNAME"].ToString(),
                         };
+                        list.Add(productInfo);
 
                     }
                     reader.Close();
@@ -530,7 +565,7 @@ namespace SportswearShop_Ver2.Models
                 conn.Close();
 
             }
-            return productInfo;
+            return list;
         }
 
         //public object getRelatedProduct(int productId, int categoryId, int menuId)

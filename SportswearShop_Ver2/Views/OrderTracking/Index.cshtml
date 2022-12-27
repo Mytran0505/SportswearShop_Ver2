@@ -107,7 +107,7 @@
                                     <img style="max-width:80px;" class="rounded" src="@item.GetType().GetProperty("ProductImage").GetValue(item, null)" alt="">
                                 </div>
                                 <div class="col-8">
-                                    <p style="color:black"><a href="@item.GetType().GetProperty("ProductId").GetValue(item, null)" style="text-decoration:none;color:black">@item.GetType().GetProperty("ProductName").GetValue(item, null)</a><br><b>x @item.GetType().GetProperty("OrderQuantity").GetValue(item, null)</b></p>
+                                    <p style="color:black"><a href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("ProductId").GetValue(item, null)" style="text-decoration:none;color:black">@item.GetType().GetProperty("ProductName").GetValue(item, null)</a><br><b>x @item.GetType().GetProperty("OrderQuantity").GetValue(item, null)</b></p>
                                 </div>
                             </div>
                             <hr>
