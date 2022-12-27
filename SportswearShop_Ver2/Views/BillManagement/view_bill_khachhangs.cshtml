@@ -1,8 +1,9 @@
 ﻿@using System.Globalization;
 @{
-    ViewData["Title"] = "Xem đơn hàng";
+    ViewData["Title"] = "Quản lý đơn hàng";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 
+    // Cái này để format tiền
     CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
 }
 <div class="main-panel">
@@ -16,111 +17,237 @@
                             <i class="flaticon-home"></i>
                         </a>
                     </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#">Tất cả</a>
+                    </li>
                 </ul>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="d-flex align-items-center">
-                                <h4 class="card-title">Danh sách đơn hàng</h4>
-                            </div>
+                            <h4 class="card-title">Tất cả đơn hàng</h4>
                         </div>
 
                         <div class="card-body">
-
                             <div class="table-responsive">
-                                <table id="multi-filter-select" class="display table table-striped table-hover">
+                                <table id="basic-datatables" class="display table table-striped table-hover">
                                     <thead>
-                                        <tr>
-                                            <th>Mã đơn hàng</th>
-                                            <th>Thành tiền</th>
-                                            <th>Mã khách hàng</th>
-                                            <th>Ngày mua hàng</th>
-                                            <th>Hành động</th>
+                                        <tr style=" font-size: 12px; font-weight: 500; text-align: center;">
+                                            <th>ID</th>
+                                            <th>Ngày đặt hàng</th>
+                                            <th>Khách hàng</th>
+                                            <th>Tổng đơn hàng</th>
+                                            <th>Trạng thái đơn hàng</th>
+                                            <th>Trạng thái thanh toán</th>
+                                            <th> Thao tác </th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Mã đơn hàng</th>
-                                            <th>Thành tiền</th>
-                                            <th>Mã khách hàng</th>
-                                            <th>Ngày mua hàng</th>
-                                        </tr>
-                                    </tfoot>
+
                                     <tbody>
                                         @foreach (var item in @ViewBag.AllBill)
                                         {
                                             <tr>
-                                                <input type="hidden" class="Id" value="@item.GetType().GetProperty("Id").GetValue(item, null)" />
-                                                <td>@item.GetType().GetProperty("Id").GetValue(item, null)</td>
-                                                <td>@item.GetType().GetProperty("TotalMoney").GetValue(item, null).ToString("#,###", cul.NumberFormat) ₫</td>
-                                                <td>@item.GetType().GetProperty("CustomerId").GetValue(item, null)</td>
-                                                <td>@item.GetType().GetProperty("CreatedAt").GetValue(item, null).ToString("dd-MM-yyyy")</td>
                                                 <td>
-                                                    <div class="form-button-action">
-                                                        <button type="button" onclick="window.open('/Report/print_invoice/?Id=@item.GetType().GetProperty("Id").GetValue(item, null)');" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="In đơn hàng">
-                                                            <a class="active" ui-toggle-class="">
-                                                                <i class="fa fa-print text-active"></i>
-                                                            </a>
-                                                        </button>
-                                                    </div>
+                                                    <a href="/BillManagement/order_detail?orderId=@item.GetType().GetProperty("OrderId").GetValue(item, null)">
+                                                        <span class="OrderId">@item.GetType().GetProperty("OrderId").GetValue(item, null)</span>
+                                                    </a>
+                                                </td>
+                                                <td>@item.GetType().GetProperty("OrderDate").GetValue(item, null).ToString("dd-MM-yyy")</td>
+                                                <td>@item.GetType().GetProperty("LastName").GetValue(item, null) @item.GetType().GetProperty("FirstName").GetValue(item, null)</td>
+                                                <td>@item.GetType().GetProperty("Total").GetValue(item, null).ToString("#,###", cul.NumberFormat) ₫</td>
+
+                                                <td class="OrderStatus" style="color: #77ACF1; font-size: 14px; font-weight: 600; text-align: center;">@item.GetType().GetProperty("OrderStatus").GetValue(item, null)<!-- CHÚ Ý !!!! Không thêm khoảng cách (SPACE) vô đây, tránh bị lỗi js  --></td>
+                                                <td class="PaymentStatus" style="color: #77ACF1; font-size: 14px; font-weight: 600; text-align: center;">
+                                                    @if (@item.GetType().GetProperty("OrderStatus").GetValue(item, null) != "Đã hủy")
+                                                    {
+                                                        @item.GetType().GetProperty("PaymentStatus").GetValue(item, null)
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>-</p>
+                                                    }<!-- CHÚ Ý !!!! Không thêm khoảng cách (SPACE) vô đây, tránh bị lỗi js  -->
+                                                </td>
+                                                <td>
+                                                    @if (@item.GetType().GetProperty("OrderStatus").GetValue(item, null) != "Đã hủy")
+                                                    {
+                                                        <div class="form-button-action">
+                                                            @if (@item.GetType().GetProperty("OrderStatus").GetValue(item, null) != "Giao hàng thành công")
+                                                            {
+                                                                <button type="button" data-target="#addRowModal" data-toggle="modal" title="" class="btn btn-link btn-primary btn-lg btn-update-order" data-original-title="Cập nhật trạng thái đơn hàng">
+                                                                    <a class="active" ui-toggle-class="">
+                                                                        <i class="fa fa-edit text-active"></i>
+                                                                    </a>
+                                                                </button>
+                                                            }
+                                                            <button type="button" onclick="window.open('/Report/print_invoice/?orderId=@item.GetType().GetProperty("OrderId").GetValue(item, null)');" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="In đơn hàng">
+                                                                <a class="active" ui-toggle-class="">
+                                                                    <i class="fa fa-print text-active"></i>
+                                                                </a>
+                                                            </button>
+                                                        </div>
+
+                                                    }
+
                                                 </td>
                                             </tr>
                                         }
                                     </tbody>
                                 </table>
+                                <div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header no-bd">
+                                                <h5 class="modal-title">
+                                                    <span class="fw-mediumbold">Cập nhật trạng thái đơn hàng</span>
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <input type="text" id="ma-don-hang-hidden" value="" hidden>
+                                                <h1 class="small" id="ma-don-hang">Mã đơn hàng: </h1>
+                                                <div class="row">
+                                                    <div class="col-md-12 pr-0" style="margin-bottom:30px">
+                                                        <b style="margin-bottom:15px">Trạng thái đơn hàng</b>
+                                                        <select class="form-control" id="trang-thai-don-hang" name="status" aria-label=".form-select-sm example" style="width:90%;margin-top: 10px">
+                                                            <option value="Đặt hàng thành công">Đặt hàng thành công</option>
+                                                            <option value="Đã tiếp nhận đơn hàng">Đã tiếp nhận đơn hàng</option>
+                                                            <option value="Đang lấy hàng">Đang lấy hàng</option>
+                                                            <option value="Đang đóng gói">Đang đóng gói</option>
+                                                            <option value="Đã giao cho đơn vị vận chuyển">Đã giao cho đơn vị vận chuyển</option>
+                                                            <option value="Đang giao hàng">Đang giao hàng</option>
+                                                            <option value="Giao hàng thành công">Giao hàng thành công</option>
+                                                            <option value="Đã hủy">Đã hủy</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-12 pr-0">
+                                                        <b style="margin-bottom:15px">Trạng thái thanh toán</b>
+                                                        <select class="form-control" name="payment" id="trang-thai-thanh-toan" aria-label=".form-select-sm example" style="width:90%;margin-top: 10px">
+                                                            <option value="Chờ thanh toán">Chờ thanh toán</option>
+                                                            <option value="Đã thanh toán">Đã thanh toán</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer no-bd">
+                                                    <button type="button" class="btn btn-primary btn-luu-update-order" data-dismiss="modal">Lưu</button>
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Huỷ</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
+            <!-- jQuery UI -->
+            <script src="~/public/admin/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+            <script src="~/public/admin/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
 
-<script src="~/public/admin/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-<script src="~/public/admin/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+            <!-- jQuery Scrollbar -->
+            <script src="~/public/admin/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+            <!-- Datatables -->
+            <script src="~/public/admin/js/plugin/datatables/datatables.min.js"></script>
+            <!-- Atlantis JS -->
+            <script src="~/public/admin/js/atlantis.min.js"></script>
+            <!-- Atlantis DEMO methods, don't include it in your project! -->
+            <script src="~/public/admin/js/setting-demo2.js"></script>
+            <script>
+                var local_parent;
+                $(document).ready(function () {
+                    $('.btn-update-order').click(function () {
+                        var parent = $(this).parents('tr');
+                        local_parent = parent;
+                        var OrderId = parent.find('.OrderId').text();
+                        $('#ma-don-hang').text("Mã đơn hàng: " + OrderId);
+                        $('#ma-don-hang-hidden').val(OrderId);
 
-<!-- jQuery Scrollbar -->
-<script src="~/public/admin/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-<!-- Datatables -->
-<script src="~/public/admin/js/plugin/datatables/datatables.min.js"></script>
-<!-- Atlantis JS -->
-<script src="~/public/admin/js/atlantis.min.js"></script>
-<!-- Atlantis DEMO methods, don't include it in your project! -->
-<script src="~/public/admin/js/setting-demo2.js"></script>
-
-
-
-<script>
-    $(document).ready(function () {
-        $('#basic-datatables').DataTable({
-        });
-
-        $('#multi-filter-select').DataTable({
-            "pageLength": 20,
-            initComplete: function () {
-                this.api().columns().every(function () {
-                    var column = this;
-                    var select = $('<select class="form-control"><option value=""></option></select>')
-                        .appendTo($(column.footer()).empty())
-                        .on('change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
-
-                            column
-                                .search(val ? '^' + val + '$' : '', true, false)
-                                .draw();
-                        });
-
-                    column.data().unique().sort().each(function (d, j) {
-                        select.append('<option value="' + d + '">' + d + '</option>')
+                        var OrderStatus = parent.find('.OrderStatus').text();
+                        var PaymentStatus = parent.find('.PaymentStatus').text();
+                        $('#trang-thai-don-hang option[value="' + OrderStatus + '"]').attr('selected', 'selected');
+                        //$('#trang-thai-thanh-toan option[value="' + PaymentStatus + '"]').attr('selected', 'selected');
                     });
                 });
-            }
-        });
 
-    });
-</script>
+                $('.btn-luu-update-order').click(function () {
+
+                    var OrderId = $('#ma-don-hang-hidden').val();
+                    var OrderStatus = $('#trang-thai-don-hang').val();
+                    var PaymentStatus = $('#trang-thai-thanh-toan').val();
+                    $.ajax({
+                        url: '/BillManagement/update_order_status',
+                        method: "GET",
+                        data: { OrderId: OrderId, OrderStatus: OrderStatus, PaymentStatus: PaymentStatus },
+                        success: function (data) {
+                            $('#addRowModal').modal('hide');
+                            local_parent.find('.OrderStatus').text(OrderStatus);
+                            local_parent.find('.PaymentStatus').text(PaymentStatus);
+                            swal({
+                                text: "Cập nhật trạng thái đơn hàng thành công!",
+                                icon: "success",
+                            });
+                        },
+                        error: function (data) {
+                            swal({
+                                text: "Cập nhật trạng thái đơn hàng không thành công!",
+                                icon: "error",
+                            });
+                        }
+                    });
+                });
+            </script>
+            <script>
+                $(document).ready(function () {
+                    $('#basic-datatables').DataTable({
+                    });
+
+                    $('#multi-filter-select').DataTable({
+                        "pageLength": 5,
+                        initComplete: function () {
+                            this.api().columns().every(function () {
+                                var column = this;
+                                var select = $('<select class="form-control"><option value=""></option></select>')
+                                    .appendTo($(column.footer()).empty())
+                                    .on('change', function () {
+                                        var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                        );
+
+                                        column
+                                            .search(val ? '^' + val + '$' : '', true, false)
+                                            .draw();
+                                    });
+
+                                column.data().unique().sort().each(function (d, j) {
+                                    select.append('<option value="' + d + '">' + d + '</option>')
+                                });
+                            });
+                        }
+                    });
+
+                    // Add Row
+                    $('#add-row').DataTable({
+                        "pageLength": 5,
+                    });
+
+                    var action = '<td> <div class="form-button-action"> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+
+                    $('#addRowButton').click(function () {
+                        $('#add-row').dataTable().fnAddData([
+                            $(".sel-status").val(),
+                            $("#addPosition").val(),
+                            $("#addOffice").val(), action
+                        ]);
+                        $('#addRowModal').modal('hide');
+
+                    });
+                });
+            </script>

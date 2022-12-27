@@ -867,36 +867,41 @@ namespace SportswearShop_Ver2.Models
             }
             return list;
         }
-        public BillKhachHang getOrderInfo(int oderId)
+        public object getOrderInfo(int oderId)
         {
-            BillKhachHang billtInfo = new BillKhachHang();
+            object billtInfo = new object();
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                var str = "SELECT * FROM bill_khachhangs WHERE Id = @billId";
+                var str = "SELECT * FROM bill_khachhangs B join user U on B.customer_id = U.UserId WHERE Id = @billId";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("billId", oderId);
                 using (var reader = cmd.ExecuteReader())
                 {
                     if (reader.Read())
                     {
-                        billtInfo.Id = Convert.ToInt32(reader["id"]);
-                        billtInfo.CustomerId = Convert.ToInt32(reader["customer_id"]);
-                        billtInfo.TotalMoney = Convert.ToInt32(reader["total_money"]);
-                        billtInfo.Status = reader["status"].ToString();
-                        billtInfo.CreatedAt = Convert.ToDateTime(reader["created_at"]);
-                        billtInfo.Payment_status = reader["payment_status"].ToString();
-                        billtInfo.ShipFee = Convert.ToInt32(reader["ShipFee"]);
-                        billtInfo.ShipMethod = reader["ShipMethod"].ToString();
-                        billtInfo.PaymentMethod = reader["PaymentMethod"].ToString();
+                        billtInfo = new
+                        {
+                            Id = Convert.ToInt32(reader["id"]),
+                            CustomerId = Convert.ToInt32(reader["customer_id"]),
+                            TotalMoney = Convert.ToInt32(reader["total_money"]),
+                            Status = reader["status"].ToString(),
+                            CreatedAt = Convert.ToDateTime(reader["created_at"]),
+                            Payment_status = reader["payment_status"].ToString(),
+                            ShipFee = Convert.ToInt32(reader["ShipFee"]),
+                            ShipMethodd = reader["ShipMethod"].ToString(),
+                            PaymentMethod = reader["PaymentMethod"].ToString(),
+                            Mobile = reader["Mobile"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            FirstName = reader["FirstName"].ToString(),
+                            LastName = reader["LastName"].ToString(),
+
+                        };
                     }
-                    else
-                        return null;
                 }
             }
             return billtInfo;
         }
-
         public List<object> getOrderDetail(int orderId)
         {
             List<object> list = new List<object>();
@@ -926,7 +931,20 @@ namespace SportswearShop_Ver2.Models
             }
             return list;
         }
+        public void updateOrderStatus(int OrderId, string OrderStatus, string PaymentStatus)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE bill_khachhangs SET status = @status, payment_status = @paytus WHERE id=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("status", OrderStatus);
+                cmd.Parameters.AddWithValue("paytus", PaymentStatus);
+                cmd.Parameters.AddWithValue("id", OrderId);
 
+                cmd.ExecuteNonQuery();
+            }
+        }
         public void updateOrderStatus(int OrderId, string OrderStatus)
         {
             using (MySqlConnection conn = GetConnection())
@@ -2280,28 +2298,33 @@ namespace SportswearShop_Ver2.Models
             }
         }
 
-        public List<BillKhachHang> getAllBillKhachHang()
+        public List<object> getAllBillKhachHang()
         {
-            List<BillKhachHang> list = new List<BillKhachHang>();
+            List<object> list = new List<object>();
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                string str = "select * from bill_khachhangs";
+                string str = "select * from bill_khachhangs BKH join user U on BKH.customer_id = U.UserID order by BKH.ID DESC";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        list.Add(new BillKhachHang()
+                        var obj = new
                         {
-                            Id = Convert.ToInt32(reader["id"]),
-                            TotalMoney = Convert.ToInt32(reader["total_money"]),
-                            CustomerId = Convert.ToInt32(reader["customer_id"]),
-                            CreatedAt = ((DateTime)reader["created_at"])
-                        });
+                            OrderId = Convert.ToInt32(reader["id"]),
+                            FirstName = reader["FirstName"].ToString(),
+                            LastName = reader["LastName"].ToString(),
+                            OrderStatus = reader["status"].ToString(),
+                            Total = Convert.ToInt32(reader["total_money"]),
+                            PaymentStatus = reader["payment_status"].ToString(),
+                            OrderDate = (DateTime)reader["created_at"]
+                        };
+                        list.Add(obj);
                     }
                     reader.Close();
                 }
+
                 conn.Close();
             }
             return list;
