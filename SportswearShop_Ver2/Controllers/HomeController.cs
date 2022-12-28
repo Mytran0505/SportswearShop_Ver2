@@ -87,10 +87,10 @@ namespace SportswearShop_Ver2.Controllers
                 <input type = 'hidden' class='item-id-for-cart' value='{cartItem.Product.Id}'/>
                 <a class='ps-cart-item__close delete-button-in-nav' href='javascript:void(0)'></a>
                 <div class='ps-cart-item__thumbnail'>
-                    <a href = '/ProductDetail?productId={cartItem.Product.Id}'></a><img src='{cartItem.Product.Image}' alt=''>
+                    <a href = '/ProductDetail/product_detail?productId={cartItem.Product.Id}'></a><img src='{cartItem.Product.Image}' alt=''>
                 </div>
                 <div class='ps-cart-item__content'>
-                    <a class='ps-cart-item__title' href='/ProductDetail?productId={cartItem.Product.Id}'>{cartItem.Product.Name}</a>
+                    <a class='ps-cart-item__title' href='/ProductDetail/product_detail?productId={cartItem.Product.Id}'>{cartItem.Product.Name}</a>
                     <p>{cartItem.Product.Price_sale.ToString("#,###", cul.NumberFormat)}₫ x{cartItem.Quantity}</p>
                 </div>
             </div>";

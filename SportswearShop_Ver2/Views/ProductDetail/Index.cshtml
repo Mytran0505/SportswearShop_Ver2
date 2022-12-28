@@ -12,10 +12,10 @@
             <div class="col-12">
                 <div class="bread-inner">
                     <ul class="bread-list">
-                        <li><a href="index.html">Trang chủ<i class="ti-arrow-right"></i></a></li>
-                        <li class="active"><a href="#">@ViewBag.ProductDetail.GetType().GetProperty("CategoryName").GetValue(ViewBag.ProductDetail, null) </a></li>
+                        <li><a href="/Home/Index">Trang chủ<i class="ti-arrow-right"></i></a></li>
+                        <li class="active"><a href="/ProductListing/Product_Listing1?categoryId=@ViewBag.ProductDetail.GetType().GetProperty("CategoryId").GetValue(ViewBag.ProductDetail, null)">@ViewBag.ProductDetail.GetType().GetProperty("CategoryName").GetValue(ViewBag.ProductDetail, null) </a></li>
                         <li class="active"><i class="ti-arrow-right"></i></li>
-                        <li class="active"><a href="#">@ViewBag.ProductDetail.GetType().GetProperty("MenuName").GetValue(ViewBag.ProductDetail, null) </a></li>
+                        <li class="active"><a href="/ProductListing/Product_Listing2?MenuId=@ViewBag.ProductDetail.GetType().GetProperty("MenuId").GetValue(ViewBag.ProductDetail, null)">@ViewBag.ProductDetail.GetType().GetProperty("MenuName").GetValue(ViewBag.ProductDetail, null) </a></li>
                     </ul>
                 </div>
             </div>
