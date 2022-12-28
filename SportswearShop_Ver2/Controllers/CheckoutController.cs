@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +7,9 @@ using SportswearShop_Ver2.Models;
 using Microsoft.AspNetCore.Http;
 using MyCardSession.Helpers;
 using System.Globalization;
-
+using System.Net;
+using System.Net.Mail;
+using Rn.NetCore.MailUtils;
 namespace SportswearShop_Ver2.Controllers
 {
     public class CheckoutController : Controller
@@ -138,47 +139,47 @@ namespace SportswearShop_Ver2.Controllers
 
             // Gửi mail
 
-            //string customerFirstName = HttpContext.Session.GetString("customerFirstName");
-            //string customerLastName = HttpContext.Session.GetString("customerLastName");
-            //string customerEmail = HttpContext.Session.GetString("customerEmail");
-            //string mailContent = getMailContent(order, customerFirstName, customerLastName);
-            //await MailUtils.SendMailGoogleSmtp("itgoshop863@gmail.com", customerEmail, $"Chào {customerFirstName}, ITGoShop đã nhận được đơn hàng của bạn", mailContent,
-            //                              "itgoshop863@gmail.com", "Itgoshop");
+            string customerFirstName = HttpContext.Session.GetString("customerFirstName");
+            string customerLastName = HttpContext.Session.GetString("customerLastName");
+            string customerEmail = HttpContext.Session.GetString("customerEmail");
+            string mailContent = getMailContent(order, customerFirstName, customerLastName);
+            await MailUtils.SendMailGoogleSmtp("mytran0505itlker@gmail.com", customerEmail, $"Chào {customerFirstName}, ITGoShop đã nhận được đơn hàng của bạn", mailContent,
+                                          "mytran0505itlker@gmail.com", "Itgoshop");
             return RedirectToAction("order_detail", "Order", new { orderId = orderId });
         }
-        //public string getMailContent(Order orderInfo, string customerFirstName, string customerLastName)
-        //{
-        //    CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
-        //    string ShipFee = orderInfo.ShipFee.ToString("#,###", cul.NumberFormat);
-        //    string ToTal = orderInfo.Total.ToString("#,###", cul.NumberFormat);
-        //    string EstimatedDeliveryTime = orderInfo.EstimatedDeliveryTime.ToString("dd-MM-yyyy");
-        //    string OrderDate = orderInfo.OrderDate.ToString("HH:mm dd-MM-yyyy");
-        //    ITGoShopContext context = HttpContext.RequestServices.GetService(typeof(ITGoShop_F_Ver2.Models.ITGoShopContext)) as ITGoShopContext;
-        //    object shippingAddress = context.getShippingAddress(orderInfo.ShippingAddressId);
+        public string getMailContent(BillKhachHang orderInfo, string customerFirstName, string customerLastName)
+        {
+            CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
+            string ShipFee = orderInfo.ShipFee.ToString("#,###", cul.NumberFormat);
+            string ToTal = orderInfo.TotalMoney.ToString("#,###", cul.NumberFormat);
+            string EstimatedDeliveryTime = orderInfo.EstimatedDeliveryTime.ToString("dd-MM-yyyy");
+            string OrderDate = orderInfo.CreatedAt.ToString("HH:mm dd-MM-yyyy");
+            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+            object shippingAddress = context.getShippingAddress(orderInfo.ShippingAddressId);
 
-        //    string output = @$"<body>
-        //        <div class='card' style='margin: 40px 100px;'>
-        //                <div class='card-body' style='font-size:16px'>
-        //                    <h2>Cảm ơn quý khách {customerLastName} {customerFirstName} đã đặt hàng tại ITGoShop,</h2>
-        //                    <p class='card-text'>ITGoShop rất vui thông báo đơn hàng #{orderInfo.OrderId} của quý khách đã được tiếp nhận và đang trong quá trình xử lý. ITGoShop sẽ thông báo đến quý khách ngay khi hàng chuẩn bị được giao.</p>
-        //                    <p class='card-text' style='color:#77ACF1;'><b>THÔNG TIN ĐƠN HÀNG #{orderInfo.OrderId}</b>  (Thời gian đặt hàng: {OrderDate})</p>
-        //                    <hr>
-        //                    <p class='card-text'><b>Mô tả đơn hàng:</b> {orderInfo.Description}</p>
-        //                    <p class= 'card-text'><b> Địa chỉ giao hàng:</b></p>
-        //                    <p> Tên người nhận: {shippingAddress.GetType().GetProperty("ReceiverName").GetValue(shippingAddress, null)}</p>
-        //                    <p> Địa chỉ: {shippingAddress.GetType().GetProperty("Address").GetValue(shippingAddress, null)}, {shippingAddress.GetType().GetProperty("XaPhuong").GetValue(shippingAddress, null)}, {shippingAddress.GetType().GetProperty("QuanHuyen").GetValue(shippingAddress, null)}, {shippingAddress.GetType().GetProperty("ThanhPho").GetValue(shippingAddress, null)}</p>
-        //                    </p> Điện thoại: {shippingAddress.GetType().GetProperty("Phone").GetValue(shippingAddress, null)}</p>
-        //                    <p class= 'card-text'><b> Phương thức thanh toán:</b> {orderInfo.ShipMethod}</p>
-        //                    <p class= 'card-text'><b> Thời gian giao hàng dự kiến: </b> dự kiến giao hàng vào ngày {EstimatedDeliveryTime}</p>
-        //                    <p class= 'card-text'><b> Phí vận chuyển: </b>{ShipFee} ₫</p>
-        //                    <p class= 'card-text'><b> TỔNG TRỊ GIÁ ĐƠN HÀNG: </b><b style = 'color:red; font-size: 20px' >{ToTal} ₫</b></p>
-        //                    <p class= 'card-text'> Trân trọng,</p>
-        //                    <p class='card-text'> Đội ngũ ITGoShop.</p>
-        //                    <p class= 'card-text'><i> Lưu ý: Với những đơn hàng thanh toán trả trước, xin vui lòng đảm bảo người nhận hàng đúng thông tin đã đăng kí trong đơn hàng, và chuẩn bị giấy tờ tùy thân để đơn vị giao nhận có thể xác thực thông tin khi giao hàng</i></p>
-        //                </div>
-        //          </div>
-        //    </body>";
-        //    return output;
-        //}
+            string output = @$"<body>
+                <div class='card' style='margin: 40px 100px;'>
+                        <div class='card-body' style='font-size:16px'>
+                            <h2>Cảm ơn quý khách {customerLastName} {customerFirstName} đã đặt hàng tại ITGoShop,</h2>
+                            <p class='card-text'>ITGoShop rất vui thông báo đơn hàng #{orderInfo.Id} của quý khách đã được tiếp nhận và đang trong quá trình xử lý. ITGoShop sẽ thông báo đến quý khách ngay khi hàng chuẩn bị được giao.</p>
+                            <p class='card-text' style='color:#77ACF1;'><b>THÔNG TIN ĐƠN HÀNG #{orderInfo.Id}</b>  (Thời gian đặt hàng: {OrderDate})</p>
+                            <hr>
+                            <p class='card-text'><b>Mô tả đơn hàng:</b> {orderInfo.Description}</p>
+                            <p class= 'card-text'><b> Địa chỉ giao hàng:</b></p>
+                            <p> Tên người nhận: {shippingAddress.GetType().GetProperty("ReceiverName").GetValue(shippingAddress, null)}</p>
+                            <p> Địa chỉ: {shippingAddress.GetType().GetProperty("Address").GetValue(shippingAddress, null)}, {shippingAddress.GetType().GetProperty("XaPhuong").GetValue(shippingAddress, null)}, {shippingAddress.GetType().GetProperty("QuanHuyen").GetValue(shippingAddress, null)}, {shippingAddress.GetType().GetProperty("ThanhPho").GetValue(shippingAddress, null)}</p>
+                            </p> Điện thoại: {shippingAddress.GetType().GetProperty("Phone").GetValue(shippingAddress, null)}</p>
+                            <p class= 'card-text'><b> Phương thức thanh toán:</b> {orderInfo.ShipMethod}</p>
+                            <p class= 'card-text'><b> Thời gian giao hàng dự kiến: </b> dự kiến giao hàng vào ngày EstimatedDeliveryTime</p>
+                            <p class= 'card-text'><b> Phí vận chuyển: </b>{ShipFee} ₫</p>
+                            <p class= 'card-text'><b> TỔNG TRỊ GIÁ ĐƠN HÀNG: </b><b style = 'color:red; font-size: 20px' >{ToTal} ₫</b></p>
+                            <p class= 'card-text'> Trân trọng,</p>
+                            <p class='card-text'> Đội ngũ ITGoShop.</p>
+                            <p class= 'card-text'><i> Lưu ý: Với những đơn hàng thanh toán trả trước, xin vui lòng đảm bảo người nhận hàng đúng thông tin đã đăng kí trong đơn hàng, và chuẩn bị giấy tờ tùy thân để đơn vị giao nhận có thể xác thực thông tin khi giao hàng</i></p>
+                        </div>
+                  </div>
+            </body>";
+            return output;
+        }
     }
 }

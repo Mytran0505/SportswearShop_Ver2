@@ -13,6 +13,7 @@
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.22" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.0-preview5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Rn.NetCore.MailUtils" Version="6.0.1.105" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.24" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.3" />
   </ItemGroup>

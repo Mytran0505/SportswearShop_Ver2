@@ -1252,14 +1252,51 @@ namespace SportswearShop_Ver2.Models
                             Email = reader["Email"].ToString(),
                             FirstName = reader["FirstName"].ToString(),
                             LastName = reader["LastName"].ToString(),
-
+                            Description = reader["Description"].ToString(),
                         };
                     }
                 }
             }
             return billtInfo;
         }
-
+        public object getShippingAddress(int shippingAddressId)
+        {
+            object item = new object();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = @"SELECT ShippingAddressId, Address, Phone, TT.name, QH.name, XP.name, ReceiverName, ShippingAddressType, ExtraShippingFee
+                        FROM shippingaddress SA, devvn_quanhuyen QH, devvn_tinhthanhpho TT, devvn_xaphuongthitran XP
+                        WHERE SA.matp = TT.matp
+                        AND SA.maqh = QH.maqh
+                        AND SA.xaid = XP.xaid
+                        AND ShippingAddressId = @ShippingAddressId;";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("ShippingAddressId", shippingAddressId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        item = new
+                        {
+                            ShippingAddressId = Convert.ToInt32(reader[0].ToString()),
+                            Address = reader[1].ToString(),
+                            Phone = reader[2].ToString(),
+                            ThanhPho = reader[3].ToString(),
+                            QuanHuyen = reader[4].ToString(),
+                            XaPhuong = reader[5].ToString(),
+                            ReceiverName = reader[6].ToString(),
+                            ShippingAddressType = reader[7].ToString(),
+                            ExtraShippingFee = Convert.ToInt32(reader[8].ToString()),
+                        };
+                        return item;
+                    }
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return null;
+        }
         public int getCustomerIdFromOrderInfo(int oderId)
         {
             int cusID = 0;
