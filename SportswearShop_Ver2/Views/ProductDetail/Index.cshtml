@@ -138,90 +138,88 @@
                 <h3 class="comment-title">
                     <a style="font-weight: bold; text-transform:none">Đánh giá - Nhận xét từ khách hàng</a>
                 </h3>
-               @* @if (ViewBag.RatingList.Count > 0)
-                {
-                    <div class="card" style="margin-bottom:20px">
-                        <div class="card-body" style="margin:20px">
-                            <b style="font-size:30px">@ViewBag.AvgRating</b>
-                            <div class="star-wrapper" style="display: inline-block; margin-left:60px;">
-                                @if (@ViewBag.AvgRating > 4.5)
-                                {
-                                    <a href="javascript:void(0)" class="fa fa-star s1" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s2" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s3" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s4" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
-                                }
-                                else if (ViewBag.AvgRating > 4)
-                                {
-                                    <a href="javascript:void(0)" class="fa fa-star-half-o s1" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s2" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s3" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s4" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
-                                }
-                                else if (ViewBag.AvgRating > 3.5)
-                                {
-                                    <a href="javascript:void(0)" class="fa fa-star s1"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s2" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s3" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s4" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
-                                }
-                                else if (ViewBag.AvgRating > 3)
-                                {
-                                    <a href="javascript:void(0)" class="fa fa-star s1"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star-half-o s2" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s3" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s4" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
-                                }
-                                else if (ViewBag.AvgRating > 2.5)
-                                {
-                                    <a href="javascript:void(0)" class="fa fa-star s1"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s2"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s3" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s4" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
-                                }
-                                else if (ViewBag.AvgRating > 2)
-                                {
-                                    <a href="javascript:void(0)" class="fa fa-star s1"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s2"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star-half-o s3" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s4" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
-                                }
-                                else if (ViewBag.AvgRating > 1.5)
-                                {
-                                    <a href="javascript:void(0)" class="fa fa-star s1"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s2"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s3"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s4" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
-                                }
-                                else if (ViewBag.AvgRating > 1)
-                                {
-                                    <a href="javascript:void(0)" class="fa fa-star s1"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s2"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s3"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star-half-o s3" style="color:gold"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
-                                }
-                                else
-                                {
-                                    <a href="javascript:void(0)" class="fa fa-star s1"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s2"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s3"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s4"></a>
-                                    <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
-                                }
-                            </div>
-                            <p style="font-size:10px">@ViewBag.RatingList.Count đánh giá</p>
-
-                            <hr style="height:0.1px;border:none;margin: 20px 0px">
-                            @foreach (var item in ViewBag.RatingList)
+                @if (ViewBag.RatingList.Count > 0){
+                <div class="card" style="margin-bottom:20px">
+                    <div class="card-body" style="margin:20px">
+                        <b style="font-size:30px">@ViewBag.AvgRating</b>
+                        <div class="star-wrapper" style="display: inline-block; margin-left:60px;">
+                            @if (@ViewBag.AvgRating > 4.5)
                             {
+                            <a href="javascript:void(0)" class="fa fa-star s1" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s2" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s3" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s4" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
+                            }
+                            else if(ViewBag.AvgRating > 4) 
+                            {
+                            <a href="javascript:void(0)" class="fa fa-star-half-o s1" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s2" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s3" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s4" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
+                            }
+                            else if(ViewBag.AvgRating > 3.5)
+                            {
+                            <a href="javascript:void(0)" class="fa fa-star s1"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s2" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s3" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s4" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
+                            }
+                            else if(ViewBag.AvgRating > 3)
+                            {
+                            <a href="javascript:void(0)" class="fa fa-star s1"></a>
+                            <a href="javascript:void(0)" class="fa fa-star-half-o s2" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s3" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s4" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
+                            }
+                            else if(ViewBag.AvgRating  > 2.5)
+                            {
+                            <a href="javascript:void(0)" class="fa fa-star s1"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s2"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s3" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s4" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
+                            }
+                            else if(ViewBag.AvgRating > 2) 
+                            {
+                            <a href="javascript:void(0)" class="fa fa-star s1"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s2"></a>
+                            <a href="javascript:void(0)" class="fa fa-star-half-o s3" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s4" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
+                            }
+                            else if(ViewBag.AvgRating > 1.5) 
+                            {
+                            <a href="javascript:void(0)" class="fa fa-star s1"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s2"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s3"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s4" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
+                            }
+                            else if(ViewBag.AvgRating > 1) 
+                            {
+                            <a href="javascript:void(0)" class="fa fa-star s1"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s2"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s3"></a>
+                            <a href="javascript:void(0)" class="fa fa-star-half-o s3" style="color:gold"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
+                            }
+                            else{
+                            <a href="javascript:void(0)" class="fa fa-star s1"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s2"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s3"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s4"></a>
+                            <a href="javascript:void(0)" class="fa fa-star s5" style="color:gold"></a>
+                            }
+                        </div>
+                        <p style="font-size:10px">@ViewBag.RatingList.Count đánh giá</p>
+
+                        <hr style="height:0.1px;border:none;margin: 20px 0px">
+                        @foreach (var item in ViewBag.RatingList)
+                        {
                                 <div class="row" style="padding: 20px 0px;">
                                     <div class="col-5">
                                         @{
@@ -348,15 +346,15 @@
 
                     </div>
                 }
-                else*@
-                @*{*@
+                else
+                {
                     <div class="card" style="margin-bottom:20px">
                         <div class="card-body" style="margin:20px">
                             <img src="~/public/client/Images/rating-star.PNG" style="height:80px; margin:auto;  display: block;" alt="">
                             <p style="text-align:center; margin-top:20px">Chưa có đánh giá nào cho sản phẩm này</p>
                         </div>
                     </div>
-                @*}*@
+                }
                 <h3 class="comment-title">
                     <a style="font-weight: bold;">Bình luận</a>
                 </h3>
@@ -422,13 +420,13 @@
                                         <h3><a style="text-decoration: none; color: black;" href="/ProductDetail/product_detail?productId=@item.ProductId">@item.ProductName</a></h3>
                                         <div class="product-price">
                                             <span style="color:black; font-size:17px"><b>@item.Price.ToString("#,###", cul.NumberFormat) ₫</b></span>
-                                            @*@if (@item.Discount > 0)
+                                            @if (@item.Discount > 0)
                                             {
                                                 double dc = @item.Price + (@item.Price * (@item.Discount / 100));
                                                 <br>
                                                 <span class="old">@dc.ToString("#,###", cul.NumberFormat) ₫</span>
                                                 <span class="o-giam-gia" style="font-size:10px">-@item.Discount% </span>
-                                            }*@
+                                            }
                                         </div>
                                     </div>
                                 </div>

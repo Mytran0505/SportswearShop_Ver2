@@ -716,7 +716,7 @@ namespace SportswearShop_Ver2.Models
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                var str = "SELECT P.ID AS PID, Quantity, P.NAME AS PNAME, P.IMAGE AS PIMAGE, PRICE_SALE, C.ID AS CID, M.ID AS MID, content, C.NAME AS CNAME, M.NAME AS MNAME " +
+                var str = "SELECT P.ID AS PID, Quantity, discount, P.NAME AS PNAME, P.IMAGE AS PIMAGE, PRICE_SALE, C.ID AS CID, M.ID AS MID, content, C.NAME AS CNAME, M.NAME AS MNAME " +
                     "FROM MENUS M, PRODUCTS P, CATEGORY C" +
                     " WHERE P.active =1 and M.PARENT_ID = C.ID AND P.MENU_ID = M.ID AND P.id != @ProId AND M.ID = @MenuId";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
@@ -739,6 +739,7 @@ namespace SportswearShop_Ver2.Models
                             Content = reader["content"].ToString(),
                             CategoryName = reader["CNAME"].ToString(),
                             MenuName = reader["MNAME"].ToString(),
+                            Discount = Convert.ToInt32(reader["discount"]),
                         };
                         list.Add(productInfo);
 
@@ -795,7 +796,148 @@ namespace SportswearShop_Ver2.Models
         //    }
         //    return productInfo;
         //}
+        public List<object> getAllRating()
+        {
+            List<object> list = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = @"SELECT U.UserId as UserId, FirstName, LastName, Title, PR.Content, Rating, PR.CreatedAt, UserImage, Name, PR.ProductId as ProductId, ProductRatingStatus
+                            FROM (`productrating` PR JOIN `user` U ON PR.UserId = U.UserId )
+                                JOIN `products` P ON P.Id = PR.ProductId
+                            ORDER BY DATE(PR.CreatedAt) DESC";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var obj = new
+                        {
+                            UserId = Convert.ToInt32(reader["UserId"]),
+                            LastName = reader["LastName"].ToString(),
+                            FirstName = reader["FirstName"].ToString(),
+                            UserImage = reader["UserImage"].ToString(),
+                            Title = reader["Title"].ToString(),
+                            Content = reader["Content"].ToString(),
+                            Rating = Convert.ToInt32(reader["Rating"]),
+                            CreatedAt = (DateTime)reader["CreatedAt"],
+                            ProductId = Convert.ToInt32(reader["ProductId"]),
+                            ProductName = reader["Name"].ToString(),
+                            ProductRatingStatus = Convert.ToInt32(reader["ProductRatingStatus"]),
+                        };
+                        list.Add(obj);
+                    }
+                }
+            }
+            return list;
+        }
 
+        public void updateRatingStatus(int userId, int productId, int status)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE productrating SET ProductRatingStatus = @status WHERE UserId = @userId and ProductId = @id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("status", status);
+                cmd.Parameters.AddWithValue("userId", userId);
+                cmd.Parameters.AddWithValue("id", productId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void deleteRating(int userId, int productId)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "Delete from productrating WHERE UserId = @userId and ProductId = @id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("userId", userId);
+                cmd.Parameters.AddWithValue("id", productId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void addRating(int productId, string title, string content, int rating, int userId)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "INSERT INTO productrating(UserId, ProductId, Rating, Title, Content, ProductRatingStatus, CreatedAt) VALUES " +
+                    "(@userId,@ProId,@Rating, @Title, @Content, 1 ,@Create)";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("userId", userId);
+                cmd.Parameters.AddWithValue("ProId", productId);
+                cmd.Parameters.AddWithValue("Rating", rating);
+                cmd.Parameters.AddWithValue("Title", title);
+                cmd.Parameters.AddWithValue("Content", content);
+                cmd.Parameters.AddWithValue("Create", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public int isRatingeExit(int productId, int userId)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                int count = 0;
+                conn.Open();
+                var str = "SELECT count(*) as SL from productrating where UserId = @userId and ProductId = @ProId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("userId", userId);
+                cmd.Parameters.AddWithValue("ProId", productId);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        count = Convert.ToInt32(reader["SL"]);
+                    }
+                }
+                if (count == 0)
+                {
+                    System.Diagnostics.Debug.WriteLine("Productrating " + userId + " " + productId);
+                    return 0; //ranting chưa tồn tại trong productrating
+                }
+            }
+            return 1;
+        }
+
+        public List<object> getRating(int ProductId)
+        {
+            List<object> list = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = @"SELECT U.UserId as UserId, FirstName, LastName, Title, Content, Rating, CreatedAt, UserImage, ProductRatingStatus
+                            FROM `productrating` PR JOIN `user` U ON PR.UserId = U.UserId 
+                            WHERE PR.ProductId = @productid
+                            AND ProductRatingStatus = 1";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("productid", ProductId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var obj = new
+                        {
+                            UserId = Convert.ToInt32(reader["UserId"]),
+                            LastName = reader["LastName"].ToString(),
+                            FirstName = reader["FirstName"].ToString(),
+                            UserImage = reader["UserImage"].ToString(),
+                            Title = reader["Title"].ToString(),
+                            Content = reader["Content"].ToString(),
+                            Rating = Convert.ToInt32(reader["Rating"]),
+                            CreatedAt = (DateTime)reader["CreatedAt"],
+                            ProductRatingStatus = reader["ProductRatingStatus"].ToString(),
+                        };
+                        list.Add(obj);
+                    }
+                }
+            }
+            return list;
+        }
         public object getDefaultShippingAddress(int userId)
         {
             object item = new object();
