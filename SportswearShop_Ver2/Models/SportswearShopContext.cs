@@ -396,7 +396,41 @@ namespace SportswearShop_Ver2.Models
             }
             return Products;
         }
-        
+
+        public List<Product> getProductByMenu(int MenuId)
+        {
+            List<Product> Products = new List<Product>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT * FROM products where active =1 and menu_id = @menuid";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("menuid", MenuId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        //System.Diagnostics.Debug.WriteLine("hI: " + reader["CategoryName"].ToString());
+                        Products.Add(new Product()
+                        {
+
+                            Id = Convert.ToInt32(reader["id"]),
+                            Name = reader["name"].ToString(),
+                            Image = reader["image"].ToString(),
+                            Original_price = Convert.ToInt32(reader["original_price"]),
+                            Price_sale = Convert.ToInt32(reader["price_sale"]),
+                            Quantity = Convert.ToInt32(reader["Quantity"])
+                        });
+                    }
+                    reader.Close();
+
+                }
+                conn.Close();
+
+            }
+            return Products;
+        }
+
         public List<Category> getAllCategory()
         {
             List<Category> list = new List<Category>();

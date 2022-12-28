@@ -12,6 +12,7 @@ namespace SportswearShop_Ver2.Controllers
             ViewBag.AllCategory = context.getAllCategory();
             ViewBag.AllMenu = context.getAllMenu();
             ViewBag.NameOfCategory = context.getNameOfCategory(categoryId);
+            ViewBag.AllProduct = context.getProductForHomePage();
             ViewBag.MenuOfCategory = context.getMenuOfCategory(categoryId);
             ViewBag.ProductForHomePage = context.getProductForHomePage();
             ViewBag.ProductOfMenu1 = context.getProductOfMenu1(categoryId);
