@@ -1886,12 +1886,12 @@ namespace SportswearShop_Ver2.Models
                           "FROM( " +
                                 "SELECT NgayBan, SUM(DoanhThu) AS DoanhThu " +
                                 "FROM( " +
-                                      "SELECT bkh.id, bkh.created_at as NgayBan, bkh.total_money - SUM(pd.original_price * cthd.amount) AS DoanhThu " +
+                                      "SELECT bkh.id, bkh.created_at as NgayBan, SUM((cthd.UnitPrice - pd.original_price) * cthd.amount) AS DoanhThu " +
                                       "FROM c_t_h_d_s cthd, products pd, bill_khachhangs bkh " +
                                       "WHERE cthd.product_id = pd.id AND bkh.id = cthd.id " +
                                       "GROUP by bkh.id, bkh.created_at " +
                                       "UNION " +
-                                      "SELECT bvl.id, bvl.created_at as NgayBan, bvl.total_money - SUM(pd.original_price * cthd.amount) AS DoanhThu " +
+                                      "SELECT bvl.id, bvl.created_at as NgayBan, SUM((cthd.UnitPrice - pd.original_price) * cthd.amount) AS DoanhThu " +
                                       "FROM c_t_h_d_s cthd, products pd, bill_vanglais bvl " +
                                       "WHERE cthd.product_id = pd.id AND bvl.id = cthd.id " +
                                       "GROUP by bvl.id, bvl.created_at) x " +
@@ -1921,17 +1921,17 @@ namespace SportswearShop_Ver2.Models
                           "FROM( " +
                                 "SELECT NgayBan, SUM(DoanhThu) AS DoanhThu " +
                                 "FROM( " +
-                                      "SELECT bkh.id, bkh.created_at as NgayBan, bkh.total_money - SUM(pd.original_price * cthd.amount) AS DoanhThu " +
+                                      "SELECT bkh.id, bkh.created_at as NgayBan, SUM((cthd.UnitPrice - pd.original_price) * cthd.amount) AS DoanhThu " +
                                       "FROM c_t_h_d_s cthd, products pd, bill_khachhangs bkh " +
                                       "WHERE cthd.product_id = pd.id AND bkh.id = cthd.id " +
-                                      "AND bkh.created_at BETWEEN @startdate AND @enddate " +
-                                      "GROUP by bkh.id, bkh.created_at " +
+                                      "AND DATE(bkh.created_at) BETWEEN @startdate AND @enddate " +
+                                      "GROUP by DATE(bkh.created_at) " +
                                       "UNION " +
-                                      "SELECT bvl.id, bvl.created_at as NgayBan, bvl.total_money - SUM(pd.original_price * cthd.amount) AS DoanhThu " +
+                                      "SELECT bvl.id, bvl.created_at as NgayBan, SUM((cthd.UnitPrice - pd.original_price) * cthd.amount) AS DoanhThu " +
                                       "FROM c_t_h_d_s cthd, products pd, bill_vanglais bvl " +
                                       "WHERE cthd.product_id = pd.id AND bvl.id = cthd.id " +
-                                      "AND bvl.created_at BETWEEN @startdate AND @enddate " +
-                                      "GROUP by bvl.id, bvl.created_at) x " +
+                                      "AND DATE(bvl.created_at) BETWEEN @startdate AND @enddate " +
+                                      "GROUP by DATE(bvl.created_at)) x " +
                                       "GROUP BY NgayBan) x";
 
                 MySqlCommand cmd = new MySqlCommand(str, conn);
@@ -1959,17 +1959,17 @@ namespace SportswearShop_Ver2.Models
                 conn.Open();
                 var str = "SELECT NgayBan, SUM(DoanhThu) AS DoanhThu " +
                           "FROM( " +
-                                "SELECT bkh.id, bkh.created_at as NgayBan, bkh.total_money - SUM(pd.original_price * cthd.amount) AS DoanhThu " +
+                                "SELECT bkh.id, DATE(bkh.created_at) as NgayBan, SUM((cthd.UnitPrice - pd.original_price) * cthd.amount) AS DoanhThu " +
                                 "FROM c_t_h_d_s cthd, products pd, bill_khachhangs bkh " +
                                 "WHERE cthd.product_id = pd.id AND bkh.id = cthd.id " +
-                                "AND bkh.created_at BETWEEN @startdate AND @enddate " +
-                                "GROUP by bkh.id, bkh.created_at " +
+                                "AND DATE(bkh.created_at) BETWEEN @startdate AND @enddate " +
+                                "GROUP by DATE(bkh.created_at) " +
                                 "UNION " +
-                                "SELECT bvl.id, bvl.created_at as NgayBan, bvl.total_money - SUM(pd.original_price * cthd.amount) AS DoanhThu " +
+                                "SELECT bvl.id, DATE(bvl.created_at) as NgayBan, SUM((cthd.UnitPrice - pd.original_price) * cthd.amount) AS DoanhThu " +
                                 "FROM c_t_h_d_s cthd, products pd, bill_vanglais bvl " +
                                 "WHERE cthd.product_id = pd.id AND bvl.id = cthd.id " +
-                                "AND bvl.created_at BETWEEN @startdate AND @enddate " +
-                                "GROUP by bvl.id, bvl.created_at) x " +
+                                "AND DATE(bvl.created_at) BETWEEN @startdate AND @enddate " +
+                                "GROUP by DATE(bvl.created_at)) x " +
                                 "GROUP BY NgayBan";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("startdate", startDate.ToString("yyyy-MM-dd"));
@@ -1998,8 +1998,8 @@ namespace SportswearShop_Ver2.Models
                 conn.Open();
 				var str = "SELECT COUNT(DISTINCT cthd.id) AS TongDonHang " +
 						  "from bill_khachhangs bkh, bill_vanglais bvl, c_t_h_d_s cthd " +
-                          "WHERE (bkh.id = cthd.id and bkh.created_at BETWEEN @startdate and @enddate) " +
-                          "OR (bvl.id = cthd.id and bvl.created_at BETWEEN @startdate and @enddate)";
+                          "WHERE (bkh.id = cthd.id and DATE(bkh.created_at) BETWEEN @startdate and @enddate) " +
+                          "OR (bvl.id = cthd.id and DATE(bvl.created_at) BETWEEN @startdate and @enddate)";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("startdate", startDate.ToString("yyyy-MM-dd"));
                 cmd.Parameters.AddWithValue("enddate", endDate.ToString("yyyy-MM-dd"));
@@ -2066,8 +2066,8 @@ namespace SportswearShop_Ver2.Models
                 conn.Open();
                 var str = "SELECT COUNT(DISTINCT cthd.id) AS TongDonHang " +
                           "from bill_khachhangs bkh, bill_vanglais bvl, c_t_h_d_s cthd " +
-                          "WHERE (bkh.id = cthd.id and bkh.created_at BETWEEN @startdate and @enddate) " +
-                          "OR (bvl.id = cthd.id and bvl.created_at BETWEEN @startdate and @enddate)";
+                          "WHERE (bkh.id = cthd.id and DATE(bkh.created_at) BETWEEN @startdate and @enddate) " +
+                          "OR (bvl.id = cthd.id and DATE(bvl.created_at) BETWEEN @startdate and @enddate)";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("startdate", startDate.ToString("yyyy-MM-dd"));
                 cmd.Parameters.AddWithValue("enddate", endDate.ToString("yyyy-MM-dd"));
@@ -2114,17 +2114,17 @@ namespace SportswearShop_Ver2.Models
                 conn.Open();
                 var str = "SELECT NgayBan, SUM(DoanhThu) AS DoanhThu " +
                           "FROM( " +
-                                "SELECT bkh.id, bkh.created_at as NgayBan, bkh.total_money - SUM(pd.original_price * cthd.amount) AS DoanhThu " +
+                                "SELECT bkh.id, DATE(bkh.created_at) as NgayBan, SUM((cthd.UnitPrice - pd.original_price) * cthd.amount) AS DoanhThu " +
                                 "FROM c_t_h_d_s cthd, products pd, bill_khachhangs bkh " +
                                 "WHERE cthd.product_id = pd.id AND bkh.id = cthd.id " +
-                                "AND bkh.created_at BETWEEN @startdate AND @enddate " +
-                                "GROUP by bkh.id, bkh.created_at " +
+                                "AND DATE(bkh.created_at) BETWEEN @startdate AND @enddate " +
+                                "GROUP by DATE(bkh.created_at) " +
                                 "UNION " +
-                                "SELECT bvl.id, bvl.created_at as NgayBan, bvl.total_money - SUM(pd.original_price * cthd.amount) AS DoanhThu " +
+                                "SELECT bvl.id, DATE(bvl.created_at) as NgayBan, SUM((cthd.UnitPrice - pd.original_price) * cthd.amount) AS DoanhThu " +
                                 "FROM c_t_h_d_s cthd, products pd, bill_vanglais bvl " +
                                 "WHERE cthd.product_id = pd.id AND bvl.id = cthd.id " +
-                                "AND bvl.created_at BETWEEN @startdate AND @enddate " +
-                                "GROUP by bvl.id, bvl.created_at) x " +
+                                "AND DATE(bvl.created_at) BETWEEN @startdate AND @enddate " +
+                                "GROUP by DATE(bvl.created_at)) x " +
                                 "GROUP BY NgayBan";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
                 cmd.Parameters.AddWithValue("startdate", startDate.ToString("yyyy-MM-dd"));
@@ -2155,16 +2155,16 @@ namespace SportswearShop_Ver2.Models
                 conn.Open();
                 var str = "SELECT id, image, name, price_sale, original_price, DoanhThuDemLai, SUM(SoLuongBanRa) AS SoLuongBanRa, SoLuongConTon " +
                           "FROM " +
-                          "((SELECT pd.id, pd.image, pd.name, pd.price_sale, pd.original_price, (pd.price_sale - pd.original_price) * SUM(cthd.amount) AS DoanhThuDemLai, SUM(cthd.amount) as SoLuongBanRa, pd.Quantity as SoLuongConTon " +
+                          "((SELECT pd.id, pd.image, pd.name, pd.price_sale, pd.original_price, SUM((cthd.UnitPrice - pd.original_price) * cthd.amount) AS DoanhThuDemLai, SUM(cthd.amount) as SoLuongBanRa, pd.Quantity as SoLuongConTon " +
                           "FROM products pd, c_t_h_d_s cthd, bill_khachhangs bkh " +
                           "WHERE pd.id = cthd.product_id AND cthd.id = bkh.id " +
-                          "AND bkh.created_at BETWEEN @startdate and @enddate " +
+                          "AND DATE(bkh.created_at) BETWEEN @startdate and @enddate " +
                           "GROUP BY pd.id) " +
                           "UNION " +
-                          "(SELECT pd.id, pd.image, pd.name, pd.price_sale, pd.original_price, (pd.price_sale - pd.original_price) * SUM(cthd.amount) AS DoanhThuDemLai, SUM(cthd.amount) as SoLuongBanRa, pd.Quantity as SoLuongConTon " +
+                          "(SELECT pd.id, pd.image, pd.name, pd.price_sale, pd.original_price, SUM((cthd.UnitPrice - pd.original_price) * cthd.amount) AS DoanhThuDemLai, SUM(cthd.amount) as SoLuongBanRa, pd.Quantity as SoLuongConTon " +
                           "FROM products pd, c_t_h_d_s cthd, bill_vanglais bvl " +
                           "WHERE pd.id = cthd.product_id AND cthd.id = bvl.id " +
-                          "AND bvl.created_at BETWEEN @startdate and @enddate " +
+                          "AND DATE(bvl.created_at) BETWEEN @startdate and @enddate " +
                           "GROUP BY pd.id)) x " +
                           "GROUP BY id " +
                           "ORDER BY SUM(SoLuongBanRa) DESC " +
@@ -2202,16 +2202,16 @@ namespace SportswearShop_Ver2.Models
                 conn.Open();
                 var str = "SELECT id, image, name, price_sale, original_price, DoanhThuDemLai, SUM(SoLuongBanRa) AS SoLuongBanRa, SoLuongConTon " +
                           "FROM " +
-                          "((SELECT pd.id, pd.image, pd.name, pd.price_sale, pd.original_price, (pd.price_sale - pd.original_price) * SUM(cthd.amount) AS DoanhThuDemLai, SUM(cthd.amount) as SoLuongBanRa, pd.Quantity as SoLuongConTon " +
+                          "((SELECT pd.id, pd.image, pd.name, pd.price_sale, pd.original_price, SUM((cthd.UnitPrice - pd.original_price) * cthd.amount) AS DoanhThuDemLai, SUM(cthd.amount) as SoLuongBanRa, pd.Quantity as SoLuongConTon " +
                           "FROM products pd, c_t_h_d_s cthd, bill_khachhangs bkh " +
                           "WHERE pd.id = cthd.product_id AND cthd.id = bkh.id " +
-                          "AND bkh.created_at BETWEEN @startdate and @enddate " +
+                          "AND DATE(bkh.created_at) BETWEEN @startdate and @enddate " +
                           "GROUP BY pd.id) " +
                           "UNION " +
-                          "(SELECT pd.id, pd.image, pd.name, pd.price_sale, pd.original_price, (pd.price_sale - pd.original_price) * SUM(cthd.amount) AS DoanhThuDemLai, SUM(cthd.amount) as SoLuongBanRa, pd.Quantity as SoLuongConTon " +
+                          "(SELECT pd.id, pd.image, pd.name, pd.price_sale, pd.original_price, SUM((cthd.UnitPrice - pd.original_price) * cthd.amount) AS DoanhThuDemLai, SUM(cthd.amount) as SoLuongBanRa, pd.Quantity as SoLuongConTon " +
                           "FROM products pd, c_t_h_d_s cthd, bill_vanglais bvl " +
                           "WHERE pd.id = cthd.product_id AND cthd.id = bvl.id " +
-                          "AND bvl.created_at BETWEEN @startdate and @enddate " +
+                          "AND DATE(bvl.created_at) BETWEEN @startdate and @enddate " +
                           "GROUP BY pd.id)) x " +
                           "GROUP BY id " +
                           "ORDER BY SUM(SoLuongBanRa) DESC";

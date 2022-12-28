@@ -93,7 +93,7 @@
                             cost = item.GetType().GetProperty("OriginalPrice").GetValue(item, null);
                             price = item.GetType().GetProperty("SalePrice").GetValue(item, null);
                             numberSolded = item.GetType().GetProperty("SoLuongBanRa").GetValue(item, null);
-                            revenue = numberSolded * (price - cost);
+                            revenue = item.GetType().GetProperty("DoanhThuDemLai").GetValue(item, null);
                             <tr>
                                 <th scope="row">@stt</th>
                                 <td style="max-width:250px;">@item.GetType().GetProperty("ProductName").GetValue(item, null)</td>
