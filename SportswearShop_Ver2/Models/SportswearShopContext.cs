@@ -110,9 +110,9 @@ namespace SportswearShop_Ver2.Models
 							Original_price = Convert.ToInt32(reader["original_price"]),
 							Price_sale = Convert.ToInt32(reader["price_sale"]),
 							Quantity = Convert.ToInt32(reader["Quantity"]),
-                            Menu_id = Convert.ToInt32(reader["menu_id"])
-
-                        });
+                            Menu_id = Convert.ToInt32(reader["menu_id"]),
+							Discount = Convert.ToInt32(reader["Discount"]),
+						});
 					}
 					reader.Close();
 				}
@@ -146,7 +146,8 @@ namespace SportswearShop_Ver2.Models
 						productInfo.Original_price = Convert.ToInt32(reader["original_price"]);
 						productInfo.Price_sale = Convert.ToInt32(reader["price_sale"]);
 						productInfo.Quantity = Convert.ToInt32(reader["Quantity"]);
-						
+                        productInfo.Discount = Convert.ToInt32(reader["Discount"]);
+
 						if (reader["menu_id"] != DBNull.Value)
 							productInfo.Menu_id = Convert.ToInt32(reader["menu_id"]);
 						productInfo.Content = reader["Content"].ToString();
@@ -274,7 +275,9 @@ namespace SportswearShop_Ver2.Models
                             Image = reader["image"].ToString(),
                             Original_price = Convert.ToInt32(reader["original_price"]),
                             Price_sale = Convert.ToInt32(reader["price_sale"]),
-                            Quantity = Convert.ToInt32(reader["Quantity"])
+                            Quantity = Convert.ToInt32(reader["Quantity"]),
+                            Discount = Convert.ToInt32(reader["Discount"]),
+
                         });
                     }
                     reader.Close();
@@ -312,8 +315,9 @@ namespace SportswearShop_Ver2.Models
                             Image = reader["image"].ToString(),
                             Original_price = Convert.ToInt32(reader["original_price"]),
                             Price_sale = Convert.ToInt32(reader["price_sale"]),
-                            Quantity = Convert.ToInt32(reader["Quantity"])
-                        });
+                            Quantity = Convert.ToInt32(reader["Quantity"]),
+                            Discount = Convert.ToInt32(reader["Discount"]),
+						});
                     }
                     reader.Close();
 
@@ -352,8 +356,9 @@ namespace SportswearShop_Ver2.Models
                             Image = reader["image"].ToString(),
                             Original_price = Convert.ToInt32(reader["original_price"]),
                             Price_sale = Convert.ToInt32(reader["price_sale"]),
-                            Quantity = Convert.ToInt32(reader["Quantity"])
-                        });
+                            Quantity = Convert.ToInt32(reader["Quantity"]),
+							Discount = Convert.ToInt32(reader["Discount"]),
+						});
                     }
                     reader.Close();
 
@@ -385,8 +390,10 @@ namespace SportswearShop_Ver2.Models
                             Image = reader["image"].ToString(),
                             Original_price = Convert.ToInt32(reader["original_price"]),
                             Price_sale = Convert.ToInt32(reader["price_sale"]),
-                            Quantity = Convert.ToInt32(reader["Quantity"])
-                        });
+                            Quantity = Convert.ToInt32(reader["Quantity"]),
+							Discount = Convert.ToInt32(reader["Discount"]),
+
+						});
                     }
                     reader.Close();
 
@@ -419,8 +426,9 @@ namespace SportswearShop_Ver2.Models
                             Image = reader["image"].ToString(),
                             Original_price = Convert.ToInt32(reader["original_price"]),
                             Price_sale = Convert.ToInt32(reader["price_sale"]),
-                            Quantity = Convert.ToInt32(reader["Quantity"])
-                        });
+                            Quantity = Convert.ToInt32(reader["Quantity"]),
+							Discount = Convert.ToInt32(reader["Discount"]),
+						});
                     }
                     reader.Close();
 
@@ -676,7 +684,7 @@ namespace SportswearShop_Ver2.Models
             using (MySqlConnection conn = GetConnection())
             {
                 conn.Open();
-                var str = "SELECT P.ID AS PID, Quantity, P.NAME AS PNAME, P.IMAGE AS PIMAGE, SOLD, PRICE_SALE, C.ID AS CID, M.ID AS MID, content, C.NAME AS CNAME, M.NAME AS MNAME  " +
+                var str = "SELECT P.ID AS PID, Quantity, P.NAME AS PNAME, Discount , P.IMAGE AS PIMAGE, SOLD, PRICE_SALE, C.ID AS CID, M.ID AS MID, content, C.NAME AS CNAME, M.NAME AS MNAME  " +
                     "FROM MENUS M, PRODUCTS P, CATEGORY C " +
                     "WHERE M.PARENT_ID = C.ID AND P.MENU_ID=M.ID AND P.ID = @ProductId";
                 MySqlCommand cmd = new MySqlCommand(str, conn);
@@ -699,7 +707,8 @@ namespace SportswearShop_Ver2.Models
                             CategoryName = reader["CNAME"].ToString(),
                             MenuName = reader["MNAME"].ToString(),
                             Sold = Convert.ToInt32(reader["SOLD"]),
-                        };
+							Discount = Convert.ToInt32(reader["Discount"]),
+						};
 
                     }
                     reader.Close();

@@ -127,13 +127,13 @@
 							<h3><a style="text-decoration: none; color: black;" href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("Id").GetValue(item, null)">@item.GetType().GetProperty("Name").GetValue(item, null)</a></h3>
 							<div class="product-price">
 								<span style="color:black; font-size:17px"><b>@item.GetType().GetProperty("Price_sale").GetValue(item, null).ToString("#,###", cul.NumberFormat) ₫</b></span>
-								@*@if (item.GetType().GetProperty("Discount").GetValue(item, null) > 0)
-							{
-							double dc = @item.GetType().GetProperty("Price").GetValue(item, null) + (@item.GetType().GetProperty("Price").GetValue(item, null) * (@item.GetType().GetProperty("Discount").GetValue(item, null)) / 100);
-							<br>
-							<span class="old">@dc.ToString("#,###", cul.NumberFormat) ₫</span>
-							<span class="o-giam-gia" style="font-size:10px">-@item.GetType().GetProperty("Discount").GetValue(item, null)% </span>
-							}*@
+								@if (item.GetType().GetProperty("Discount").GetValue(item, null) > 0)
+								{
+									double dc = @item.GetType().GetProperty("Price_sale").GetValue(item, null) + (@item.GetType().GetProperty("Price_sale").GetValue(item, null) * (@item.GetType().GetProperty("Discount").GetValue(item, null)) / 100);
+								<br>
+								<span class="old">@dc.ToString("#,###", cul.NumberFormat) ₫</span>
+								<span class="o-giam-gia">- @item.GetType().GetProperty("Discount").GetValue(item, null)% </span>
+								}
 							</div>
 						</div>
 					</div>
