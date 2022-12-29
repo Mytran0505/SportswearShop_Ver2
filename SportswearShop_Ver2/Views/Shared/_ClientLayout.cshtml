@@ -73,8 +73,8 @@
 </head>
 <body>
 	<header class="header">
-        <nav class="navigation" style="height:60px; margin-bottom: 15px;">
-            <div class="container-fluid">
+        <nav class="navigation" style="height:50px; margin-bottom: 15px;">
+            <div class="wrap-menu-desktop b-shadow-head">
                 <div class="navigation__column left">
                     <div class="header__logo pl-40"><a class="ps-logo" href="/Home/Index"><img src="\public\images\icons\sport.png" alt=""></a></div>
                     <input type="text" id="input-customer-id" value="@customerId" hidden><!--Đừng xóa cái này  -->
@@ -88,8 +88,8 @@
                             
                                 <li class="menu-item menu-item-has-children has-mega-menu">
                                     <a href="/ProductListing/Product_Listing1?categoryId=@item.GetType().GetProperty("Id").GetValue(item, null)" style="text-decoration:none">@item.GetType().GetProperty("Name").GetValue(item, null)</a>
-                                    <div class="mega-menu">
-                                        <div class="mega-wrap">
+                                    <div class="mega-menu b-r-15">
+                                        <div class="mega-wrap b-r-15">
                                             @foreach (var brand in @ViewBag.AllMenu)
                                             {
 											@if (brand.GetType().GetProperty("Parent_id").GetValue(brand, null) == @item.GetType().GetProperty("Id").GetValue(item, null))

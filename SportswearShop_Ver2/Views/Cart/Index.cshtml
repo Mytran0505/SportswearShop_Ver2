@@ -7,7 +7,7 @@
     CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
 }
 <!-- Breadcrumbs -->
-<div class="breadcrumbs">
+<div class="breadcrumbs p-t-30">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -36,13 +36,13 @@
                             <th class="text-center" style="width:140px">Đơn giá</th>
                             <th class="text-center">Số lượng</th>
                             <th class="text-center" style="width:140px">Tổng tiền</th>
-                            <th class="text-center"><i class="ti-trash remove-icon"></i></th>
+                            <th class="text-center"></th>
                         </tr>
                     </thead>
                     <tbody id="table-card">
                         @if (ViewBag.numberItem < 1)
                         {
-                            <tr>
+                            <tr class="b-r-15">
                                 <td colspan="6">
                                     <img style="display: block; width: auto; height: 250px; margin-left: auto; margin-right: auto; " src="~/public/client/Images/empty-cart.png">
                                 </td>
@@ -52,22 +52,22 @@
                         {
                             @foreach (var item in ViewBag.cart)
                             {
-                                <tr>
+                                <tr class="b-r-15">
                                     <td class="image" data-title="No" style="width: 60px; height: 60px;"><img style="margin: auto; max-width: 60px; max-height: 60px; width: auto; height: auto; " src="@item.Product.Image" alt="#"></td>
                                     <td class="product-des" data-title="Description">
                                         <p class="product-name"><a href="/ProductDetail/product_detail?productId=@item.Product.Id">@item.Product.Name</a></p>
                                     </td>
                                     <td class="price" data-title="Price" data-value="@item.Product.Price_sale"><span>@item.Product.Price_sale.ToString("#,###", cul.NumberFormat) ₫</span></td>
-                                    <td class="qty" data-title="Qty">
+                                    <td data-title="Qty">
                                         <!-- Input Order -->
-                                        <div class="input-group">
-                                            <div class="button minus">
+                                        <div class="input-group" style="display: flex;">
+                                            <div class="button minus" style="display: inline-block; scale: 65%;">
                                                 <button type="button" class="btn btn-primary btn-number" data-type="minus" data-field="quant[@item.Product.Id]">
                                                     <i class="ti-minus"></i>
                                                 </button>
                                             </div>
-                                            <input type="text" name="quant[@item.Product.Id]" id="@item.Product.Id" class="input-number" data-min="1" data-max="100" value="@item.Quantity">
-                                            <div class="button plus">
+                                            <input style="display: inline-block; width: 15px; text-align: center;" type="text" name="quant[@item.Product.Id]" id="@item.Product.Id" class="input-number" data-min="1" data-max="100" value="@item.Quantity">
+                                            <div class="button plus" style="display: inline-block; scale: 65%; ">
                                                 <button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[@item.Product.Id]">
                                                     <i class="ti-plus"></i>
                                                 </button>
@@ -97,7 +97,7 @@
 
             <div class="col-6 col-lg-3">
                 <div class="total-amount">
-                    <div class="right" style="padding: 20px; width: 280px; background-color: white; position: absolute; top:0px">
+                    <div class="right b-r-15" style="padding: 20px; width: 280px; background-color: white; position: absolute; top:0px">
                         <ul>
                             <li>Tạm tính<span id="tam-tinh">@ViewBag.total.ToString("#,###", cul.NumberFormat) ₫</span></li>
 

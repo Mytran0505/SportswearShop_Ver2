@@ -2544,6 +2544,19 @@ textarea.form-control {
         opacity: 1;
     }
 
+.bread-list > li, .bread-list > li > a {
+    display: inline-block;
+    padding-right: 5px;
+}
+
+.qty {
+    width: 50px;
+    text-align: center;
+    display: inline-block;
+    border-radius: 5px;
+    border: 0.75px solid #333;
+}
+
 .ps-post {
     margin-bottom: 30px;
 }
@@ -5538,7 +5551,7 @@ textarea.form-control {
     .mega-menu .mega-wrap {
         max-width: 1440px;
         margin: 0 auto;
-        padding: 35px 30px;
+        padding: 10px 250px;
         display: -webkit-box;
         display: -moz-box;
         display: box;
@@ -5549,18 +5562,20 @@ textarea.form-control {
         -webkit-flex-flow: row nowrap;
         -moz-flex-flow: row nowrap;
         flex-flow: row nowrap;
-        text-align: left;
     }
 
     .mega-menu .mega-heading {
         margin-bottom: 15px;
         font-family: "Archivo Narrow", sans-serif;
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 700;
         line-height: 1.8em;
-        color: #1d1d1d;
         text-transform: uppercase;
     }
+
+        .mega-menu .mega-heading:hover {
+            color: #6c7ae0;
+        }
 
     .mega-menu .mega-column {
         width: 20%;
@@ -5679,8 +5694,7 @@ textarea.form-control {
 }
 
 .menu {
-    display: inline-block;
-    vertical-align: top;
+    height: 70px;
 }
 
     .menu::after {
@@ -5705,7 +5719,7 @@ textarea.form-control {
             font-weight: 700;
             line-height: 80px;
             text-transform: uppercase;
-            color: #fff;
+            color: #000;
         }
 
             .menu > li > a:before {
@@ -5915,6 +5929,7 @@ textarea.form-control {
         }
 
         .menu > li:hover .mega-menu {
+            background: rgb(249, 249, 249);
             -webkit-transform: translateY(0);
             -moz-transform: translateY(0);
             -ms-transform: translateY(0);
@@ -5922,6 +5937,7 @@ textarea.form-control {
             transform: translateY(0);
             visibility: visible;
             opacity: 1;
+            margin-top: -17px;
         }
 
 @media (max-width: 1199px) {
@@ -6032,13 +6048,13 @@ textarea.form-control {
     }
 
         .navigation .navigation__column.right .ps-cart__toggle {
-            top: 15px;
+            top: 5px;
             margin: 8px;
             color: #fff;
         }
 
         .navigation .navigation__column.right .ps-search--header {
-            top: 25px;
+            top: 15px;
         }
 
     .navigation .ps-search--header {
@@ -6262,18 +6278,14 @@ textarea.form-control {
 
 .ps-cart__listing {
     position: absolute;
-    top: 80%;
-    right: 0;
-    width: 300px;
+    top: 74%;
+    right: -52px;
+    width: 323px;
     background-color: #fff;
     z-index: 1000;
     -webkit-transition: all 0.4s ease;
     -moz-transition: all 0.4s ease;
     transition: all 0.4s ease;
-    -webkit-box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2);
-    -ms-box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2);
-    box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2);
     visibility: hidden;
     opacity: 0;
     -webkit-transform: translateX(50%);
@@ -6281,6 +6293,8 @@ textarea.form-control {
     -ms-transform: translateX(50%);
     -o-transform: translateX(50%);
     transform: translateX(50%);
+    border-radius: 15px;
+    box-shadow: 1px 1px 2px 1px rgb(175 175 175 / 90%);
 }
 
 .ps-cart__content {
@@ -6316,7 +6330,8 @@ textarea.form-control {
         -webkit-border-radius: 0;
         -moz-border-radius: 0;
         -ms-border-radius: 0;
-        border-radius: 0;
+        border-radius: 15px;
+        box-shadow: 1px 1px 2px 1px rgb(192 192 192 / 0.9);
         color: #fff;
     }
 
@@ -6394,6 +6409,8 @@ textarea.form-control {
     width: 60px;
     height: 60px;
     overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 1px 1px 2px 1px rgb(192 192 192 / 90%);
 }
 
     .ps-cart-item__thumbnail > img {
@@ -6421,7 +6438,7 @@ textarea.form-control {
     }
 
     .ps-cart-item__thumbnail:hover > a {
-        background-color: #77ACF1;
+        opacity:70%;
     }
 
 .ps-cart-item__title {
@@ -6447,9 +6464,12 @@ textarea.form-control {
 
     .ps-cart-item__content p {
         font-family: "Be Vietnam Pro", sans-serif;
-        font-size: 14px;
         line-height: 1.43;
         color: #333;
+        display: flex;
+        justify-content: flex-end;
+        padding-right: 6px;
+        font-size: 15px;
     }
 
         .ps-cart-item__content p span {
@@ -7052,7 +7072,7 @@ textarea.form-control {
 }
 
     .header .ps-logo {
-        padding-top: 15px;
+        padding-top: 5px;
         display: inline-block;
         max-width: 150px;
         line-height: 55px;
@@ -10062,7 +10082,7 @@ html .bg--parallax {
     }
 /* Sinlge Product */
 .single-product {
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
     .single-product .product-img {
@@ -10236,7 +10256,7 @@ html .bg--parallax {
 
         .single-product .product-img .product-action-2 {
             position: absolute;
-            left: 0;
+            left: 15px;
             bottom: 0;
             text-align: left;
             z-index: 99;
@@ -10262,7 +10282,7 @@ html .bg--parallax {
                 }
 
     .single-product .button-head {
-        background: #fff;
+        background: #fff9f9;
         display: inline-block;
         height: 40px;
         width: 100%;
@@ -11460,8 +11480,7 @@ html .bg--parallax {
 }
 
 .shopping-cart {
-    background: #f6f6f6;
-    padding: 50px 0;
+    padding: 35px 0px 50px 0;
 }
 
 .shopping-summery thead .main-hading {
@@ -11748,7 +11767,7 @@ html .bg--parallax {
 
         .shopping-cart .total-amount .right .button5 .btn {
             text-align: center;
-            border-radius: 0;
+          
             width: 100%;
             margin-top: 10px;
             height: 46px;
@@ -11756,19 +11775,22 @@ html .bg--parallax {
             font-size: 13px;
             color: #fff;
         }
-/*======================================
+
+        .shopping-cart .total-amount .right .button5 .btn {
+            border-radius: 15px;
+        }
+            /*======================================
    End Shopping Cart CSS
 ========================================*/
-
-/*======================================
+            /*======================================
    Start Checkout Form CSS
 ========================================*/
-.shop.checkout {
-    padding: 0;
-    background: #fff;
-    padding-top: 20px;
-    padding-bottom: 50px;
-}
+            .shop.checkout {
+                padding: 0;
+                background: #fff;
+                padding-top: 20px;
+                padding-bottom: 50px;
+            }
 
     .shop.checkout .checkout-form {
         margin-top: 30px;
@@ -12891,7 +12913,7 @@ html .bg--parallax {
 /* Blog Single CSS */
 .blog-single {
     background: #fff;
-    padding: 70px 0 100px;
+    padding: 50px 0px 100px 0px;
 }
 
     .blog-single .blog-single-main {
@@ -13133,6 +13155,11 @@ html .bg--parallax {
             background: transparent;
             padding: 0;
         }
+
+.content .button > button {
+    border-radius: 30px;
+    box-shadow: 1px 1px 2px 1px rgb(192 192 192 / 90%);
+}
 
         .blog-single .single-comment .content a i {
             display: inline-block;
