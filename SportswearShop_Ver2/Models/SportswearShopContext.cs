@@ -2432,7 +2432,7 @@ namespace SportswearShop_Ver2.Models
                             OriginalPrice = Convert.ToInt32(reader["original_price"]),
                             SalePrice = Convert.ToInt32(reader["price_sale"]),
                             SoLuongBanRa = Convert.ToInt32(reader["SoLuongBanRa"]),
-                            DoanhThuDemLai = Convert.ToInt64(reader["DoanhThuDemLai"])
+                            DoanhThuDemLai = Convert.ToInt32(reader["DoanhThuDemLai"])
                         };
                         products.Add(obj);
                     }
@@ -2478,7 +2478,7 @@ namespace SportswearShop_Ver2.Models
                             OriginalPrice = Convert.ToInt32(reader["original_price"]),
                             SalePrice = Convert.ToInt32(reader["price_sale"]),
                             SoLuongBanRa = Convert.ToInt32(reader["SoLuongBanRa"]),
-                            DoanhThuDemLai = Convert.ToInt64(reader["DoanhThuDemLai"])
+                            DoanhThuDemLai = Convert.ToInt32(reader["DoanhThuDemLai"])
                         };
                         products.Add(obj);
                     }

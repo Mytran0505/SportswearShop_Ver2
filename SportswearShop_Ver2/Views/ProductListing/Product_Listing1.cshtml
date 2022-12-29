@@ -28,7 +28,7 @@
                                     {
                                     @if (ViewBag.NameOfCategory.GetType().GetProperty("Id").GetValue(ViewBag.NameOfCategory, null) == menu.GetType().GetProperty("Parent_id").GetValue(menu, null))
                                         {
-                                        <li><a class="nav-link active" data-toggle="tab" href="#menu_@menu.GetType().GetProperty("Id").GetValue(menu, null)" role="tab">@menu.GetType().GetProperty("Name").GetValue(menu, null)</a></li>
+                                        <li><a class="nav-link" data-toggle="tab" href="#menu_@menu.GetType().GetProperty("Id").GetValue(menu, null)" role="tab">@menu.GetType().GetProperty("Name").GetValue(menu, null)</a></li>
                                         }
                                     }
                                 }
@@ -38,7 +38,7 @@
                                     {
                                     @if (ViewBag.NameOfCategory.GetType().GetProperty("Id").GetValue(ViewBag.NameOfCategory, null) == menu.GetType().GetProperty("Parent_id").GetValue(menu, null))
                                         {
-                                        <li><a class="nav-link active" data-toggle="tab" href="#menu_@menu.GetType().GetProperty("Id").GetValue(menu, null)" role="tab">@menu.GetType().GetProperty("Name").GetValue(menu, null)</a></li>
+                                        <li><a class="nav-link" data-toggle="tab" href="#menu_@menu.GetType().GetProperty("Id").GetValue(menu, null)" role="tab">@menu.GetType().GetProperty("Name").GetValue(menu, null)</a></li>
                                         }
                                     }
                                 }
