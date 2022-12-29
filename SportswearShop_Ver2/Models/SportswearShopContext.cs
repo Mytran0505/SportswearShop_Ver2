@@ -2738,7 +2738,28 @@ namespace SportswearShop_Ver2.Models
             }
         }
 
-        public List<User> getAllAdminUser()
+		public void saveAdmin(User newUser)
+		{
+			using (MySqlConnection conn = GetConnection())
+			{
+				conn.Open();
+				var str = "INSERT INTO user(UserId, FirstName, LastName, Mobile, Email, Password, Admin, UserImage, RegisteredAt, LastLogin) VALUES (@UserId, @FirstName, @LastName, @Mobile, @Email, @Password, @Admin, @UserImage, @RegisteredAt, @LastLogin)";
+				MySqlCommand cmd = new MySqlCommand(str, conn);
+				cmd.Parameters.AddWithValue("UserId", newUser.UserId);
+				cmd.Parameters.AddWithValue("FirstName", newUser.FirstName);
+				cmd.Parameters.AddWithValue("LastName", newUser.LastName);
+				cmd.Parameters.AddWithValue("Mobile", newUser.Mobile);
+				cmd.Parameters.AddWithValue("Email", newUser.Email);
+				cmd.Parameters.AddWithValue("Password", newUser.Password);
+				cmd.Parameters.AddWithValue("Admin", 1);
+				cmd.Parameters.AddWithValue("UserImage", newUser.UserImage);
+				cmd.Parameters.AddWithValue("RegisteredAt", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+				cmd.Parameters.AddWithValue("LastLogin", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+				cmd.ExecuteNonQuery();
+			}
+		}
+
+		public List<User> getAllAdminUser()
         {
             List<User> list = new List<User>();
             using (MySqlConnection conn = GetConnection())
