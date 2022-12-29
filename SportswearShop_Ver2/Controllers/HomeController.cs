@@ -43,6 +43,15 @@ namespace SportswearShop_Ver2.Controllers
 			return View();
 		}
 
+		public IActionResult All_product()
+		{
+			SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+			ViewBag.AllCategory = context.getAllCategory();
+			ViewBag.AllMenu = context.getAllMenu();
+			ViewBag.Allproduct = context.getAlllProduct();
+			return View();
+		}
+
 		public IActionResult login(string message)
 		{
 			if (!string.IsNullOrEmpty(ViewBag.message))
@@ -124,9 +133,9 @@ namespace SportswearShop_Ver2.Controllers
 				HttpContext.Session.SetString("customerImage", userInfo.UserImage);
 				HttpContext.Session.SetString("customerEmail", userInfo.Email);
 
-				var LINQContext = new SportswearShopLINQContext();
-				LoginHistory login = new LoginHistory(userInfo.UserId, DateTime.Now, DateTime.Now);
-				LINQContext.updateLoginHistory(login);
+				//var LINQContext = new SportswearShopLINQContext();
+				//LoginHistory login = new LoginHistory(userInfo.UserId, DateTime.Now, DateTime.Now);
+				//LINQContext.updateLoginHistory(login);
 				// Update last login
 				context.updateLastLogin(userInfo.UserId);
 				return RedirectToAction("Index");
@@ -166,7 +175,7 @@ namespace SportswearShop_Ver2.Controllers
             ViewBag.AllMenu = context.getAllMenu();
             //ViewBag.AllSubBrand = context.getAllSubBrand();
             //ViewBag.AllBlog = context.getAllBlog();
-            var linqContext = new SportswearShopLINQContext();
+            //var linqContext = new SportswearShopLINQContext();
             ViewData["CurrentFilter"] = kw_submit;
             //var blog = from s in linqContext.Blog select s;
             //if (!String.IsNullOrEmpty(kw_submit))
@@ -181,16 +190,16 @@ namespace SportswearShop_Ver2.Controllers
             //}
 
             //ViewBag.Result2 = blog;
-            var product = from s in linqContext.Product select s;
-            if (!String.IsNullOrEmpty(kw_submit))
-            {
-                product = product.Where(s => s.Name.Contains(kw_submit));
-            }
-            if (product.Count() == 0)
-            {
-                total1 = "NOTNULL";
-            }
-            ViewBag.Result1 = product;
+            //var product = from s in linqContext.Product select s;
+            //if (!String.IsNullOrEmpty(kw_submit))
+            //{
+            //    product = product.Where(s => s.Name.Contains(kw_submit));
+            //}
+            //if (product.Count() == 0)
+            //{
+            //    total1 = "NOTNULL";
+            //}
+            //ViewBag.Result1 = product;
 
 
 

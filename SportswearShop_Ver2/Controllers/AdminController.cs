@@ -51,7 +51,7 @@ namespace SportswearShop_Ver2.Controllers
                 HttpContext.Session.SetString("adminFirstName", userInfo.FirstName);
                 HttpContext.Session.SetString("adminImage", userInfo.UserImage);
                 HttpContext.Session.SetString("adminEmail", userInfo.Email);
-                var LINQContext = new SportswearShopLINQContext();
+                //var LINQContext = new SportswearShopLINQContext();
                 // Update last login
                 //context.updateLastLogin(userInfo.UserId);
                 // Thêm lịch sử đăng nhập
