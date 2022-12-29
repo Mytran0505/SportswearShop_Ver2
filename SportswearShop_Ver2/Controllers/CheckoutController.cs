@@ -143,8 +143,8 @@ namespace SportswearShop_Ver2.Controllers
             string customerLastName = HttpContext.Session.GetString("customerLastName");
             string customerEmail = HttpContext.Session.GetString("customerEmail");
             string mailContent = getMailContent(order, customerFirstName, customerLastName);
-            await MailUtils.SendMailGoogleSmtp("mytran0505itlker@gmail.com", customerEmail, $"Chào {customerFirstName}, ITGoShop đã nhận được đơn hàng của bạn", mailContent,
-                                          "mytran0505itlker@gmail.com", "Itgoshop");
+            await MailUtils.SendMailGoogleSmtp("mytran0505itlker@gmail.com", customerEmail, $"Chào {customerFirstName}, SportswearShop đã nhận được đơn hàng của bạn", mailContent,
+                                          "mytran0505itlker@gmail.com", "SportswearShop");
             return RedirectToAction("order_detail", "Order", new { orderId = orderId });
         }
         public string getMailContent(BillKhachHang orderInfo, string customerFirstName, string customerLastName)
@@ -160,8 +160,8 @@ namespace SportswearShop_Ver2.Controllers
             string output = @$"<body>
                 <div class='card' style='margin: 40px 100px;'>
                         <div class='card-body' style='font-size:16px'>
-                            <h2>Cảm ơn quý khách {customerLastName} {customerFirstName} đã đặt hàng tại ITGoShop,</h2>
-                            <p class='card-text'>ITGoShop rất vui thông báo đơn hàng #{orderInfo.Id} của quý khách đã được tiếp nhận và đang trong quá trình xử lý. ITGoShop sẽ thông báo đến quý khách ngay khi hàng chuẩn bị được giao.</p>
+                            <h2>Cảm ơn quý khách {customerLastName} {customerFirstName} đã đặt hàng tại SportswearShop,</h2>
+                            <p class='card-text'>SportswearShop rất vui thông báo đơn hàng #{orderInfo.Id} của quý khách đã được tiếp nhận và đang trong quá trình xử lý. SportswearShop sẽ thông báo đến quý khách ngay khi hàng chuẩn bị được giao.</p>
                             <p class='card-text' style='color:#77ACF1;'><b>THÔNG TIN ĐƠN HÀNG #{orderInfo.Id}</b>  (Thời gian đặt hàng: {OrderDate})</p>
                             <hr>
                             <p class='card-text'><b>Mô tả đơn hàng:</b> {orderInfo.Description}</p>
@@ -174,7 +174,7 @@ namespace SportswearShop_Ver2.Controllers
                             <p class= 'card-text'><b> Phí vận chuyển: </b>{ShipFee} ₫</p>
                             <p class= 'card-text'><b> TỔNG TRỊ GIÁ ĐƠN HÀNG: </b><b style = 'color:red; font-size: 20px' >{ToTal} ₫</b></p>
                             <p class= 'card-text'> Trân trọng,</p>
-                            <p class='card-text'> Đội ngũ ITGoShop.</p>
+                            <p class='card-text'> Đội ngũ SportswearShop.</p>
                             <p class= 'card-text'><i> Lưu ý: Với những đơn hàng thanh toán trả trước, xin vui lòng đảm bảo người nhận hàng đúng thông tin đã đăng kí trong đơn hàng, và chuẩn bị giấy tờ tùy thân để đơn vị giao nhận có thể xác thực thông tin khi giao hàng</i></p>
                         </div>
                   </div>

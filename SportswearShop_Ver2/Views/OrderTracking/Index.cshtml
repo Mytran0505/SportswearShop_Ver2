@@ -2,7 +2,7 @@
 @using System.Globalization;
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
-    ViewData["Title"] = "Theo dõi đơn hàng #"+ ViewBag.OrderInfo.Id + " - ITGoShop";
+    ViewData["Title"] = "Theo dõi đơn hàng #" + ViewBag.OrderInfo.Id + " - SportswearShop";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
     string customerId = HttpContextAccessor.HttpContext.Session.GetString("customerId");
     string customerFirstName = HttpContextAccessor.HttpContext.Session.GetString("customerFirstName");

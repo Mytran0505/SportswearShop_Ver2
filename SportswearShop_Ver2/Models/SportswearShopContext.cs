@@ -6,10 +6,10 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using SportswearShop_Ver2.Controllers;
 using System;
-using ITGoShop_F_Ver2.Controllers;
+using SportswearShop_Ver2.Controllers;
 using System.ComponentModel.Design;
 using System.Reflection.Metadata;
-using ITGoShop_F_Ver2.Models;
+using SportswearShop_Ver2.Models;
 
 namespace SportswearShop_Ver2.Models
 {

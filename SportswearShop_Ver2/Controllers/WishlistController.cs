@@ -7,7 +7,7 @@ using SportswearShop_Ver2.Models;
 using Microsoft.AspNetCore.Http;
 using SportswearShop_Ver2.Models;
 
-namespace ITGoShop_F_Ver2.Controllers
+namespace SportswearShop_Ver2.Controllers
 {
     public class WishlistController : Controller
     {

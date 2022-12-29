@@ -1,4 +1,4 @@
-﻿using ITGoShop_F_Ver2.Controllers;
+﻿using SportswearShop_Ver2.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using MyCardSession.Helpers;
 using SportswearShop_Ver2.Models;
@@ -160,7 +160,7 @@ namespace SportswearShop_Ver2.Controllers
                     output += $"<h4>{subItem.GetType().GetProperty("LastName").GetValue(subItem, null)} {subItem.GetType().GetProperty("FirstName").GetValue(subItem, null)}";
                     if ((int)subItem.GetType().GetProperty("Admin").GetValue(subItem, null) == 1)
                     {
-                        output += "<span><i> Nhân viên ITGoShop</i></span>";
+                        output += "<span><i> Nhân viên SportswearShop</i></span>";
                     }
                     output += @$"<span>{created_at}</span></h4>
                         <p>{subItem.GetType().GetProperty("CommentContent").GetValue(subItem, null)}</p>

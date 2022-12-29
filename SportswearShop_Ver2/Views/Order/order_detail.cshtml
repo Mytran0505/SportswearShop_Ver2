@@ -2,7 +2,7 @@
 @using System.Globalization;
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
-    ViewData["Title"] = "Chi tiết đơn hàng #" + ViewBag.OrderInfo.Id + " - ITGoShop";
+    ViewData["Title"] = "Chi tiết đơn hàng #" + ViewBag.OrderInfo.Id + " - SportswearShop";
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
     string customerId = HttpContextAccessor.HttpContext.Session.GetString("customerId");
     string customerFirstName = HttpContextAccessor.HttpContext.Session.GetString("customerFirstName");
@@ -536,7 +536,7 @@
             })
                 .then((willDelete) => {
                     if (willDelete) {
-                        swal("Hãy cho ITGoShop biết lý do nhé!", {
+                        swal("Hãy cho SportswearShop biết lý do nhé!", {
                             content: "input",
                         })
                             .then((value) => {

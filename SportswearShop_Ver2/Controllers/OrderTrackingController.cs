@@ -22,7 +22,6 @@ namespace SportswearShop_Ver2.Controllers
                 //ViewBag.AllSubBrand = context.getAllSubBrand();
                 /*======*/
 
-                //var linqContext = new ITGoShopLINQContext();
                 ViewBag.OrderInfo = context.getOrderInfo(orderId);
                 ViewBag.OrderDetail = context.getOrderDetail(orderId);
                 return View();

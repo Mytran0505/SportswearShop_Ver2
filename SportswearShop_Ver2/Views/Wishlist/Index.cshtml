@@ -90,7 +90,7 @@
                                     <a href="javascript:void(0)" class="button-xoa-wishlist"><i class="fa fa-times" aria-hidden="true"></i></a>
                                     <input type="text" class="ProductId" value="@item.GetType().GetProperty("ProductId").GetValue(item, null)" hidden>
                                 </div>
-                                <h2 style="margin-top:30px"><a href="/ProductDetail/product_detail/@item.GetType().GetProperty("ProductId").GetValue(item, null)" style="text-decoration:none;">@item.GetType().GetProperty("ProductName").GetValue(item, null)</a></h2>
+                                <h2 style="margin-top:30px"><a href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("ProductId").GetValue(item, null)" style="text-decoration:none;">@item.GetType().GetProperty("ProductName").GetValue(item, null)</a></h2>
                                 <p style="margin-top:15px; font-size:16px; color: red;">@item.GetType().GetProperty("Price").GetValue(item, null).ToString("#,###", cul.NumberFormat) ₫</p>
                             </div>
                         </div>
