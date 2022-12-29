@@ -38,7 +38,7 @@ namespace SportswearShop_Ver2.Controllers
             //ViewBag.AllSubBrand = context.getAllSubBrand();
             /*======*/
             int customerId = Convert.ToInt32(HttpContext.Session.GetInt32("customerId"));
-            ViewBag.DefaultShippingAddress = context.getDefaultShippingAddress(customerId);
+            ViewBag.DefaultShippingAddress = context.getShippingAddressOFOrder(orderId);
             ViewBag.OrderInfo = context.getOrderInfo(orderId);
             ViewBag.OrderDetail = context.getOrderDetail(orderId);
             return View();

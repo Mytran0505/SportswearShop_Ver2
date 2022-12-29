@@ -1021,6 +1021,46 @@ namespace SportswearShop_Ver2.Models
             return null;
         }
 
+        public object getShippingAddressOFOrder(int OderId)
+        {
+            object item = new object();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = @"SELECT SA.ShippingAddressId, Address, Phone, TT.name, QH.name, XP.name, ReceiverName, ShippingAddressType, ExtraShippingFee
+                        FROM shippingaddress SA, devvn_quanhuyen QH, devvn_tinhthanhpho TT, devvn_xaphuongthitran XP, bill_khachhangs B
+                        WHERE SA.matp = TT.matp
+                        AND SA.maqh = QH.maqh
+                        AND SA.xaid = XP.xaid
+                        AND B.ShippingAddressId = SA.ShippingAddressId
+                        AND B.Id = @BillId;";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("BillId", OderId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        item = new
+                        {
+                            ShippingAddressId = Convert.ToInt32(reader[0].ToString()),
+                            Address = reader[1].ToString(),
+                            Phone = reader[2].ToString(),
+                            ThanhPho = reader[3].ToString(),
+                            QuanHuyen = reader[4].ToString(),
+                            XaPhuong = reader[5].ToString(),
+                            ReceiverName = reader[6].ToString(),
+                            ShippingAddressType = reader[7].ToString(),
+                            ExtraShippingFee = Convert.ToInt32(reader[8].ToString()),
+                        };
+                        return item;
+                    }
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return null;
+        }
+
         public List<object> getWishList(int customerId)
         {
             List<object> list = new List<object>();

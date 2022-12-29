@@ -87,8 +87,13 @@
                                                 @ViewBag.ProductDetail.GetType().GetProperty("Price").GetValue(ViewBag.ProductDetail, null).ToString("#,###", cul.NumberFormat) ₫
                                                 <sub style="color:black; font-size:15px ">
                                                     <!--  Phần giảm giá -->
-                                                    <del>@((@ViewBag.ProductDetail.GetType().GetProperty("Price").GetValue(ViewBag.ProductDetail, null) + @ViewBag.ProductDetail.GetType().GetProperty("Price").GetValue(ViewBag.ProductDetail, null) * ((@ViewBag.ProductDetail.GetType().GetProperty("Discount").GetValue(ViewBag.ProductDetail, null)) / 100)).ToString("#,###", cul.NumberFormat)) ₫</del>
-                                                    <span class="o-giam-gia">- @ViewBag.ProductDetail.GetType().GetProperty("Discount").GetValue(ViewBag.ProductDetail, null)% </span>
+                                                    @if (@ViewBag.ProductDetail.GetType().GetProperty("Discount").GetValue(ViewBag.ProductDetail, null) > 0)
+                                                    {
+                                                        double dc = @ViewBag.ProductDetail.GetType().GetProperty("Price").GetValue(ViewBag.ProductDetail, null) + (@ViewBag.ProductDetail.GetType().GetProperty("Price").GetValue(ViewBag.ProductDetail, null) * (@ViewBag.ProductDetail.GetType().GetProperty("Discount").GetValue(ViewBag.ProductDetail, null)) / 100);
+
+                                                        <del> @dc.ToString("#,###", cul.NumberFormat) ₫</del>
+                                                        <span class="o-giam-gia">- @ViewBag.ProductDetail.GetType().GetProperty("Discount").GetValue(ViewBag.ProductDetail, null)% </span>
+                                                    }
                                                 </sub>
                                             </h1>
                                         </div>

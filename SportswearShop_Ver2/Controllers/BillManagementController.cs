@@ -49,7 +49,7 @@ namespace SportswearShop_Ver2.Controllers
             /*======*/
 
             var OrderInfo = context.getOrderInfo(orderId);
-            ViewBag.DefaultShippingAddress = context.getDefaultShippingAddress((int)OrderInfo.GetType().GetProperty("CustomerId").GetValue(OrderInfo, null));
+            ViewBag.DefaultShippingAddress = context.getShippingAddressOFOrder(orderId);
             ViewBag.OrderInfo = OrderInfo;
             ViewBag.OrderDetail = context.getOrderDetail(orderId);
             return View();
