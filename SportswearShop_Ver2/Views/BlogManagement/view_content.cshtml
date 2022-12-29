@@ -35,15 +35,6 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">
-                            <div class="d-flex align-items-center">
-                                <h4 class="card-title">Danh sách danh mục sản phẩm</h4>
-                                <button class="btn btn-primary btn-round ml-auto" data-toggle="modal" data-target="#addRowModal">
-                                    <i class="fa fa-plus"></i>
-                                    Thêm sản phẩm
-                                </button>
-                            </div>
-                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <div id="add-row_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
@@ -94,11 +85,11 @@
                                                 </td>
                                                 <td>
                                                     <div class="form-button-action">
-                                                        <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Cập nhật bài đăng">
+                                                        @*<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Cập nhật bài đăng">
                                                             <a href="/BlogManagement/update_content?blogtId=@item.GetType().GetProperty("BlogId").GetValue(item, null)" class="active" ui-toggle-class="">
                                                                 <i class="fa fa-edit text-active"></i>
                                                             </a>
-                                                        </button>
+                                                        </button>*@
                                                         <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Xóa bài đăng">
                                                             <a href="javascript:void(0)" class="active" ui-toggle-class="">
                                                                 <i class="fa fa-times text-danger text"></i>
@@ -174,7 +165,7 @@
         data: { BlogId: BlogId },
     success: function (data) {
     thisSlider.remove();
-    swal("Xóa thương hiệu nhánh thành công!", {
+    swal("Xóa thương blog thành công!", {
     icon: "success",
     });
     },
