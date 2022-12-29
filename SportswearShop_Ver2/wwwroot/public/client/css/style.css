@@ -1296,12 +1296,28 @@ body {
     z-index: 999;
 }
 
+..noidung_dropdown a:hover {
+    top: 50%;
+    padding-left: 30px;
+    color: #ffffff;
+    background-color: #77ACF1;
+}
+
+.noidung_dropdown::before {
+    position: absolute;
+    width: 100%;
+    height: 31%;
+    content: "";
+    display: block;
+    left: 0px;
+    top: -37px;
+}
     /* Thiết kế style cho các đường dẫn tronng Dropdown */
     .noidung_dropdown a {
         display: block;
-        padding: 5px 8px;
+        padding: 13px 20px;
         text-align: left;
-        font-family: "Be Vietnam Pro", sans-serif;
+        font-family: BeVietnamPro-Medium;
         font-size: 14px;
         color: #1d1d1d;
         font-weight: 500;
@@ -1310,16 +1326,20 @@ body {
         /* thay đổi màu background khi hover vào đường dẫn */
         .noidung_dropdown a:hover {
             top: 50%;
-            padding-left: 25px;
-            color: #77ACF1;
+            padding-left: 30px;
+            color: #ffffff;
+            background-color: #77ACF1;
         }
 
 /* hiển thị nội dung dropdown khi hover */
 .dropdown:hover .noidung_dropdown {
-    margin-top: 5%;
-    ;
+    margin-top: 15%;
     display: block;
+    position: absolute;
     transition-delay: 2s;
+    width: 200px;
+    right: -70%;
+    box-shadow: 1px 1px 2px 1px rgb(192 192 192 / 90%);
 }
 
 /* Thay đổi màu background cho nút khi được hover */

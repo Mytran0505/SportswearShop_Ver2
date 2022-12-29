@@ -128,7 +128,9 @@
                     </div>
                     <div class="menu-toggle"><span></span></div>
                     @if (!string.IsNullOrEmpty(customerId))
-                    {<a class="ps-cart__toggle" href="/Wishlist/Index"><i class="fa fa-heart-o" aria-hidden="true" title="Wish List"></i></a>}
+                    {
+                    
+                    <a class="ps-cart__toggle" href="/Wishlist/Index"><i class="fa fa-heart-o" aria-hidden="true" title="Wish List"></i></a>}
                     <div class="dropdown">
                         <div class="nut_dropdown"><a href="/Home/login" class="ps-cart__toggle"><i class="fa fa-user-circle-o" title="Đăng Nhập"></i></a></div>
                         <div class="noidung_dropdown">
@@ -140,28 +142,7 @@
                             }
                         </div>
                     </div>
-
-
-                    <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11">
-                        <div class="dropdown">
-                            <div class="nut_dropdown">
-                                <a class="login_a" href="/login">
-                                    <i class="zmdi zmdi-account-circle p-1" title="Đăng Nhập"></i>
-                                </a>
-                            </div>
-                            <div class="noidung_dropdown">
-                                <?php
-                                $CustomerId= Session::get('customerId');
-                                if($CustomerId) { ?>
-                                <a href="/profile/{{ $CustomerId }}">Tài khoản</a>
-                                <a href="{{URL::to('/my-orders')}}">Đơn hàng của tôi</a>
-                                <a href="/logout">Đăng xuất</a>
-                                <?php } ?>
-                            </div>
-                        </div>
-                    </div>
-
-
+                      
                 </div>
             </div>
         </nav>
