@@ -10039,11 +10039,17 @@ html .bg--parallax {
     }
 
 .most-popular .owl-carousel .owl-controls .owl-nav .owl-prev {
-    left: 0;
+    left: -49px;
+    background-color: #d8d8d8;
+    border-radius: 15px;
+    box-shadow: 1px 1px 2px 1px rgb(192 192 192 / 90%);
 }
 
 .most-popular .owl-carousel .owl-controls .owl-nav .owl-next {
-    right: 0;
+    right: -46px;
+    background-color: #d8d8d8;
+    border-radius: 15px;
+    box-shadow: 1px 1px 2px 1px rgb(192 192 192 / 90%);
 }
 /*======================================
    End Most Popular CSS
@@ -10161,8 +10167,8 @@ html .bg--parallax {
                 display: inline-block;
                 font-size: 11px;
                 color: #fff;
-                right: 20px;
-                top: 20px;
+                right: 0;
+                top: 0;
                 padding: 1px 16px;
                 font-weight: 700;
                 border-radius: 0;
@@ -10393,17 +10399,22 @@ html .bg--parallax {
 
     .single-product .product-content .product-price {
         margin: 6px 0 0 0;
+        display: flex;
+        align-items: center;
+        justify-content:space-between;
     }
 
         .single-product .product-content .product-price span {
             font-size: 15px;
             font-weight: 500;
+            display: flex;
         }
 
             .single-product .product-content .product-price span.old {
                 text-decoration: line-through;
                 opacity: .6;
                 margin-right: 2px;
+                display:flex;
             }
 /*======================================
    End Single Product CSS
@@ -11517,10 +11528,10 @@ html .bg--parallax {
 }
 
     .shopping-summery tbody tr img {
-        border-radius: 15px;
+
         width: 80px;
         height: 80px;
-        box-shadow: 1px 1px 2px 1px rgb(192 192 192 / 0.9);
+
     }
 
     .shopping-summery tbody tr:last-child {

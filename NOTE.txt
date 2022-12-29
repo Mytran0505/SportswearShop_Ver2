@@ -2,6 +2,7 @@
 - SỬA CSS LẠI TRANG BLOG 
 - SỬA LẠI ĐƯỜNG DẪN XUỐNG DƯỚI CHO THẤY ĐƯỜNG DẪN
 - CSS BÌNH LUẬN CẤP 2 (ĐĂNG NHẬP)
+--CSS trang profile (trang cá nhân)
 CODE THÊM
 - vãng lai: Trân
 - khuyến mãi: Huy, Đức
