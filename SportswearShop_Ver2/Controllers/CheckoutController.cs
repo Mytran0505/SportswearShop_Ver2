@@ -68,9 +68,9 @@ namespace SportswearShop_Ver2.Controllers
                 HttpContext.Session.SetString("customerImage", userInfo.UserImage);
                 HttpContext.Session.SetString("customerEmail", userInfo.Email);
 
-                var LINQContext = new SportswearShopLINQContext();
-                LoginHistory login = new LoginHistory(userInfo.UserId, DateTime.Now, DateTime.Now);
-                LINQContext.updateLoginHistory(login);
+                //var LINQContext = new SportswearShopLINQContext();
+                //LoginHistory login = new LoginHistory(userInfo.UserId, DateTime.Now, DateTime.Now);
+                //LINQContext.updateLoginHistory(login);
                 // Update last login
                 context.updateLastLogin(userInfo.UserId);
                 return RedirectToAction("Index");
