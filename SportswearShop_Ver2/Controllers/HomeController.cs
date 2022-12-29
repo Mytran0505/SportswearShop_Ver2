@@ -39,7 +39,7 @@ namespace SportswearShop_Ver2.Controllers
             ViewBag.SliderForHomePage = context.getSliderForHomePage();
 			ViewBag.BannerForHomePage = context.getBannerForHomePage();
 			ViewBag.ProductForHomePage = context.getProductForHomePage();
-			//ViewBag.GiamGiaSoc = context.getGiamGiaSoc();
+			ViewBag.GiamGiaSoc = context.getGiamGiaSoc();
 			return View();
 		}
 

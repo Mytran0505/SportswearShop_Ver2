@@ -3216,5 +3216,43 @@ namespace SportswearShop_Ver2.Models
             return list;
         }
 
+        public List<object> getGiamGiaSoc()
+        {
+            List<object> list = new List<object>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = @"SELECT image, name, id , price_sale, original_price, discount, Sold, created_at, Quantity
+                            FROM `products`
+                            WHERE Quantity > 1 AND active = 1 AND discount > 0 
+                            group by image, name, id , price_sale, original_price, discount, Sold, created_at
+                            LIMIT 8;";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var obj = new
+                        {
+                            ProductImage = reader["image"].ToString(),
+                            Quantity =  Convert.ToInt32(reader["Quantity"]),
+                            //Title = reader["Title"].ToString(),
+                            //Content = reader["Content"].ToString(),
+                            ProductId = Convert.ToInt32(reader["id"]),
+                            ProductName = reader["name"].ToString(),
+                            //ProductRatingStatus = Convert.ToInt32(reader["ProductRatingStatus"]),
+                            Price = Convert.ToInt32(reader["price_sale"]),
+                            Cost = Convert.ToInt32(reader["original_price"]),
+                            Discount = Convert.ToInt32(reader["discount"]),
+                            Sold = Convert.ToInt32(reader["Sold"]),
+                            StartsAt = (DateTime)reader["created_at"],
+                        };
+                        list.Add(obj);
+                    }
+                }
+            }
+            return list;
+        }
+
     }
 }

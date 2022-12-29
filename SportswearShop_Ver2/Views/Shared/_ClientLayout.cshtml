@@ -367,6 +367,44 @@
 			font-size: 13px;
 			color: #767779;
 		}
+
+        .section-title {
+	        text-align: center;
+            margin: 10px 0px;
+	        padding-right: 3%;
+        }
+        .section-title h2 {
+	        font-size: 30px;
+	        text-transform: capitalize;
+	        position: relative;
+	        color: #fe2222;
+	        font-weight: 700;
+	        margin-bottom: 10px;
+	        padding-bottom: 15px;
+            display: inline-block;
+            top: 3px;
+        }
+        .section-title h2::before {
+	        position: absolute;
+            content: "";
+            height: 2px;
+            width: 42%;
+            background: #f1491e;
+            left: 36%;
+            margin-left: -25px;
+            bottom: 25px;
+        }
+
+        .section-title>h2>img{
+            height: 80px;
+            position: relative;
+            bottom: 28px;
+        }
+
+        .section-title p {
+	        font-size: 14px;
+	        color: #666;
+        }
 	</style>
 	<!--===============================================================================================-->
 	<script src="~/public/vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -470,6 +508,42 @@
 	<!--===============================================================================================-->
 	<script src="~/public/js/main.js"></script>
 	<script src="~/public/admin/js/plugin/sweetalert/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //var end_date = $('#end_date').val();
+        
+            var DateExpired = new Date('2022-12-31').getTime();
+
+            setInterval(function () {
+            var CurrentDate = new Date().getTime();
+            var DayRemaining = DateExpired - CurrentDate;
+            var days = Math.floor(DayRemaining / (1000 * 60 * 60 * 24));
+            var hours = Math.floor(DayRemaining / (1000 * 60 * 60));
+            var minutes = Math.floor(DayRemaining / (1000 * 60));
+            var seconds = Math.floor(DayRemaining / 1000);
+
+            hours %= 24;
+            minutes %= 60;
+            seconds %= 60;
+            if (hours   < 10)
+            {
+                hours   = "0"+hours;
+            }
+            if (minutes < 10)
+            {
+                minutes = "0"+minutes;
+            }
+            if (seconds < 10) 
+            {
+                seconds = "0"+seconds;
+            }
+            document.getElementById("days").innerText = days;
+            document.getElementById("hours").innerText = hours;
+            document.getElementById("minutes").innerText = minutes;
+            document.getElementById("seconds").innerText = seconds;
+            }, 1000);
+        });
+    </script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#sortOrder').on('change', function () {
