@@ -1,0 +1,73 @@
+﻿@using System.Globalization;
+@{
+    Layout = "~/Views/Shared/_ClientLayout.cshtml";
+}
+@model IEnumerable<SportswearShop_Ver2.Models.Blog>
+<section class="blog-single section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-12">
+                    <div class="blog-single-main">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="image">
+                                    <img src="@ViewBag.BlogDetail.Image" alt="#">
+                                </div>
+                                <div class="blog-detail">
+                                    <h2 class="blog-title" style="text-align: center;">@ViewBag.BlogDetail.Title</h2>
+                                    <div class="blog-meta">
+                                        <span class="author"><a><i class="fa fa-user"></i>@ViewBag.BlogDetail.Author</a><a><i class="fa fa-calendar"></i>@ViewBag.BlogDetail.DatePost</a><a><i class="ti-eye"></i>@ViewBag.BlogDetail.View</a></span>
+                                    </div>
+                                    <div class="content">
+                                        <p>@Html.Raw(@ViewBag.BlogDetail.GetType().GetProperty("Content").GetValue(ViewBag.BlogDetail, null))</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-12">
+                    <div class="main-sidebar">
+                        <!-- Single Widget -->
+                        <div class="single-widget recent-post">
+                            <h3 class="title">Bài viết liên quan</h3>
+                            <!-- Single Post -->
+                            @foreach (var item in @ViewBag.BlogRelated)
+                            {
+                            <div class="single-post">
+                                <div class="image">
+                                    <img style="margin: auto; max-width: 70px; max-height: 70px; width: auto; height: auto; " src="@item.GetType().GetProperty("Image").GetValue(item, null)" alt="#">
+                                </div>
+                                <div class="content">
+                                    <h5><a href="/Blog/blog_detail?blogId=@item.GetType().GetProperty("BlogId").GetValue(item, null)">@item.GetType().GetProperty("Title").GetValue(item, null)</a></h5>
+                                    <ul class="comment">
+                                        <li><i class="fa fa-calendar" aria-hidden="true"></i>@item.GetType().GetProperty("DatePost").GetValue(item, null)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                        <!--/ End Single Widget -->
+                        <!-- Single Widget -->
+                        <!--/ End Single Widget -->
+                        <!-- Single Widget
+                        <div class="single-widget side-tags">
+                            <h3 class="title">Tags</h3>
+                            <ul class="tag">
+                                <li><a href="#">business</a></li>
+                                <li><a href="#">wordpress</a></li>
+                                <li><a href="#">html</a></li>
+                                <li><a href="#">multipurpose</a></li>
+                                <li><a href="#">education</a></li>
+                                <li><a href="#">template</a></li>
+                                <li><a href="#">Ecommerce</a></li>
+                            </ul>
+                        </div>-->
+                        <!--/ End Single Widget -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+<!--/ End Blog Single -->

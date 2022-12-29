@@ -35,7 +35,7 @@ namespace SportswearShop_Ver2.Controllers
 			SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
             ViewBag.AllCategory = context.getAllCategory();
             ViewBag.AllMenu = context.getAllMenu();
-            //ViewBag.Blog = context.getBlog();
+            ViewBag.Blog = context.getBlog();
             ViewBag.SliderForHomePage = context.getSliderForHomePage();
 			ViewBag.BannerForHomePage = context.getBannerForHomePage();
 			ViewBag.ProductForHomePage = context.getProductForHomePage();
@@ -51,7 +51,16 @@ namespace SportswearShop_Ver2.Controllers
 			}
 			return View();
 		}
+        private IActionResult View(List<Blog> blogs, List<Product> products)
+        {
+            throw new NotImplementedException();
+        }
 
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
         public int load_cart_quantity()
         {
             if (SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart") == null)
