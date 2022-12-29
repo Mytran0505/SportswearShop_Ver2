@@ -49,7 +49,7 @@
 						<div class="product-content">
 							<h3><a class="limit-text-2" style="text-decoration: none" href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("Id").GetValue(item, null)">@item.GetType().GetProperty("Name").GetValue(item, null)</a></h3>
 							<div class="product-price">
-								<span style="color:black; font-size:17px"><b>@item.GetType().GetProperty("Price_sale").GetValue(item, null).ToString("#,###", cul.NumberFormat) ₫</b></span>
+								<span style="color:black; font-size:15px"><b>@item.GetType().GetProperty("Price_sale").GetValue(item, null).ToString("#,###", cul.NumberFormat) ₫</b></span>
 								@if (item.GetType().GetProperty("Discount").GetValue(item, null) > 0)
 								{
 									double dc = @item.GetType().GetProperty("Price_sale").GetValue(item, null) + (@item.GetType().GetProperty("Price_sale").GetValue(item, null) * (@item.GetType().GetProperty("Discount").GetValue(item, null)) / 100);

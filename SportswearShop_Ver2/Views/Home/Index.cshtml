@@ -130,10 +130,10 @@
                                 </div>
                             </div>
                             <div class="product-content">
-                                <h3><a style="text-decoration: none;" class="limit-text-2" href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("ProductId").GetValue(item, null)"><b style="font-size:17px">@item.GetType().GetProperty("ProductName").GetValue(item, null)</b></a></h3>
+                                <h3><a style="text-decoration: none;" class="limit-text-2" href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("ProductId").GetValue(item, null)"><b style="font-size:15px">@item.GetType().GetProperty("ProductName").GetValue(item, null)</b></a></h3>
                                 
                                 <div class="product-price">
-                                    <span style="color:red; font-size:17px"><b>@item.GetType().GetProperty("Price").GetValue(item, null).ToString("#,###", cul.NumberFormat) ₫</b></span>
+                                    <span style="color:red; font-size:15px"><b>@item.GetType().GetProperty("Price").GetValue(item, null).ToString("#,###", cul.NumberFormat) ₫</b></span>
                                     <br>
 									@{
 										double dc = @item.GetType().GetProperty("Price").GetValue(item, null) + (@item.GetType().GetProperty("Price").GetValue(item, null) * (@item.GetType().GetProperty("Discount").GetValue(item, null)) / 100);
