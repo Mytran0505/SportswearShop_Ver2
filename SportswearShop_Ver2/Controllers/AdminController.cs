@@ -138,5 +138,13 @@ namespace SportswearShop_Ver2.Controllers
             SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
             return context.getRevenueByDate(tu_ngay, den_ngay);
         }
-    }
+
+		public IActionResult customer_register(User newCustomer)
+		{
+			SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+			context.saveAdmin(newCustomer);
+			System.Diagnostics.Debug.WriteLine(newCustomer.Email);
+			return RedirectToAction("check_password", "Admin", new RouteValueDictionary(newCustomer));
+		}
+	}
 }
