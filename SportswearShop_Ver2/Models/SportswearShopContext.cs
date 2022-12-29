@@ -8,6 +8,8 @@ using SportswearShop_Ver2.Controllers;
 using System;
 using ITGoShop_F_Ver2.Controllers;
 using System.ComponentModel.Design;
+using System.Reflection.Metadata;
+using ITGoShop_F_Ver2.Models;
 
 namespace SportswearShop_Ver2.Models
 {
@@ -56,10 +58,215 @@ namespace SportswearShop_Ver2.Models
 				}
 
 				conn.Close();
+            }
+            return sliders;
+		}
+
+		public void saveBlog(Blog newBlog)
+		{
+			using (MySqlConnection conn = GetConnection())
+			{
+				conn.Open();
+				var str = "INSERT INTO blog(BlogId, Author, DateCreate, DatePost, Title, Summary, Content, Status, Image, View) " +
+                    "VALUES (@BId,@Author, @DateCreate, @DatePost,@Title,@Summary, @Content, @Status,@Image,@View)";
+				MySqlCommand cmd = new MySqlCommand(str, conn);
+				cmd.Parameters.AddWithValue("BId", newBlog.BlogId);
+				cmd.Parameters.AddWithValue("Author", newBlog.Author);
+				cmd.Parameters.AddWithValue("DateCreate", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+				cmd.Parameters.AddWithValue("DatePost", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+				cmd.Parameters.AddWithValue("Title", newBlog.Title);
+				cmd.Parameters.AddWithValue("Summary", newBlog.Summary);
+				cmd.Parameters.AddWithValue("Content", newBlog.Content);
+				cmd.Parameters.AddWithValue("Status", newBlog.Status);
+				cmd.Parameters.AddWithValue("Image", newBlog.Image);
+				cmd.Parameters.AddWithValue("View", newBlog.View);
+				cmd.ExecuteNonQuery();
+			}
+		}
+		public void updateBlogStatus(int BlogId, int Status)
+		{
+			using (MySqlConnection conn = GetConnection())
+			{
+				conn.Open();
+				var str = "UPDATE blog set Status =@status  WHERE BlogId=@id";
+				MySqlCommand cmd = new MySqlCommand(str, conn);
+				cmd.Parameters.AddWithValue("status", Status);
+				cmd.Parameters.AddWithValue("id", BlogId);
+				cmd.ExecuteNonQuery();
+			}
+		}
+
+		public void deleteBlog(int BlogId)
+		{
+			using (MySqlConnection conn = GetConnection())
+			{
+				conn.Open();
+				var str = "delete from blog WHERE BlogId=@id";
+				MySqlCommand cmd = new MySqlCommand(str, conn);
+				cmd.Parameters.AddWithValue("id", BlogId);
+				cmd.ExecuteNonQuery();
+			}
+		}
+		public List<Blog> getAllBlogForBlogManagement()
+		{
+			List<Blog> list = new List<Blog>();
+			using (MySqlConnection conn = GetConnection())
+			{
+				conn.Open();
+				string str = "select * from blog ";
+				MySqlCommand cmd = new MySqlCommand(str, conn);
+				using (var reader = cmd.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						list.Add(new Blog()
+						{
+							BlogId = Convert.ToInt32(reader["BlogId"]),
+							Author = reader["Author"].ToString(),
+							Title = reader["Title"].ToString(),
+							Summary = reader["Summary"].ToString(),
+							Content = reader["Content"].ToString(),
+							Image = reader["Image"].ToString(),
+							Status = Convert.ToInt32(reader["Status"])
+
+						});
+					}
+					reader.Close();
+				}
+
+				conn.Close();
 
 			}
-			return sliders;
+			return list;
 		}
+		public List<Blog> getListBlog()
+        {
+            List<Blog> list = new List<Blog>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from blog " +
+                             "where Status = 1 " +
+                             "ORDER BY DatePost DESC ";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new Blog()
+                        {
+                            BlogId = Convert.ToInt32(reader["BlogId"]),
+                            Author = reader["Author"].ToString(),
+                            Title = reader["Title"].ToString(),
+                            Summary = reader["Summary"].ToString(),
+                            Content = reader["Content"].ToString(),
+                            DateCreate = (DateTime)reader["DateCreate"],
+                            Image = reader["Image"].ToString(),
+                        });
+                    }
+                    reader.Close();
+                }
+
+                conn.Close();
+
+            }
+            return list;
+        }
+		public List<Blog> getBlogRelate(int blogId)
+		{
+			List<Blog> list = new List<Blog>();
+			using (MySqlConnection conn = GetConnection())
+			{
+				conn.Open();
+				string str = "select * from blog where Status = 1 and BlogId <> @blogId  ORDER BY DatePost DESC LIMIT 5";
+				MySqlCommand cmd = new MySqlCommand(str, conn);
+				cmd.Parameters.AddWithValue("BlogId", blogId);
+				using (var reader = cmd.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						list.Add(new Blog()
+						{
+							BlogId = Convert.ToInt32(reader["BlogId"]),
+							Author = reader["Author"].ToString(),
+							Title = reader["Title"].ToString(),
+							Summary = reader["Summary"].ToString(),
+							Content = reader["Content"].ToString(),
+							DatePost = (DateTime)reader["DatePost"],
+							Image = reader["Image"].ToString(),
+						});
+					}
+					reader.Close();
+				}
+
+				conn.Close();
+
+			}
+			return list;
+		}
+
+		public Blog getBlogDetail(int blogId)
+        {
+            Blog Info = new Blog();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "SELECT * FROM Blog " +
+                    "where BlogId = @blogId";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("BlogId", blogId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        Info.BlogId = Convert.ToInt32(reader["BlogId"]);
+                        Info.Author = reader["Author"].ToString();
+                        Info.Title = reader["Title"].ToString();
+                        Info.Summary = reader["Summary"].ToString();
+                        Info.Content = reader["Content"].ToString();
+                        Info.DatePost = (DateTime)reader["DatePost"];
+                        Info.View = Convert.ToInt32(reader["View"]);
+                        Info.Image = reader["Image"].ToString();
+                    }
+                    else
+                        return null;
+                }
+            }
+            return Info;
+        }
+		public List<Blog> getBlog()
+		{
+			List<Blog> list = new List<Blog>();
+			using (MySqlConnection conn = GetConnection())
+			{
+				conn.Open();
+				string str = "select * from blog where Status = 1 ORDER BY DatePost DESC LIMIT 3";
+				MySqlCommand cmd = new MySqlCommand(str, conn);
+				using (var reader = cmd.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						list.Add(new Blog()
+						{
+							BlogId = Convert.ToInt32(reader["BlogId"]),
+							Author = reader["Author"].ToString(),
+							Title = reader["Title"].ToString(),
+							Summary = reader["Summary"].ToString(),
+							Content = reader["Content"].ToString(),
+							DatePost = (DateTime)reader["DatePost"],
+							Image = reader["Image"].ToString(),
+						});
+					}
+					reader.Close();
+				}
+
+				conn.Close();
+
+			}
+			return list;
+		}
+
+
 		public List<Category> getBannerForHomePage()
 		{
 			List<Category> banners = new List<Category>();

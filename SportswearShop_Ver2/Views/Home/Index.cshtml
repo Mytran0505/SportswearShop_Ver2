@@ -150,3 +150,33 @@
 		</div>
 	</div>
 </section>
+<!-- Start Shop Blog  -->
+<section class="shop-blog section">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<div class="section-title">
+					<h2>Bài Viết Nổi Bật</h2>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			@foreach (var item in @ViewBag.Blog)
+			{
+				<div class="col-lg-4 col-md-6 col-12">
+					<!-- Start Single Blog  -->
+					<div class="shop-single-blog" href="/Blog/blog_detail?blogId=@item.GetType().GetProperty("BlogId").GetValue(item, null)">
+						<img style="margin: auto; max-width: 330px; max-height: 300px; width: auto; height: auto;" src="@item.GetType().GetProperty("Image").GetValue(item, null)" alt="#">
+						<div class="content" style="text-align: justify; text-decoration:none;">
+							<a class="title" href="/Blog/blog_detail?blogId=@item.GetType().GetProperty("BlogId").GetValue(item, null)">@item.GetType().GetProperty("Title").GetValue(item, null)</a>
+							<a href="/Blog/blog_detail?blogId=@item.GetType().GetProperty("BlogId").GetValue(item, null)" class="more-btn">Đọc tiếp</a>
+						</div>
+					</div>
+					<!-- End Single Blog  -->
+				</div>
+			}
+
+		</div>
+	</div>
+</section>
+<!-- End Shop Blog  -->
