@@ -11,10 +11,10 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="image">
-                                    <img src="@ViewBag.BlogDetail.Image" alt="#">
+                                    <img class="b-r-15" src="@ViewBag.BlogDetail.Image" alt="#">
                                 </div>
                                 <div class="blog-detail">
-                                    <h2 class="blog-title" style="text-align: center;">@ViewBag.BlogDetail.Title</h2>
+                                    <h2 class="blog-title">@ViewBag.BlogDetail.Title</h2>
                                     <div class="blog-meta">
                                         <span class="author"><a><i class="fa fa-user"></i>@ViewBag.BlogDetail.Author</a><a><i class="fa fa-calendar"></i>@ViewBag.BlogDetail.DatePost</a><a><i class="ti-eye"></i>@ViewBag.BlogDetail.View</a></span>
                                     </div>
@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-12">
-                    <div class="main-sidebar">
+                    <div class="main-sidebar b-r-15">
                         <!-- Single Widget -->
                         <div class="single-widget recent-post">
                             <h3 class="title">Bài viết liên quan</h3>
@@ -36,10 +36,10 @@
                             {
                             <div class="single-post">
                                 <div class="image">
-                                    <img style="margin: auto; max-width: 70px; max-height: 70px; width: auto; height: auto; " src="@item.GetType().GetProperty("Image").GetValue(item, null)" alt="#">
+                                    <img style="margin: auto; border-radius: 5px; max-width: 70px; max-height: 70px; width: auto; height: auto; " src="@item.GetType().GetProperty("Image").GetValue(item, null)" alt="#">
                                 </div>
                                 <div class="content">
-                                    <h5><a href="/Blog/blog_detail?blogId=@item.GetType().GetProperty("BlogId").GetValue(item, null)">@item.GetType().GetProperty("Title").GetValue(item, null)</a></h5>
+                                    <a class="limit-text-2" href="/Blog/blog_detail?blogId=@item.GetType().GetProperty("BlogId").GetValue(item, null)">@item.GetType().GetProperty("Title").GetValue(item, null)</a>
                                     <ul class="comment">
                                         <li><i class="fa fa-calendar" aria-hidden="true"></i>@item.GetType().GetProperty("DatePost").GetValue(item, null)</li>
                                     </ul>

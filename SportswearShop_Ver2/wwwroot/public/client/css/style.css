@@ -2547,6 +2547,7 @@ textarea.form-control {
 .bread-list > li, .bread-list > li > a {
     display: inline-block;
     padding-right: 5px;
+    font-size: 15px
 }
 
 .qty {
@@ -2559,11 +2560,17 @@ textarea.form-control {
 
 .ps-post {
     margin-bottom: 30px;
+    width: 410px;
+    position: relative;
+    left: 19px;
 }
 
     .ps-post .ps-post__thumbnail {
         position: relative;
         margin-bottom: 10px;
+        left: 20px;
+        top: 20px;
+        width: 90%;
     }
 
         .ps-post .ps-post__thumbnail > a {
@@ -2571,6 +2578,7 @@ textarea.form-control {
             top: 0;
             left: 0;
             width: 100%;
+
             height: 100%;
             z-index: 10;
             z-index: 10;
@@ -2578,11 +2586,15 @@ textarea.form-control {
 
         .ps-post .ps-post__thumbnail img {
             width: 100%;
+            border-radius: 15px;
         }
 
-        .ps-post .ps-post__thumbnail:hover > a {
-            background-color: #77ACF1;
-        }
+    .ps-post .ps-post__content {
+        position: relative;
+        top: 35px;
+        left: 20px;
+        width: 380px;
+    }
 
     .ps-post .ps-post__overlay {
         position: absolute;
@@ -6673,7 +6685,7 @@ textarea.form-control {
 
     .ps-shipping a {
         color: #77ACF1;
-        text-decoration: underline;
+        text-decoration: none;
     }
 
 .ps-cart-listing .ps-cart__table thead > tr > th {
@@ -7795,7 +7807,7 @@ textarea.form-control {
     font-size: 14px;
     font-style: italic;
     color: #000000;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
     .ps-product--detail .ps-product__size > h4 a:hover {
@@ -8610,7 +8622,7 @@ html .bg--parallax {
 
         .copyright p a {
             color: #fff;
-            text-decoration: underline;
+            text-decoration: none;
         }
 
 .margin-0 {
@@ -10059,8 +10071,7 @@ html .bg--parallax {
         position: relative;
         margin-right: 5px;
         font-weight: 500;
-        background: #fff;
-        color: #333;
+        background: #d8d8d8;
         padding: 3px 14px;
         border-radius: 3px;
         font-size: 13px;
@@ -10075,7 +10086,7 @@ html .bg--parallax {
     }
 
     .product-area .nav-tabs li a.active,
-    .product-area .nav-tabs li:hover a {
+    .product-area .nav-tabs li:hover a{
         background: #77ACF1;
         color: #fff;
         border-color: transparent;
@@ -11506,9 +11517,10 @@ html .bg--parallax {
 }
 
     .shopping-summery tbody tr img {
-        border-radius: 0;
+        border-radius: 15px;
         width: 80px;
         height: 80px;
+        box-shadow: 1px 1px 2px 1px rgb(192 192 192 / 0.9);
     }
 
     .shopping-summery tbody tr:last-child {
@@ -11519,7 +11531,7 @@ html .bg--parallax {
     font-weight: 600;
     color: #282828;
     font-weight: 600;
-    font-size: 17px;
+    font-size: 14px;
 }
 
 .shopping-cart .table p {
@@ -12552,6 +12564,7 @@ html .bg--parallax {
     margin-top: 30px;
 }
 
+
 .shop-blog .shop-single-blog {
     text-align: center;
     -webkit-transition: all 0.4s ease;
@@ -12560,7 +12573,8 @@ html .bg--parallax {
 }
 
     .shop-blog .shop-single-blog:hover {
-        box-shadow: 0px 10px 10px #0000000a;
+        border-radius: 15px;
+        box-shadow: 1px 1px 2px 1px rgb(192 192 192 / 0.9);
     }
 
     .shop-blog .shop-single-blog img {
@@ -12569,7 +12583,7 @@ html .bg--parallax {
     }
 
     .shop-blog .shop-single-blog .content {
-        padding: 40px;
+        padding: 18px 25px;
     }
 
         .shop-blog .shop-single-blog .content .title {
@@ -12590,7 +12604,7 @@ html .bg--parallax {
         }
 
         .shop-blog .shop-single-blog .content .more-btn {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 400;
             color: #3c3c3c;
             margin-top: 10px;
@@ -12932,6 +12946,7 @@ html .bg--parallax {
         .blog-single .image img {
             width: 100%;
             height: 100%;
+            border-radius: 15px;
         }
 
     .blog-single .blog-title {

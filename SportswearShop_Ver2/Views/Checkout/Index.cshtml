@@ -83,9 +83,9 @@
                                         {
                                             <tr style="font-size: 14px;">
                                                 <td style=" height:80px">
-                                                    <img style="margin: auto; max-width: 60px; max-height: 60px; width: auto; height: auto; " src="@item.Product.Image" alt="">
+                                                    <img class="b-r-15" style="margin: auto; max-width: 60px; max-height: 60px; width: auto; height: auto; " src="@item.Product.Image" alt="">
                                                 </td>
-                                                <td><a href="/ProductDetail/product_detail?productId=@item.Product.Id" style="text-decoration:none; color:black;">@item.Product.Name</a></td>
+                                                <td style="width: 40%"><a href="/ProductDetail/product_detail?productId=@item.Product.Id" style="text-decoration:none; color:black;">@item.Product.Name</a></td>
                                                 <td>@item.Product.Price_sale.ToString("#,###", cul.NumberFormat) ₫</td>
                                                 <td style="text-align:center">x@(@item.Quantity)</td>
                                                 <td>@((@item.Quantity * @item.Product.Price_sale).ToString("#,###", cul.NumberFormat)) ₫</td>
@@ -114,14 +114,14 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-lg btn-dat-mua" style="width:320px;font-size:20px; background-color: #000; height:50px; position: initial">ĐẶT MUA</button>
+                        <button type="submit" class="btn btn-primary btn-lg btn-dat-mua" style="width:320px;font-size:20px; border-radius:30px ; height:50px; position: initial">ĐẶT MUA</button>
                         <p style="margin: 7px 0px;"><i>(Xin vui lòng kiểm tra lại đơn hàng trước khi Đặt Mua)</i></p>
                     </div>
 
                     <div class="col-lg-4">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <button type="button" style="float:right; padding: 20px; background-color: white;"><a href="/ShippingAddress/show_shipping_address" style="font-size:11px">Sửa</a></button>
+                        <div class="panels panel-default p-b-20">
+                            <div class="panel-body b-r-15">
+                                <button type="button" style="float:right; padding: 20px; background-color: white;"><a href="/ShippingAddress/show_shipping_address" style="font-size: 15px; position: relative; top: -10px;">Sửa</a></button>
                                 <h4><div style="margin-bottom:20px;"> <i class="fa fa-map-marker" aria-hidden="true"></i> <b>Địa chỉ giao hàng </b>  </div></h4>
                                 <div></div>
                                 <hr>
@@ -132,8 +132,8 @@
                             </div>
                         </div>
 
-                        <div class="panel panel-default">
-                            <div class="panel-body">
+                        <div class="panels panel-default">
+                            <div class="panel-body b-r-15">
                                 <button type="button" style="float:right; padding: 20px; background-color: white;"><a href="/Cart/show_cart" style="font-size:11px">Sửa thông tin nhận hàng</a></button>
                                 <h4><b>Đơn hàng </b></h4>
                                 <p><i>@ViewBag.numberItem sản phẩm</i></p>

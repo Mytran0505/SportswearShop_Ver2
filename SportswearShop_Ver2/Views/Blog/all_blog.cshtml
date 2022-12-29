@@ -3,14 +3,14 @@
     Layout = "~/Views/Shared/_ClientLayout.cshtml";
 }
 <!-- Breadcrumbs -->
-<div class="breadcrumbs">
+<div class="breadcrumbs p-t-50">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <div class="bread-inner">
                     <ul class="bread-list">
-                        <li><a>Trang chủ<i class="ti-arrow-right"></i></a></li>
-                        <li class="active"><a>Tất cả bài đăng</a></li>
+                        <li><a class="swap">Trang chủ<i class="ti-arrow-right"></i></a></li>
+                        <li class="active"><a class="swap">Tất cả bài đăng</a></li>
                     </ul>
                 </div>
             </div>
@@ -18,19 +18,19 @@
     </div>
 </div>
 <!-- End Breadcrumbs -->
-<div class="ps-blog-grid pt-80 pb-80">
+<div class="ps-blog-grid pt-50 pb-80">
     <div class="ps-container">
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
                 @foreach (var item in @ViewBag.AllBlog)
                 {
-                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12  " style="height: 400px; width: 570px">
-                        <div class="ps-post">
+                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="height: 500px; width: 570px; margin-bottom: 35px">
+                        <div class="ps-post p-b-55 b-r-15">
                             <div class="ps-post__thumbnail"><a class="ps-post__overlay"></a><img src="@item.GetType().GetProperty("Image").GetValue(item, null)" alt=""></div>
                             <div class="ps-post__content">
                                 <a class="ps-post__title" href="/Blog/blog_detail?blogId=@item.GetType().GetProperty("BlogId").GetValue(item, null)">@item.GetType().GetProperty("Title").GetValue(item, null)</a>
                                 <p class="ps-post__meta"><span>By:<a class="mr-5">@item.GetType().GetProperty("Author").GetValue(item, null)</a></span>-<span class="ml-3">@item.GetType().GetProperty("DateCreate").GetValue(item, null)</span></p>
-                                <p>@item.GetType().GetProperty("Summary").GetValue(item, null)</p><a class="ps-morelink" href="/Blog/blog_detail/@item.GetType().GetProperty("BlogId").GetValue(item, null)">Đọc tiếp<i class="fa fa-long-arrow-right"></i></a>
+                                <p>@item.GetType().GetProperty("Summary").GetValue(item, null)</p><a class="ps-morelink" href="/Blog/blog_detail?blogId=@item.GetType().GetProperty("BlogId").GetValue(item, null)">Đọc tiếp<i class="fa fa-long-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>

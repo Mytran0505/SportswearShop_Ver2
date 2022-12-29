@@ -23,10 +23,10 @@
 			{
 				<div class="col-xl-3 col-lg-4 col-md-4 col-12 isotope-item women">
 					<div class="single-product">
-						<div class="product-img" style="width: 250px; height: 200px;">
+						<div class="product-img hov-img0 b-r-15">
 							<a href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("Id").GetValue(item, null)">
-								<img class="default-img" style="margin: auto; max-width: 250px; max-height: 200px; width: auto; height: auto; " src="@item.GetType().GetProperty("Image").GetValue(item, null)" alt="#">
-								<img class="hover-img" src="@item.GetType().GetProperty("Image").GetValue(item, null)" alt="#">
+								<img class="default-img" src="@item.GetType().GetProperty("Image").GetValue(item, null)" alt="#">
+								<img class="hover-img b-r-15" src="@item.GetType().GetProperty("Image").GetValue(item, null)" alt="#">
 								@*@{
 							double so_ngay_da_moban = (DateTime.Now - item.GetType().GetProperty("StartsAt").GetValue(item, null)).TotalDays;
 							}*@
@@ -53,7 +53,7 @@
 							</div>
 						</div>
 						<div class="product-content">
-							<h3><a style="text-decoration: none; color: black;" href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("Id").GetValue(item, null)">@item.GetType().GetProperty("Name").GetValue(item, null)</a></h3>
+							<h3><a class="limit-text-2" style="text-decoration: none;" href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("Id").GetValue(item, null)">@item.GetType().GetProperty("Name").GetValue(item, null)</a></h3>
 							<div class="product-price">
 								<span style="color:black; font-size:17px"><b>@item.GetType().GetProperty("Price_sale").GetValue(item, null).ToString("#,###", cul.NumberFormat) ₫</b></span>
 								@if (item.GetType().GetProperty("Discount").GetValue(item, null) > 0)

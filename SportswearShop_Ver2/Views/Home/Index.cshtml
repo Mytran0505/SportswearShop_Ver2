@@ -75,7 +75,7 @@
 </div>
 <!-- Product -->
 @*abc*@
-<section class="bg0 p-t-23 p-b-140">
+<section class="bg0 p-t-23 p-b-70">
 	<div class="container">
 		<div class="p-b-10">
 			<h3 class="ltext-103 cl5">
@@ -150,23 +150,23 @@
 		</div>
 	</div>
 </section>
-<div class="bg6 flex-c-m flex-w size-302 m-t-73 p-tb-15">
+<div class="bg6 flex-c-m flex-w size-302 m-b-20 p-t-20 p-b-40">
     <h3 class="ltext-106 cl5 txt-center">
-        Blog
+        BLOG
     </h3>
 </div>
 <!-- Start Shop Blog  -->
-<section class="shop-blog section p-t-30">
+<section class="shop-blog section p-t-30 p-b-150">
 	<div class="container">
 		<div class="row">
 			@foreach (var item in @ViewBag.Blog)
 			{
 				<div class="col-lg-4 col-md-6 col-12">
 					<!-- Start Single Blog  -->
-					<div class="shop-single-blog" href="/Blog/blog_detail?blogId=@item.GetType().GetProperty("BlogId").GetValue(item, null)">
-						<img style="margin: auto; max-width: 330px; max-height: 300px; width: auto; height: auto;" src="@item.GetType().GetProperty("Image").GetValue(item, null)" alt="#">
+					<div class="shop-single-blog p-t-20 b-r-15" href="/Blog/blog_detail?blogId=@item.GetType().GetProperty("BlogId").GetValue(item, null)">
+                        <img style="height: 225px; width:320px" class="b-r-15" src="@item.GetType().GetProperty("Image").GetValue(item, null)" alt="#">
 						<div class="content" style="text-align: justify; text-decoration:none;">
-							<a class="title" href="/Blog/blog_detail?blogId=@item.GetType().GetProperty("BlogId").GetValue(item, null)">@item.GetType().GetProperty("Title").GetValue(item, null)</a>
+							<a class="title limit-text-2" href="/Blog/blog_detail?blogId=@item.GetType().GetProperty("BlogId").GetValue(item, null)">@item.GetType().GetProperty("Title").GetValue(item, null)</a>
 							<a href="/Blog/blog_detail?blogId=@item.GetType().GetProperty("BlogId").GetValue(item, null)" class="more-btn">Đọc tiếp</a>
 						</div>
 					</div>

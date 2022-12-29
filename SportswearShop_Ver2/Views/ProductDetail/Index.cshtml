@@ -601,7 +601,7 @@
         $('body').on('click', '.btn-reply', function () {
             var o_binh_luan_khac = $(this).parents('.comments').find('.o-binh-luan-con').remove();
             var noidung = '';
-            noidung += "<form> <input type='hidden' name='_token' value='{{ csrf_token() }}' /><div class='o-binh-luan-con' style='margin:0px 0px 30px;'><textarea class='textarea-sub-commnent-content' name='CommentContent' rows='2' style='padding: 16px; border-radius: 8px; resize: none; margin: 10px 0px 10px; font-size: 16px; background-color:#F3F5F8;' placeholder='Mời bạn để lại bình luận'></textarea>";
+            noidung += "<form> <input type='hidden' name='_token' value='{{ csrf_token() }}' /><div class='o-binh-luan-con' style='margin:0px 0px 30px;'><textarea class='textarea-sub-commnent-content' name='CommentContent' rows='2' style='padding: 16px; width: 100%; border-radius: 8px; resize: none; margin: 10px 0px 10px; font-size: 16px; background-color:#F3F5F8;' placeholder='Mời bạn để lại bình luận'></textarea>";
             noidung += "<button class='send-sub-comment-button' type='button'style='margin-bottom:30px;float:right;width: 60px;height: 30px; width: 60px;height: 30px;border-radius: 50px;font-size: 14px;background: black;'>  <a href='javascript:void(0)' style='color: white;font-weight: bold;'>Gửi</a> </button></div></form>";
             $(this).parents('.single-comment').append(noidung);
         });

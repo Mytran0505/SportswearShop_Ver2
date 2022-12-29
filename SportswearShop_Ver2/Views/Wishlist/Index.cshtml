@@ -32,7 +32,7 @@
 <!-- End Breadcrumbs -->
 <div class="row gutters-sm pt-20 pl-60 pr-60 pb-80">
     <div class="col-md-3 mb-4">
-        <div class="card">
+        <div class="cards b-r-15">
             <div class="card-body">
                 <div class="d-flex flex-column align-items-center text-center">
                     <img src="~/public/images_upload/user/@customerImage" alt="Admin" class="rounded-circle" width="150">
@@ -47,7 +47,7 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                     <h4 class="mb-0">
                         <i style="font-size: 20px; padding-right: 15px; font-weight:bold;" class="fa fa-user-circle-o" class="fa fa-user-circle-o"></i>
-                        <a href="/Profile/profile" style="color:#333; font-weight:500;">Tài khoản</a>
+                        <a href="/Profile/profile" style="font-weight:500;">Tài khoản</a>
                     </h4>
 
                 </li>
@@ -56,7 +56,7 @@
                         <i style="font-size: 20px; padding-right: 15px; font-weight:bold;" class="fa fa-heart-o"></i>
                         @if (!string.IsNullOrEmpty(customerId))
                         {
-                            <a href="/wishlist" style="color:#333; font-weight:500;">Sản phẩm yêu thích</a>
+                            <a href="/wishlist" style="font-weight:500;">Sản phẩm yêu thích</a>
                         }
                     </h4>
 
@@ -65,7 +65,7 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                     <h4 class="mb-0">
                         <i style="font-size: 20px; padding-right: 18px;" class="fa fa-history"></i>
-                        <a href="/Order/my_orders" style="color:#333; font-weight:500;">Lịch sử mua hàng</a>
+                        <a href="/Order/my_orders" style="font-weight:500;">Lịch sử mua hàng</a>
                     </h4>
                 </li>
 
@@ -76,16 +76,16 @@
     <div class=" col-md-9">
         @if (ViewBag.WishList.Count > 0)
         {
-            <h1 style="margin-bottom:20px">Danh sách sản phẩm yêu thích @*(@ViewBag.WishList.Count)*@</h1>
+            <h1 style="margin-bottom: 20px;margin-left: 5px;font-size: 25px;">Danh sách sản phẩm yêu thích @*(@ViewBag.WishList.Count)*@</h1>
             @foreach (var item in ViewBag.WishList)
             {
-                <div class="card" style="margin-bottom:15px; padding: 30px">
-                    <div class="card-body">
-                        <div class="row">
+                <div class="cards" style="margin-bottom:15px;padding: 30px;scale: 74%; height:110px ;position: relative;left: -15%;border: none;top: -5%;">
+                    <div class="card-body b-r-15">
+                        <div style="width: 121%" class="row">
                             <div class="col-sm-4">
-                                <img style="margin: auto; max-width: 250px; max-height: 250px; width: auto; height: auto; " src="@item.GetType().GetProperty("ProductImage").GetValue(item, null)" alt="#">
+                                <img class="b-r-15" style="margin: auto;max-width: 179px;width: 139px;height: 130px;" src="@item.GetType().GetProperty("ProductImage").GetValue(item, null)" alt="#">
                             </div>
-                            <div class="col-sm-8">
+                            <div class="col-sm-8" style="position: relative; left: -15%;">
                                 <div class="button" style="float:right">
                                     <a href="javascript:void(0)" class="button-xoa-wishlist"><i class="fa fa-times" aria-hidden="true"></i></a>
                                     <input type="text" class="ProductId" value="@item.GetType().GetProperty("ProductId").GetValue(item, null)" hidden>

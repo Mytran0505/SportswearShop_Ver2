@@ -18,14 +18,14 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Breadcrumbs -->
-<div class="breadcrumbs">
+<div class="breadcrumbs p-t-30">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <div class="bread-inner">
                     <ul class="bread-list">
-                        <li><a href="product-detail.html">Trang chủ<i class="ti-arrow-right"></i></a></li>
-                        <li class="active"><a href="blog-single.php">Profile</a></li>
+                        <li><a style="font-size: 16px;" href="product-detail.html">Trang chủ<i class="ti-arrow-right fs-17"></i></a></li>
+                        <li class="active"><a style="font-size: 16px;" href="blog-single.php">Profile</a></li>
                     </ul>
                 </div>
             </div>
@@ -36,7 +36,7 @@
 <!-- Start Contact -->
 <div class="row gutters-sm pt-20 pl-60 pr-80 pb-80">
     <div class="col-md-3 mb-4">
-        <div class="card">
+        <div class="cards b-r-15">
             <div class="card-body">
                 <div class="d-flex flex-column align-items-center text-center">
                     <img src="~/public/images_upload/user/@customerImage" alt="Admin" class="rounded-circle" width="150">
@@ -51,7 +51,7 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                     <h4 class="mb-0">
                         <i style="font-size: 20px; padding-right: 15px; font-weight:bold;" class="fa fa-user-circle-o" class="fa fa-user-circle-o"></i>
-                        <a href="/Profile/profile" style="color:#333; font-weight:500;">Tài khoản</a>
+                        <a href="/Profile/profile" style="font-weight:500;">Tài khoản</a>
                     </h4>
 
                 </li>
@@ -60,7 +60,7 @@
                         <i style="font-size: 20px; padding-right: 15px; font-weight:bold;" class="fa fa-heart-o"></i>
                         @if (!string.IsNullOrEmpty(customerId))
                         {
-                            <a href="/wishlist" style="color:#333; font-weight:500;">Sản phẩm yêu thích</a>
+                            <a href="/wishlist" style="font-weight:500;">Sản phẩm yêu thích</a>
                         }
                     </h4>
 
@@ -69,7 +69,7 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                     <h4 class="mb-0">
                         <i style="font-size: 20px; padding-right: 18px;" class="fa fa-history"></i>
-                        <a href="/Order/my_orders" style="color:#333; font-weight:500;">Lịch sử mua hàng</a>
+                        <a href="/Order/my_orders" style="font-weight:500;">Lịch sử mua hàng</a>
                     </h4>
                 </li>
 
@@ -77,7 +77,7 @@
         </div>
     </div>
     <div class="col-md-9">
-        <div class="card mb-4">
+        <div class="cards mb-4 b-r-15">
             <div class="card-body">
                 <div class="title">
                     <h1>Thông tin tài khoản</h1>
@@ -85,21 +85,11 @@
                 <Br>
                 <div class="row">
                     <div class="col-sm-3">
-                        <h4 class="mt-0">Họ</h4>
+                        <h4 class="mt-0">Họ và tên</h4>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <input name="name" type="text" placeholder="@ViewBag.Profile.LastName" style="width: 400px; border-radius: 3px; height: 28px;">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <h4 class="mb-0">Tên</h4>
-                    </div>
-                    <div class="col-lg-8 ">
-                        <div class="form-group">
-                            <input name="name" type="text" placeholder="@ViewBag.Profile.FirstName" style="width: 400px; border-radius: 3px; height: 28px;">
+                            <input name="name" class="input-profile" type="text" placeholder="Họ và tên">
                         </div>
                     </div>
                 </div>
@@ -109,7 +99,7 @@
                     </div>
                     <div class="col-lg-8">
                         <div class="form-group">
-                            <input name="email" type="email" placeholder="@ViewBag.Profile.Email" style="width: 400px; border-radius: 3px; height: 28px;">
+                            <input name="email" type="email" placeholder="Email" class="input-profile">
                         </div>
                     </div>
                 </div>
@@ -119,18 +109,28 @@
                     </div>
                     <div class="col-lg-8">
                         <div class="form-group">
-                            <input name="company_name" type="text" placeholder="@ViewBag.Profile.Mobile" style="width: 400px; border-radius: 3px; height: 28px;">
+                            <input name="phone" type="text" placeholder="Số điện thoại" class="input-profile">
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12">
-                        <a class="btn btn-info " target="__blank" href="#" style="font-size:12px;">Cập nhật</a>
+                    <div class="col-sm-3">
+                        <h4 class="mb-0">Địa chỉ</h4>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="form-group">
+                            <input name="address" type="text" placeholder="Địa chỉ" class="input-profile">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <a class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10" target="__blank" href="#" style="text-decoration:none; font-size:12px;">Cập nhật</a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="card mb-4">
+        <div class="cards mb-4 b-r-15">
             <div class="card-body">
                 <div class="title">
                     <h1>Địa chỉ giao hàng</h1>
@@ -142,7 +142,7 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <input name="name" type="text" @*placeholder="@ViewBag.DefaultShippingAddress.GetType().GetProperty("ThanhPho").GetValue(@ViewBag.DefaultShippingAddress, null)"*@ style="width: 400px; border-radius: 3px; height: 28px;">
+                            <input name="phone" type="text" placeholder="Tỉnh/Thành phố" class="input-profile">
                         </div>
                     </div>
                 </div>
@@ -152,7 +152,7 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <input name="name" type="text" @*placeholder="@ViewBag.DefaultShippingAddress.GetType().GetProperty("QuanHuyen").GetValue(@ViewBag.DefaultShippingAddress, null)"*@ style="width: 400px; border-radius: 3px; height: 28px;">
+                            <input name="phone" type="text" placeholder="Quận/Huyện" class="input-profile">
                         </div>
                     </div>
                 </div>
@@ -162,7 +162,7 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <input name="name" type="text" @*placeholder="@ViewBag.DefaultShippingAddress.GetType().GetProperty("XaPhuong").GetValue(@ViewBag.DefaultShippingAddress, null)"*@ style="width: 400px; border-radius: 3px; height: 28px;">
+                            <input name="phone" type="text" placeholder="Phường xã" class="input-profile">
                         </div>
                     </div>
                 </div>
@@ -172,13 +172,13 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <input name="name" type="text" @*placeholder="@ViewBag.DefaultShippingAddress.GetType().GetProperty("ShippingAddressId").GetValue(@ViewBag.DefaultShippingAddress, null)"*@ style="width: 400px; border-radius: 3px; height: 28px;">
+                            <input name="phone" type="text" placeholder="Số nhà - Tên đường" class="input-profile">
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-12">
-                        <a class="btn btn-info " target="__blank" href="#" style="font-size:12px">Cập nhật</a>
+                    <div class="col-sm-2">
+                        <a class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10" target="__blank" href="#" style="text-decoration:none; font-size:12px;">Cập nhật</a>
                     </div>
                 </div>
             </div>
@@ -195,7 +195,7 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <input type="password" name="" id="" placeholder="" style="width: 400px; border-radius: 3px; height: 28px;">
+                            <input type="password" name="" id="" placeholder="" class="input-profile">
                         </div>
                     </div>
                 </div>
@@ -205,7 +205,7 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <input type="password" name="" id="" placeholder="" style="width: 400px; border-radius: 3px; height: 28px;">
+                            <input type="password" name="" id="" placeholder="" class="input-profile">
                         </div>
                     </div>
                 </div>
@@ -215,14 +215,14 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <input type="password" name="" id="" placeholder="" style="width: 400px; border-radius: 3px; height: 28px;">
+                            <input type="password" name="" id="" placeholder="" class="input-profile">
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-12">
-                        <a class="btn btn-info " target="__blank" href="#" style="font-size:12px">Cập nhật</a>
+                    <div class="col-sm-2">
+                        <a class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10" target="__blank" href="#" style="text-decoration:none; font-size:12px;">Cập nhật</a>
                     </div>
                 </div>
             </div>
