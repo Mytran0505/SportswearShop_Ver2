@@ -13,13 +13,13 @@
 
 }
 <!-- Breadcrumbs -->
-<div class="breadcrumbs">
+<div class="breadcrumbs p-t-30">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <div class="bread-inner">
                     <ul class="bread-list">
-                        <li><a>Trang chủ<i class="ti-arrow-right"></i></a></li>
+                        <li><a href="/">Trang chủ<i class="ti-arrow-right"></i></a></li>
                         <li class="active"><a>Kết quả tìm kiếm</a></li>
                     </ul>
                 </div>
@@ -38,8 +38,8 @@
                         <!-- Tab Nav -->
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#man" role="tab" Style="font-size: 20px">Sản Phẩm</a></li>
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#women" role="tab" Style="font-size: 20px">Tin tức</a></li>
-                        </ul>
+@*                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#women" role="tab" Style="font-size: 20px">Tin tức</a></li>
+*@                        </ul>
                         <!--/ End Tab Nav -->
                     </div>
                     <div class="tab-content" id="myTabContent">
@@ -61,43 +61,52 @@
                                     {
                                         @foreach (var item in ViewBag.Result1)
                                         {
-                                            <div class="col-xl-3 col-lg-4 col-md-4 col-12">
-                                                <div class="single-product">
-                                                    <div class="product-img" style="width: 250px; height: 200px;">
-                                                        <a href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("ProductId").GetValue(item, null)">
-                                                            <img class="default-img" style="margin: auto; max-width: 250px; max-height: 200px; width: auto; height: auto; " src="~/public/images_upload/product/@item.GetType().GetProperty("ProductImage").GetValue(item, null)" alt="#">
-                                                            <img class="hover-img" src="~/public/images_upload/product/@item.GetType().GetProperty("ProductImage").GetValue(item, null)" alt="#">
-                                                            @{double so_ngay_da_moban = (DateTime.Now - item.GetType().GetProperty("StartsAt").GetValue(item, null)).TotalDays;}
-                                                            @if (@so_ngay_da_moban < 14)
-                                                            {
-                                                                <span class="new">New</span>}
-                                                        </a>
-                                                        <div class="button-head">
-                                                            <div class="product-action">
-                                                                <a data-toggle="modal" data-target="#exampleModal" title="Lượt Xem" href="#"><i class=" ti-eye"></i><span>Lượt xem: @item.GetType().GetProperty("View").GetValue(item, null)</span></a>
-                                                                <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Yêu thích</span></a>
-                                                                <input type="text" class="ProductId" value="@item.GetType().GetProperty("ProductId").GetValue(item, null)" hidden>
-                                                            </div>
-                                                            <div class="product-action-2">
-                                                                <a title="Add to cart" class="add-to-cart-a-tag" href="javascript:void(0)">Thêm vào giỏ hàng</a>
-                                                                <input type="text" value="@item.GetType().GetProperty("ProductId").GetValue(item, null)" hidden>
-                                                            </div>
+                                        <div class="col-xl-3 col-lg-4 col-md-4 col-12 isotope-item women">
+                                            <div class="single-product">
+                                                <div class="product-img hov-img0 b-r-15">
+                                                    <a href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("Id").GetValue(item, null)">
+                                                        <img class="default-img" src="@item.GetType().GetProperty("Image").GetValue(item, null)" alt="#">
+                                                        <img class="hover-img" src="@item.GetType().GetProperty("Image").GetValue(item, null)" alt="#">
+                                                        @*@{
+                                                    double so_ngay_da_moban = (DateTime.Now - item.GetType().GetProperty("StartsAt").GetValue(item, null)).TotalDays;
+                                                    }*@
+                                                        @if (item.GetType().GetProperty("Quantity").GetValue(item, null) < 1)
+                                                        {
+                                                            <span class="out-of-stock" style="background-color:#FF8C00;">Hết hàng</span>
+                                                        }
+                                                        @*@if (so_ngay_da_moban < 14)
+                                                    {
+                                                    <span class="new" style="right: 180px;">New</span>
+                                                    }*@
+                                                    </a>
+                                                    <div class="button-head">
+                                                        <div class="product-action">
+                                                            @*<a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Lượt xem: @item.GetType().GetProperty("View").GetValue(item, null)</span></a>*@
+                                                            <a title="Wishlist" href="javascript:void(0)"><i class=" ti-heart "></i><span>Yêu thích</span></a>
+                                                            <input type="text" class="ProductId" value="@item.GetType().GetProperty("Id").GetValue(item, null)" hidden>
                                                         </div>
-                                                    </div>
-                                                    <div class="product-content">
-                                                        <h3><a style="text-decoration:none" href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("ProductId").GetValue(item, null)">@item.GetType().GetProperty("ProductName").GetValue(item, null)</a></h3>
-                                                        <div class="product-price">
-                                                            <span style="color:black; font-size:17px"><b>@item.GetType().GetProperty("Price").GetValue(item, null).ToString("#,###", cul.NumberFormat) ₫</b></span>
-                                                            @if (@item.GetType().GetProperty("Discount").GetValue(item, null) > 0)
-                                                            {
-                                                                double dc = @item.GetType().GetProperty("Price").GetValue(item, null) + (@item.GetType().GetProperty("Price").GetValue(item, null) * (@item.GetType().GetProperty("Discount").GetValue(item, null)) / 100);
-                                                                <br>
-                                                                <span class="old">@dc.ToString("#,###", cul.NumberFormat) ₫</span>
-                                                                <span class="o-giam-gia" style="font-size:10px">-@item.GetType().GetProperty("Discount").GetValue(item, null)% </span>}
+                                                        <div class="product-action-2">
+                                                            <a title="Add to cart" class="add-to-cart-a-tag" href="javascript:void(0)">Thêm vào giỏ hàng</a>
+                                                            <input type="text" value="@item.GetType().GetProperty("Id").GetValue(item, null)" hidden>
+                                                            <input type="hidden" class="Quantity" value="@item.GetType().GetProperty("Quantity").GetValue(item, null)">
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="product-content">
+                                                    <h3><a class="limit-text-2" style="text-decoration: none" href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("Id").GetValue(item, null)">@item.GetType().GetProperty("Name").GetValue(item, null)</a></h3>
+                                                    <div class="product-price">
+                                                        <span style="color:black; font-size:15px"><b>@item.GetType().GetProperty("Price_sale").GetValue(item, null).ToString("#,###", cul.NumberFormat) ₫</b></span>
+                                                        @if (item.GetType().GetProperty("Discount").GetValue(item, null) > 0)
+                                                        {
+                                                            double dc = @item.GetType().GetProperty("Price_sale").GetValue(item, null) + (@item.GetType().GetProperty("Price_sale").GetValue(item, null) * (@item.GetType().GetProperty("Discount").GetValue(item, null)) / 100);
+                                                            <br>
+                                                            <span class="old">@dc.ToString("#,###", cul.NumberFormat) ₫</span>
+                                                            <span class="o-giam-gia">- @item.GetType().GetProperty("Discount").GetValue(item, null)% </span>
+                                                        }
+                                                    </div>
+                                                </div>
                                             </div>
+                                        </div>
                                         }
                                     }
                                 </div>
@@ -105,7 +114,7 @@
                         </div>
                         <!--/ End Single Tab -->
                         <!-- Start Single Tab  -->
-                        <div class="tab-pane fade" id="women" role="tabpanel">
+                       @* <div class="tab-pane fade" id="women" role="tabpanel">
                             <div class="tab-single">
                                 <div class="row">
                                     @if (Enumerable.Count(ViewBag.Result2) == 0)
@@ -136,7 +145,7 @@
                                     }
                                 </div>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                 </div>
             </div>
