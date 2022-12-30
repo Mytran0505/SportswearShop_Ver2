@@ -307,7 +307,7 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            <h6 class="fw-bold mb-1"><a href="~/product-detail">@item.GetType().GetProperty("ProductName").GetValue(item, null)</a></h6>
+                                                            <h6 class="fw-bold mb-1"><a href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("ProductId").GetValue(item, null)">@item.GetType().GetProperty("ProductName").GetValue(item, null)</a></h6>
                                                         </td>
                                                         <td>
                                                             <h4 class="text-info fw-bold">+@item.GetType().GetProperty("DoanhThuDemLai").GetValue(item, null).ToString("0,000", cul.NumberFormat) ₫</h4>

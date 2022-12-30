@@ -1384,6 +1384,7 @@ namespace SportswearShop_Ver2.Models
                             Payment_status = reader["payment_status"].ToString(),
                             ShipMethod = reader["ShipMethod"].ToString(),
                             ShipFee = Convert.ToInt32(reader["ShipFee"]),
+                            Description = reader["Description"].ToString(),
                         });
                     }
                     reader.Close();
