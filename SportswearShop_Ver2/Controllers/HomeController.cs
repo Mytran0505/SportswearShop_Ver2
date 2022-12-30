@@ -40,7 +40,8 @@ namespace SportswearShop_Ver2.Controllers
 			ViewBag.BannerForHomePage = context.getBannerForHomePage();
 			ViewBag.ProductForHomePage = context.getProductForHomePage();
 			ViewBag.GiamGiaSoc = context.getGiamGiaSoc();
-			return View();
+			ViewBag.GiamGia = context.getAllPromtionForPromtionManagement();
+            return View();
 		}
 
 		public IActionResult All_product()

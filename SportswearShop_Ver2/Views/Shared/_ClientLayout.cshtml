@@ -512,9 +512,9 @@
 	<script src="~/public/admin/js/plugin/sweetalert/sweetalert.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            //var end_date = $('#end_date').val();
+            //var end_date = $('#ngayketthuc').val();
         
-            var DateExpired = new Date('2022-12-31').getTime();
+            var DateExpired = new Date(DateTime.Now).getTime();
 
             setInterval(function () {
             var CurrentDate = new Date().getTime();
