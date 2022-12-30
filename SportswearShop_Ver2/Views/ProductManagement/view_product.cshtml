@@ -42,8 +42,8 @@
                                             <th>Mã sản phẩm</th>
                                             <th>Tên sản phẩm</th>
                                             <th>Mô tả sơ lược</th>
-                                            <th>Nội dung sản phẩm</th>
-                                            <th>Danh mục sản phẩm</th>
+@*                                            <th>Nội dung sản phẩm</th>
+*@                                            <th>Danh mục sản phẩm</th>
                                             <th>Giá vốn</th>
                                             <th>Giá bán</th>
                                             <th>Hình ảnh</th>
@@ -77,8 +77,8 @@
                                                 <td>@item.GetType().GetProperty("Id").GetValue(item, null)</td>
                                                 <td>@item.GetType().GetProperty("Name").GetValue(item, null)</td>
                                                 <td>@item.GetType().GetProperty("Description").GetValue(item, null)</td>
-                                                <td class="decode">@item.GetType().GetProperty("Content").GetValue(item, null)</td>
-                                                <td>
+@*                                                <td class="decode">@item.GetType().GetProperty("Content").GetValue(item, null)</td>
+*@                                                <td>
                                                     @foreach (var menu in @ViewBag.AllMenu)
                                                     {
                                                         @if (item.GetType().GetProperty("Menu_id").GetValue(item, null) == menu.GetType().GetProperty("Id").GetValue(menu, null))
