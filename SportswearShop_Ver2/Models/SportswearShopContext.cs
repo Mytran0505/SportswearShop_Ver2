@@ -3163,6 +3163,43 @@ namespace SportswearShop_Ver2.Models
             return list;
         }
 
+        public List<Product> getAllProductSearch(string search)
+        {
+            List<Product> list = new List<Product>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from products where name like '%@string%' ";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("string", search);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new Product()
+                        {
+                            Id = Convert.ToInt32(reader["id"]),
+                            Name = reader["name"].ToString(),
+                            Description = reader["description"].ToString(),
+                            Content = reader["content"].ToString(),
+                            Menu_id = Convert.ToInt32(reader["menu_id"]),
+                            Original_price = Convert.ToInt32(reader["original_price"]),
+                            Price_sale = Convert.ToInt32(reader["price_sale"]),
+                            Image = reader["image"].ToString(),
+                            Active = Convert.ToInt32(reader["active"]),
+                            Quantity = Convert.ToInt32(reader["quantity"]),
+                            Sold = Convert.ToInt32(reader["sold"]),
+                            Discount = Convert.ToInt32(reader["discount"])
+                        });
+                    }
+                    reader.Close();
+                }
+                conn.Close();
+            }
+            return list;
+        }
+
+
         public void updateProductStatus(int id, int status)
         {
             using (MySqlConnection conn = GetConnection())

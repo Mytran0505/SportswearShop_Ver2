@@ -174,36 +174,8 @@ namespace SportswearShop_Ver2.Controllers
             SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
             ViewBag.AllCategory = context.getAllCategory();
             ViewBag.AllMenu = context.getAllMenu();
-            //ViewBag.AllSubBrand = context.getAllSubBrand();
-            //ViewBag.AllBlog = context.getAllBlog();
-            //var linqContext = new SportswearShopLINQContext();
-            ViewData["CurrentFilter"] = kw_submit;
-            //var blog = from s in linqContext.Blog select s;
-            //if (!String.IsNullOrEmpty(kw_submit))
-            //{
-            //    blog = blog.Where(s => s.Author.Contains(kw_submit)
-            //                   || s.Title.Contains(kw_submit)
-            //                   || s.Summary.Contains(kw_submit));
-            //}
-            //if (blog.Count() == 0)
-            //{
-            //    total2 = "NOTNULL";
-            //}
-
-            //ViewBag.Result2 = blog;
-            //var product = from s in linqContext.Product select s;
-            //if (!String.IsNullOrEmpty(kw_submit))
-            //{
-            //    product = product.Where(s => s.Name.Contains(kw_submit));
-            //}
-            //if (product.Count() == 0)
-            //{
-            //    total1 = "NOTNULL";
-            //}
-            //ViewBag.Result1 = product;
-
-
-
+            @ViewData["CurrentFilter"] = kw_submit;
+            ViewBag.Result1 = context.getAllProductSearch(kw_submit);
             return View();
         }
     }

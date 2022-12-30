@@ -16,36 +16,34 @@ namespace SportswearShop_Ver2.Controllers
     {
         public IActionResult Index()
         {
-            SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
-            ViewBag.AllCategory = context.getAllCategory();
-            ViewBag.AllMenu = context.getAllMenu();
-            ViewBag.AllThanhPho = context.getAllThanhPho();
-            ViewBag.AllQuanHuyen = context.getAllQuanHuyen();
-            ViewBag.AllXaPhuong = context.getAllXaPhuong();
+            
 
             int customerId = Convert.ToInt32(HttpContext.Session.GetInt32("customerId"));
             if (customerId != 0) // Nếu customer đã đăng nhập
             {
+                SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
+                ViewBag.AllCategory = context.getAllCategory();
+                ViewBag.AllMenu = context.getAllMenu();
+                ViewBag.AllThanhPho = context.getAllThanhPho();
+                ViewBag.AllQuanHuyen = context.getAllQuanHuyen();
+                ViewBag.AllXaPhuong = context.getAllXaPhuong();
                 ViewBag.DefaultShippingAddress = context.getDefaultShippingAddress(customerId);
-                
+                ViewBag.AllShipMethod = context.getShipMethodToCheckout();
+                var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
+                ViewBag.cart = cart;
+                if (cart == null)
+                {
+                    ViewBag.total = 0;
+                    ViewBag.numberItem = 0;
+                }
+                else
+                {
+                    ViewBag.numberItem = cart.Sum(item => item.Quantity);
+                    ViewBag.total = cart.Sum(item => item.Product.Price_sale * item.Quantity);
+                }
+                return View();
             }
-            ViewBag.AllShipMethod = context.getShipMethodToCheckout();
-            var cart = SessionHelper.GetObjectFromJson<List<CartItem>>(HttpContext.Session, "cart");
-            ViewBag.cart = cart;
-            if (cart == null)
-            {
-                ViewBag.total = 0;
-                ViewBag.numberItem = 0;
-            }
-            else
-            {
-                ViewBag.numberItem = cart.Sum(item => item.Quantity);
-                ViewBag.total = cart.Sum(item => item.Product.Price_sale * item.Quantity);
-            }
-
-            //return RedirectToAction("login_to_checkout");
-            return View();
-
+            return RedirectToAction("login_to_checkout");
         }
         public IActionResult login_to_checkout(string message)
         {
