@@ -113,9 +113,10 @@
                 </div>
 
                 <div class="navigation__column right" style="height:60px; margin-bottom: 15px;">
-                    <form class="ps-search--header" action="/Home/search_result" name="timkiem" method="post">
-                        <input class="form-control" type="text" id="keyword" name="kw_submit" placeholder="Tìm kiếm" value="@ViewData["CurrentFilter"]">
-                        <button type="submit" name="submit" value="Search"><i class="fa fa-search"></i></button>
+                    <form class="ps-search--header" action="/Home/search_result?kw_submit=@ViewData["CurrentFilter"]" name="timkiem" method="post" enctype="multipart/form-data">
+                        <input class="form-control" type="text" id="kw_submit" name="kw_submit" placeholder="Tìm kiếm">
+                        <input class="form-control" type="hidden" id="kw_submit" name="kw_submit">
+                        <button type="submit" name="submit" class="btn btn-success"><i class="fa fa-search"></i></button>
                     </form>
                     <div class="ps-cart">
                         <a class="ps-cart__toggle" href="/Cart/show_cart" title="Giỏ hàng">
@@ -514,7 +515,7 @@
         $(document).ready(function () {
             //var end_date = $('#end_date').val();
         
-            var DateExpired = new Date('2022-12-31').getTime();
+            var DateExpired = new Date('2023-01-31').getTime();
 
             setInterval(function () {
             var CurrentDate = new Date().getTime();

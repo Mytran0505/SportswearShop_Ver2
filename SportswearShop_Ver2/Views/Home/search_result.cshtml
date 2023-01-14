@@ -47,7 +47,7 @@
                         <div class="tab-pane fade show active" id="man" role="tabpanel">
                             <div class="tab-single">
                                 <div class="row">
-                                    @if (Enumerable.Count(ViewBag.Result1) == 0)
+                                    @*@if (Enumerable.Count(ViewBag.Result1) == 0)
                                     {
                                         <div class="box_search_null">
                                             <img src="~/public/images_upload/Null.png" alt="null"> <div class="font-primary font-bold text-2xl text-dark-gray mb-2">
@@ -58,10 +58,10 @@
                                         </div>
                                     }
                                     else
-                                    {
+                                    {*@
                                         @foreach (var item in ViewBag.Result1)
                                         {
-                                        <div class="col-xl-3 col-lg-4 col-md-4 col-12 isotope-item women">
+                                        @*<div class="col-xl-3 col-lg-4 col-md-4 col-12 isotope-item women">*@
                                             <div class="single-product">
                                                 <div class="product-img hov-img0 b-r-15">
                                                     <a href="/ProductDetail/product_detail?productId=@item.GetType().GetProperty("Id").GetValue(item, null)">
@@ -106,9 +106,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @*</div>*@
                                         }
-                                    }
+                                    @*}*@
                                 </div>
                             </div>
                         </div>

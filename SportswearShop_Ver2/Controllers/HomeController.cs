@@ -167,7 +167,7 @@ namespace SportswearShop_Ver2.Controllers
             System.Diagnostics.Debug.WriteLine(newCustomer.Email);
             return RedirectToAction("check_password", "Home", new RouteValueDictionary(newCustomer));
         }
-        public ActionResult search_result(string kw_submit)
+        public async Task<IActionResult> search_result(string kw_submit)
         {
 
             SportswearShopContext context = HttpContext.RequestServices.GetService(typeof(SportswearShop_Ver2.Models.SportswearShopContext)) as SportswearShopContext;
@@ -175,7 +175,7 @@ namespace SportswearShop_Ver2.Controllers
             ViewBag.AllMenu = context.getAllMenu();
             @ViewData["CurrentFilter"] = kw_submit;
             ViewBag.Result1 = context.getAllProductSearch(kw_submit);
-            return View();
+            return View(ViewBag.Result1);
         }
     }
 }
