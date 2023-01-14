@@ -3347,5 +3347,65 @@ namespace SportswearShop_Ver2.Models
             return list;
         }
 
+        public void savePromotion(Promotion newPromotion)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "INSERT INTO promotion(promotionId, startDate, endDate, title, status) " +
+                    "VALUES (@promotionId,@startDate,@endDate,@Title,@Status)";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("promotionId", newPromotion.PromotionId);
+                cmd.Parameters.AddWithValue("startDate", newPromotion.StartDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("endDate", newPromotion.EndDate.ToString("yyyy-MM-dd HH:mm:ss"));
+                cmd.Parameters.AddWithValue("Title", newPromotion.Title);
+                cmd.Parameters.AddWithValue("Status", newPromotion.Status);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public List<Promotion> getAllPromtionForPromtionManagement()
+        {
+            List<Promotion> list = new List<Promotion>();
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                string str = "select * from promotion ";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new Promotion()
+                        {
+                            PromotionId = Convert.ToInt32(reader["PromotionId"]),
+                            Title = reader["Title"].ToString(),
+                            Status = Convert.ToInt32(reader["Status"]),
+                            StartDate = (DateTime)reader["StartDate"],
+                            EndDate = (DateTime)reader["EndDate"]
+                        });
+                    }
+                    reader.Close();
+                }
+
+                conn.Close();
+
+            }
+            return list;
+        }
+
+        public void updatePromotionStatus(int PromotionId, int Status)
+        {
+            using (MySqlConnection conn = GetConnection())
+            {
+                conn.Open();
+                var str = "UPDATE promotion set Status =@status  WHERE PromotionId=@id";
+                MySqlCommand cmd = new MySqlCommand(str, conn);
+                cmd.Parameters.AddWithValue("status", Status);
+                cmd.Parameters.AddWithValue("id", PromotionId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
     }
 }

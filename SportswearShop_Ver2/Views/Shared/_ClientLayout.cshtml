@@ -513,9 +513,13 @@
 	<script src="~/public/admin/js/plugin/sweetalert/sweetalert.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            //var end_date = $('#end_date').val();
+            //var end_date = $('#ngayketthuc').val();
         
+<<<<<<< HEAD
             var DateExpired = new Date('2023-01-31').getTime();
+=======
+            var DateExpired = new Date(DateTime.Now).getTime();
+>>>>>>> d5f4c4c4d77084b370575c3289c40efb112e3d1e
 
             setInterval(function () {
             var CurrentDate = new Date().getTime();

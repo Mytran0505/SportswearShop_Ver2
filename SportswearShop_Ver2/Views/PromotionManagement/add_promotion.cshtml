@@ -1,0 +1,87 @@
+﻿@using System.Globalization;
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    DateTime firstDateOfThisMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+
+    // Cái này để format tiền
+    CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");
+}
+<div class="main-panel">
+    <div class="content">
+        <div class="page-inner">
+            <div class="page-header">
+                <h4 class="page-title">Chương trình khuyến mãi</h4>
+                <ul class="breadcrumbs">
+                    <li class="nav-home">
+                        <a href="#">
+                            <i class="flaticon-home"></i>
+                        </a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">Quản lý khuyến mãi</a>
+                    </li>
+                    <li class="separator">
+                        <i class="flaticon-right-arrow"></i>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">Thêm khuyến mãi</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Nội dung khuyến mãi</div>
+                        </div>
+                        <form role="form" action="/PromotionManagement/SavePromotion" method="post" enctype="multipart/form-data">
+                            <!-- enctype="multipart/form-data" có cái này mới thêm ảnh đc-->
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8 col-lg-12">
+                                        <div class="form-group">
+                                            <div class="input-group mb-3">
+
+                                                <input type="text" name="Title" class="form-control" placeholder="Tên chương trình khuyến mãi" aria-label="Promotionname" aria-describedby="basic-addon1">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <span class="btn-label">Ngày bắt đầu: </span>
+                                            <input type="date" name="StartDate" class="form-control" id="tu-ngay" min="2020-01-01" style="display:inline-block; width: 65%;" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <span class="btn-label">Ngày kết thúc: </span>
+                                            <input type="date" name="EndDate" class="form-control" id="den-ngay" min="2020-01-01" style="display:inline-block; width: 65%;" required>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="form-label d-block">Hiển thị</label>
+                                            <div class="selectgroup selectgroup-secondary selectgroup-pills">
+                                                <label class="selectgroup-item">
+                                                    <input type="radio" name="status" value="1" class="selectgroup-input" checked="">
+                                                    <span class="selectgroup-button selectgroup-button-icon"><i class="fa fa-eye"></i></span>
+                                                </label>
+                                                <label class="selectgroup-item">
+                                                    <input type="radio" name="status" value="0" class="selectgroup-input">
+                                                    <span class="selectgroup-button selectgroup-button-icon"><i class="fa fa-eye-slash"></i></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-action">
+                                <button type="submit" name="add_content" class="btn btn-success">Thêm</button>
+                                <button class="btn btn-danger">Huỷ</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
